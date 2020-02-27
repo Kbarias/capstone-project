@@ -10,10 +10,17 @@
     "type": "git",
     "url": "git+https://github.com/Kbarias/capstone-project.git"
   },
-  "author": "",
+  "author": "agora team",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Kbarias/capstone-project/issues"
   },
-  "homepage": "https://github.com/Kbarias/capstone-project#readme"
+  "homepage": "https://github.com/Kbarias/capstone-project#readme",
+  "dependencies": {
+    "bcrypt": "^4.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.2",
+    "nodemon": "^2.0.2"
+  },
+  "devDependencies": {}
 }
