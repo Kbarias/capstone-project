@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-require('dotenv/config');
+//require('dotenv/config');
 
 app.use(bodyParser.json());
 
@@ -20,7 +20,11 @@ app.get('/', (req,res) => {
 });
 
 //Connection to database
-mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () => 
+// mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () => 
+//    console.log('Connected to database')
+// );
+
+mongoose.connect(mongodb+srv://kcg-admin:Mn51phLrce3uYPt4@kcg-cluster-t19p2.mongodb.net/agoraDB?retryWrites=true&w=majority, { useNewUrlParser: true }, () => 
    console.log('Connected to database')
 );
 
