@@ -15,8 +15,8 @@ app.use('/places', placesRoute);
 
 
 //ROUTES
-app.get('/', (req,res) => {
-   res.send('We are on home');
+app.get('/', (req, res) => {
+    res.send('We are on home');
 });
 
 //Connection to database
@@ -24,8 +24,8 @@ app.get('/', (req,res) => {
 //    console.log('Connected to database')
 // );
 
-mongoose.connect(mongodb+srv://kcg-admin:Mn51phLrce3uYPt4@kcg-cluster-t19p2.mongodb.net/agoraDB?retryWrites=true&w=majority, { useNewUrlParser: true }, () => 
-   console.log('Connected to database')
+mongoose.connect('mongodb+srv://kcg-admin:Mn51phLrce3uYPt4@kcg-cluster-t19p2.mongodb.net/agoraDB?retryWrites=true&w=majority', { useNewUrlParser: true }, () =>
+    console.log('Connected to database')
 );
 
 app.listen(3000);
