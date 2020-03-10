@@ -8,7 +8,6 @@ const passport = require('passport');
 
 require('dotenv/config');
 
-
 //Passport config
 require('./config/passport')(passport);
 
@@ -54,7 +53,8 @@ const placesRoute = require('./routes/places.js');
 app.use('/places', placesRoute);
 
 
-//Connection to database
+
+//Connection to database with hidden credentials
 // mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () => 
 //    console.log('Connected to database')
 // );
