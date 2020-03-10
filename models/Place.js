@@ -22,6 +22,10 @@ const PlaceSchema = mongoose.Schema({
         city: { type: String, required: true},
         state: { type: String, required: true},
         zipcode: { type: String, required: true}
+    },
+    is_deleted: {
+        type: Boolean,
+        default: false
     }
 });
 

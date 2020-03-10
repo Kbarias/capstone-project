@@ -25,13 +25,17 @@ const MerchSchema = mongoose.Schema({
     },
     status: {
         state: { type: String, required: true},
-        status_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Status'}
+        exchange_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Exchange'}
     },
     suggested_places: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Place',
         maxItems: 3
-    }]
+    }],
+    is_deleted: {
+        type: Boolean,
+        default: false
+    }
 });
 
 module.exports = mongoose.model('Merch', MerchSchema);

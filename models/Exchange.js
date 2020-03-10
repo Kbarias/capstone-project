@@ -37,7 +37,16 @@ const ExchangeSchema = mongoose.Schema({
     },
     status: {
         state: { type: String, required: true },
-        status_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Status', required: true}
+        rent_info: {
+            start_date: Date,
+            return_date: Date,
+            days_late: Number
+        },
+        purchase_date: Date
+    },
+    is_deleted: {
+        type: Boolean,
+        default: false
     }
 });
 

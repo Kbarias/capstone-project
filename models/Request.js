@@ -33,6 +33,10 @@ const RequestSchema = mongoose.Schema({
         sec_time: { type: Number, required: true },
         third_date: { type: Date, required: true },
         third_date: { type: Number, required: true },
+    },
+    is_deleted: {
+        type: Boolean,
+        default: false
     }
 });
 

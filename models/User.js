@@ -19,7 +19,12 @@ const UserSchema = mongoose.Schema({
     },
     is_admin: {
         type: Boolean,
+        default: false,
         required: true
+    },
+    is_deleted: {
+        type: Boolean,
+        default: false
     }
 });
 

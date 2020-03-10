@@ -25,6 +25,10 @@ const SessionSchema = mongoose.Schema({
     is_public: {
         type: Boolean,
         required: true
+    },
+    is_deleted: {
+        type: Boolean,
+        default: false
     }
 });
 

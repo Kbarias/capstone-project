@@ -9,7 +9,11 @@ const UserInfoSchema = mongoose.Schema({
         type: String,
         default: 'active'
     },
-    rating: Number
+    rating: Number,
+    is_deleted: {
+        type: Boolean,
+        default: false
+    }
 });
 
 module.exports = mongoose.model('UserInfo', UserInfoSchema);

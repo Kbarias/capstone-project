@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
 });
 
 //create new place handle
-router.post('/', (req,res) => {
+router.post('/', async (req,res) => {
     const place = new Place({
         gps_coordinates: {
             latitude: req.body.gps_coordinates.latitude,
@@ -36,14 +36,14 @@ router.post('/', (req,res) => {
 
     });
 
-    place.save()
-        .then(data => {
-            res.json(data);
-        })
-        .catch(err => {
-            res.json({ message: err });
-        });
 
+    try {
+        const savedPlace = await place.save();
+        res.json(savedPlace);
+    } catch (err) {
+        res.json( {message:err} );
+    }
+    
 });
 
 module.exports = router;

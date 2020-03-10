@@ -5,10 +5,18 @@ const SessionMemberSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Session'
     },
-    tutors: [ { type: mongoose.Schema.Types.ObjectId,
-                ref: 'User'}],
-    members: [ { type: mongoose.Schema.Types.ObjectId,
-                ref: 'User'}],
+    tutors: [{ 
+        type: mongoose.Schema.Types.ObjectId,   
+        ref: 'User'
+    }],
+    members: [{ 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    is_deleted: {
+        type: Boolean,
+        default: false
+    }
 });
 
 module.exports = mongoose.model('SessionMember', SessionMemberSchema);

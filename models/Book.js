@@ -16,7 +16,11 @@ const BookSchema = mongoose.Schema({
     subjects: [{
         type: String,
         required: true
-    }]
+    }],
+    is_deleted: {
+        type: Boolean,
+        default: false
+    }
 });
 
 module.exports = mongoose.model('Book', BookSchema);
