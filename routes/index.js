@@ -4,14 +4,13 @@ const { ensureAuthenticated } = require('../config/auth');
 
 //Welcome Page
 router.get('/', (req, res) => {
-    res.render('welcome');
- });
+    res.render('login');
+});
 
 
- //Dashboard Page
- router.get('/dashboard', ensureAuthenticated, (req, res) => 
-    res.render('dashboard',{
+//Dashboard Page
+router.get('/dashboard', ensureAuthenticated, (req, res) =>
+    res.render('dashboard', {
         name: req.user.name //fix
- }));
-
- module.exports = router;
+    }));
+module.exports = router;
