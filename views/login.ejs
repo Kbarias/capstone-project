@@ -1,30 +1,50 @@
-<div class="row mt-5">
-    <div class="col-md6 m-auto" style="justify-content: center; color: red;">
+<div class="row" style="height: 60px;">
+
+</div>
+<div class="row mt-5" style="align-items: center; margin: 20px;">
+    <div class=" col-md-3 m-auto " style="justify-content: center; color: black; background: rgba(235, 132, 209, 0.4);
+    height: 40px; border-radius: 5px;
+    ">
         Response Text if available
     </div>
 </div>
-<div class="row mt-3">
-    <div class="col-md-6 m-auto">
-        <div class="card card-body">
-            <!--<h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>  Login</h1>  -->
-            <h1 class="text-center mb-3"><b><i>Agorá</i></b></h1>
+<div class=" row ">
+    <div class="col-md-3 m-auto ">
+        <div class="card card-body ">
+            <!--<h1 class="text-center mb-3 "><i class="fas fa-sign-in-alt "></i>  Login</h1>  -->
+            <h1 class="text-center mb-3 "><b><i>Agorá</i></b></h1>
             <%- include ('./partials/messages'); -%>
-                <form action="/users/login" method="POST">
-                    <div class="form-group">
-                        <!--<label for="email">Email</label>-->
-                        <input type="email" id="email" name="email" class="form-control" placeholder="Email" />
+                <form action="/users/login " method="POST ">
+                    <div class="form-group ">
+                        <!--<label for="email ">Email</label>-->
+                        <input type="email " id="email " name="email " class="form-control " placeholder="Email " />
                     </div>
-                    <div class="form-group">
-                        <!--<label for="password">Password</label>-->
-                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" />
+                    <div class="form-group ">
+                        <!--<label for="password ">Password</label>-->
+                        <input type="password " id="password " name="password " class="form-control " placeholder="Password " />
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    <button type="submit " class="btn btn-primary btn-block mybtn ">Login</button>
                 </form>
                 <!--Need fixing-->
-                <p class="lead mt-4">
-                    <a href="/users/recovery">Forgot username or password?</a>
-                    <br> New to Agora? <a href="/users/register">Sign up</a>
+                <p class="lead mt-4 ">
+                    <a class="mya1" href="/users/recovery ">Forgot username or password?</a>
+                    <br> New to Agora? <a class="mya1" href="/users/register ">Sign up</a>
                 </p>
         </div>
     </div>
+</div>
+<div class="row fixed-bottom myfooter">
+    <div class="col-2 mycol">
+        <a class="mya" href="#">about us</a>
+    </div>
+    <div class="col-2 mycol">
+        <a class="mya" href="#">privacy</a>
+    </div>
+    <div class="col-2 mycol">
+        <a class="mya" href="#">terms</a>
+    </div>
+    <div class="col-2 mycol">
+        <a class="mya" href="#">help</a>
+    </div>
+
 </div>

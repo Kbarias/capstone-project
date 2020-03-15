@@ -15,6 +15,6 @@ router.get('/', (req, res) => {
 //     }));
 
 router.get('/dashboard', (req, res) => {
-    res.render('dashboard-draft');
+    res.render('dashboard1');
 });
 module.exports = router;
