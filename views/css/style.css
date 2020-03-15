@@ -42,7 +42,7 @@ body {
 .mya2 {
     text-decoration: none;
     color: white;
-    font-size: x-large;
+    font-size: large;
 }
 
 .mya2h {
@@ -116,8 +116,4 @@ body {
 
 .nav-item:active {
     text-decoration: underline;
-}
-
-.mytable {
-    /* size: 100%; */
 }

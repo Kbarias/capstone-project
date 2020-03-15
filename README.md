@@ -5,3 +5,5 @@
 
 # 3/11   added static path for express to allow background image
 # 3/11   modify welcome page to default to login page and added forgot password option (needs code for ejs)
+# 3/14   added datatable and modified dashboard page
+# 3/15   added google calendar. login name agoracuny, password kiaragillianchun
