@@ -20,17 +20,21 @@ router.get('/recovery', (req, res) => {
     res.render('recovery');
 });
 //Register Handle
-//remember to add asynce
 router.post('/register', (req, res) => {
 
     //Extract from registers form
-    const { name, username, email, password, password2 } = req.body;
+    const { fname, lname, username, email, password, password2 } = req.body;
 
     let errors = [];
     //Check required fields are filled
-    if (!name || !username || !email || !password || !password2) {
+    if (!fname || !lname || !username || !email || !password || !password2) {
         errors.push({ msg: 'Please fill in all fields' });
     }
+
+    // //Check that username length is greater than 4
+    // if (username.length < 6) {
+    //     errors.push({ msg: 'Username should be at least 4 characters' });
+    // }
 
     //Check that passwords match
     if (password != password2) {
@@ -46,7 +50,8 @@ router.post('/register', (req, res) => {
     if (errors.length > 0) {
         res.render('register', {
             errors,
-            name,
+            fname,
+            lname,
             username,
             email,
             password,
@@ -55,57 +60,75 @@ router.post('/register', (req, res) => {
     } else {
         //Validation passed
         //Check if user already exists
-        User.findOne({ email: email })
+        User.findOne({ username: username })
             .then(user => {
                 if (user) {
                     //User exists, re-render register page
-                    errors.push({ msg: 'Email is already registered' });
+                    errors.push({ msg: 'That username is already taken' });
                     res.render('register', {
                         errors,
-                        name,
+                        fname,
+                        lname,
                         username,
                         email,
                         password,
                         password2
                     });
                 } else {
-                    //create new user
-                    const newUser = new User({
-                        user_name: username,
-                        user_pw: password,
-                        full_name: name,
-                        email: email,
-                    });
+                    User.findOne({email: email})
+                        .then(user2 => {
+                            if(user2) {
 
-                    // //create userInfo document for this new user
-                    // const userinfo = new UserInfo({
-                    //     _id: user.id,
-                    // });
+                                errors.push({msg: 'That email is already registered'});
+                                res.render('register', {
+                                    errors,
+                                    fname,
+                                    lname,
+                                    username,
+                                    email,
+                                    password,
+                                    password2
+                                });
+                            } else {
+                                    const newUser = new User({
+                                        first_name: fname,
+                                        last_name: lname,
+                                        username: username,
+                                        password: password,
+                                        email: email,
+                                    });
 
-                    // Hash password
-                    bcrypt.genSalt(10, (err, salt) =>
-                        bcrypt.hash(newUser.user_pw, salt, (err, hash) => {
-                            if (err) throw err;
-                            //set password to hashed
-                            newUser.user_pw = hash;
+                                    // Hash password
+                                    bcrypt.genSalt(10, (err, salt) =>
+                                        bcrypt.hash(newUser.password, salt, (err, hash) => {
+                                            if (err) throw err;
+                                            //set password to hashed
+                                            newUser.password = hash;
 
-                            //save user to database
-                            newUser.save()
-                                .then(user => {
-                                    req.flash('success_msg', 'You are now registered and can log in!');
-                                    res.redirect('/users/login');
-                                })
-                                .catch(err => console.log(err));
-                            //userinfo.save()
-                        }))
+                                            //save user to database
+                                            newUser.save()
+                                                .then()
+                                                .catch(err => console.log(err));
+
+                                            //create userInfo document for this new user
+                                            const userinfo = new UserInfo({
+                                                _id: newUser.id,
+                                            });
+                                            
+                                            //save userInfo to database and redirect to login page
+                                            userinfo.save()
+                                                .then(user => {
+                                                    req.flash('success_msg', 'You are now registered and can log in!');
+                                                    res.redirect('/users/login');
+                                                })
+                                                .catch(err => console.log(err));
+                                        }))
+                            }
+                        });
                 }
             });
-
     }
-
-
-
-});
+});//end of register handle
 
 
 //Login Handle

@@ -15,8 +15,13 @@ module.exports = function(passport){
                         return done(null, false, {message: 'That email is not registered'});
                     }
 
+                    //if user email is not verified
+                    if(!user.is_verified){
+                        return done(null, false, {message: 'Please verify your email to login'});
+                    }
+
                     //match password in database
-                    bcrypt.compare(password, user.user_pw, (err, isMatch) => {
+                    bcrypt.compare(password, user.password, (err, isMatch) => {
                         if(err) throw err;
 
                         if(isMatch) {
@@ -32,11 +37,11 @@ module.exports = function(passport){
 
     passport.serializeUser( (user, done) => {
         done(null, user.id);
-      });
+    });
     
-      passport.deserializeUser((id, done) => {
+    passport.deserializeUser((id, done) => {
         User.findById(id, (err, user) => {
           done(err, user);
         });
-      });
+    });
 }
