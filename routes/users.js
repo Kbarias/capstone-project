@@ -3,12 +3,21 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const UserInfo = require('../models/UserInfo');
 const passport = require('passport');
+const crypto =  require('crypto');
+const nodemailer = require('nodemailer');
+const Token = require('../models/Token');
 
 const router = express.Router();
 
 //Login Page
-router.get('/login', (req, res) => {
-    res.render('login');
+router.get('/login/:confirmation?/:token?', (req, res) => {
+    //Check for if confirming email link
+    if(req.params.token){
+        let token = req.params.token;
+        res.render('login', {token});
+    } else {
+        res.render('login');
+    }
 });
 
 //Register Page
@@ -19,6 +28,8 @@ router.get('/register', (req, res) => {
 router.get('/recovery', (req, res) => {
     res.render('recovery');
 });
+
+
 //Register Handle
 router.post('/register', (req, res) => {
 
@@ -48,15 +59,7 @@ router.post('/register', (req, res) => {
 
     //Check if there are issues from above, if so re-render the registration page but with entered values so user can edit
     if (errors.length > 0) {
-        res.render('register', {
-            errors,
-            fname,
-            lname,
-            username,
-            email,
-            password,
-            password2
-        });
+        res.render('register', { errors, fname, lname, username, email, password, password2 });
     } else {
         //Validation passed
         //Check if user already exists
@@ -65,30 +68,14 @@ router.post('/register', (req, res) => {
                 if (user) {
                     //User exists, re-render register page
                     errors.push({ msg: 'That username is already taken' });
-                    res.render('register', {
-                        errors,
-                        fname,
-                        lname,
-                        username,
-                        email,
-                        password,
-                        password2
-                    });
+                    res.render('register', { errors, fname, lname, username, email, password, password2 });
                 } else {
                     User.findOne({email: email})
                         .then(user2 => {
                             if(user2) {
 
                                 errors.push({msg: 'That email is already registered'});
-                                res.render('register', {
-                                    errors,
-                                    fname,
-                                    lname,
-                                    username,
-                                    email,
-                                    password,
-                                    password2
-                                });
+                                res.render('register', { errors, fname, lname, username, email, password, password2 });
                             } else {
                                     const newUser = new User({
                                         first_name: fname,
@@ -114,11 +101,43 @@ router.post('/register', (req, res) => {
                                             const userinfo = new UserInfo({
                                                 _id: newUser.id,
                                             });
+
+                                            // Create a verification token for this user
+                                            var token = new Token({ _userId: newUser._id, token: crypto.randomBytes(16).toString('hex') });
                                             
+                                            // Save the verification token
+                                            token.save(function (err) {
+                                                if (err) { return res.status(500).send({ msg: err.message }); }
+                                    
+                                                // Send the email
+                                                var transporter = nodemailer.createTransport({ 
+                                                    service: 'gmail', 
+                                                    auth: { 
+                                                        user: 'TheAgoraProject1@gmail.com', 
+                                                        pass: 'vr0gVBroj3ct' 
+                                                    } 
+                                                });
+
+                                                var mailOptions = { 
+                                                    from: 'TheAgoraProject1@gmail.com', 
+                                                    to: newUser.email, 
+                                                    subject: 'Account Verification Token', 
+                                                    text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/users'+ '\/login'+ '\/confirmation\/' + token.token + '.\n' 
+                                                };
+
+                                                transporter.sendMail(mailOptions, function (err) {
+                                                    if(err) { 
+                                                        console.log(err);
+                                                    } else {
+                                                        console.log('A verification email has been sent to ' + user.email + '.');
+                                                    }
+                                                });
+                                            });
+
                                             //save userInfo to database and redirect to login page
                                             userinfo.save()
                                                 .then(user => {
-                                                    req.flash('success_msg', 'You are now registered and can log in!');
+                                                    req.flash('success_msg', 'A verification email has been sent to ' + newUser.email + '.');
                                                     res.redirect('/users/login');
                                                 })
                                                 .catch(err => console.log(err));
@@ -133,11 +152,50 @@ router.post('/register', (req, res) => {
 
 //Login Handle
 router.post('/login', (req, res, next) => {
-    passport.authenticate('local', {
-        successRedirect: '/dashboard',
-        failureRedirect: '/users/login',
-        failureFlash: true
-    })(req, res, next);
+    const {token, email, password} = req.body;
+    //Logging in
+    if(!token){
+        passport.authenticate('local', {
+            successRedirect: '/dashboard',
+            failureRedirect: '/users/login',
+            failureFlash: true
+        })(req, res, next);
+    } else {
+        //Confirmation of email handle
+        let errors = [];
+        //Find that token is a valid token
+        Token.findOne({ token: token })
+            .then( found_token => {
+                if (!found_token) {
+                    errors.push({ msg: 'We were unable to find a valid token. Your token my have expired.'});
+                    res.render('login' , {errors, token, email, password});
+                }
+                
+                //Find that user with this token exists in database
+                User.findOne({ _id: found_token._userId, email: req.body.email })
+                    .then(user => {
+                        if (!user) {
+                            errors.push({msg: 'We were unable to find a user for this token.'});
+                            res.render('login' , {errors, token, email, password});
+                        }
+                        if (user.is_verified) {
+                            errors.push({msg: 'This user has already been verified.'})
+                        }
+
+                        // Verify and save the user
+                        user.is_verified = true;
+                        user.save()
+                            .then(saved_user => {
+                                passport.authenticate('local', {
+                                    successRedirect: '/dashboard',
+                                    failureRedirect: '/users/login',
+                                    failureFlash: true
+                                })(req, res, next);
+                            })
+                            .catch(err => console.log(err));
+                    });
+            });
+    }
 });
 
 

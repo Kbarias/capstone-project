@@ -44,6 +44,7 @@ app.use((req, res, next) => {
     next();
 });
 
+
 //Import routes
 const indexRoute = require('./routes/index.js');
 app.use('/', indexRoute);
@@ -53,6 +54,7 @@ app.use('/users', usersRoute);
 
 const placesRoute = require('./routes/places.js');
 app.use('/places', placesRoute);
+
 
 
 
