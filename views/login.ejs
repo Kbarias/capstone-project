@@ -1,34 +1,52 @@
-<div class="row mt-5">
-    <div class="col-md-6 m-auto">
-      <div class="card card-body">
-        <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>  Login</h1>
+<div class="row" style="height: 60px;">
+
+</div>
+<div class="row mt-5" style="align-items: center; margin: 20px;">
+    <div class=" col-md-3 m-auto ">
         <%- include ('./partials/messages'); -%>
-        <form action="/users/login" method="POST">
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              class="form-control"
-              placeholder="Enter Email"
-            />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              class="form-control"
-              placeholder="Enter Password"
-            />
-          </div>
-          <button type="submit" class="btn btn-primary btn-block">Login</button>
-        </form>
-        <p class="lead mt-4">
-          No Account? <a href="/users/register">Register</a>
-        </p>
-      </div>
     </div>
-  </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3 m-auto">
+        <div class="card card-body ">
+            <!--<h1 class="text-center mb-3 "><i class="fas fa-sign-in-alt "></i>  Login</h1>  -->
+            <h1 class="text-center mb-3 "><b><i>Agorá</i></b></h1>
+                <form action="/users/login" method="POST">
+                    <!--Hidden token field for users route-->
+                    <div class="form-group" style= "display: none;">
+                        <input type="token" id="token" name="token" class="form-control" placeholder="token" value="<%= typeof token != 'undefined' ? token : '' %>"/>
+                    </div>
+                    <div class="form-group">
+                        <!--<label for="email ">Email</label>-->
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Email" />
+                    </div>
+                    <div class="form-group ">
+                        <!--<label for="password ">Password</label>-->
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mybtn">Login</button>
+                </form>
+                <!--Need fixing-->
+                <p class="lead mt-4 ">
+                    <a class="mya1" href="/users/recovery ">Forgot username or password?</a>
+                    <br> New to Agora? <a class="mya1" href="/users/register ">Sign up</a>
+                </p>
+        </div>
+    </div>
+</div>
+<div class="row fixed-bottom myfooter">
+    <div class="col-2 mycol">
+        <a class="mya" href="#">about us</a>
+    </div>
+    <div class="col-2 mycol">
+        <a class="mya" href="#">privacy</a>
+    </div>
+    <div class="col-2 mycol">
+        <a class="mya" href="#">terms</a>
+    </div>
+    <div class="col-2 mycol">
+        <a class="mya" href="#">help</a>
+    </div>
+
+</div>

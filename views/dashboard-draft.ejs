@@ -1,0 +1,108 @@
+<!--Navigation-->
+<!-- <nav class="navbar navbar-expand-lg fixed-top nav-fill myHorizontalNav">
+    <img class="navbar-brand mya" style="height: 60px;" src="image/logo.png">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor03">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link mya2" href="#">home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link mya2" href="#">inbox</a>
+            </li>
+
+        </ul>
+
+    </div>
+</nav> -->
+<nav class="nav nav-pills nav-fill fixed-top myHorizontalNav">
+    <img class="navbar-brand " style="height: 60px;" src="image/logo.png">
+    <a class="nav-link mya2h" href="#">home</a>
+    <a class="nav-link mya2h" href="#">inbox</a>
+
+</nav>
+
+
+<div class="wrapper bg-light text-dark">
+    <div class="sidebar text-center text-light">
+        <br>
+        <img class="img-fluid rounded bg-white" src="image/profile-icon.png">
+
+        <ul class="text-uppercase text-xl-left">
+            <br>
+            <li>
+                <a class="mya2" href="#">DASHadfadfadfadfBORD <span class="sr-only">(current)</span></a>
+            </li>
+            <li>
+                <a class="mya2" href="#">EXCHANGE</a>
+            </li>
+            <li>
+                <a class="mya2" href="#">GATHER</a>
+            </li>
+            <li>
+                <a class="mya2" href="#">WANDER</a>
+            </li>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <li>
+                <a class="mya2" href="#">LOGOUT</a>
+            </li>
+            <li>
+                <a class="mya2" href="#">SETTINGS</a>
+            </li>
+            <li>
+                <a class="mya2" href="#">HELP</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <div>
+            <h1 class="">Welcome member!</h1>
+            <h3 class="">This is the textbook page</h3>
+        </div>
+
+        <table class=" table table-hover table-striped table-dark mytable" id="myTable">
+
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">ISBN NO.</th>
+                    <th scope="col">Book Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Edition</th>
+                    <th scope="col">Rent/Buy/Sell</th>
+                    <th scope="col">Condition</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <!--Sample code-->
+                <% for(var i=0; i < 20; i++) { %>
+                    <tr class="table-secondary">
+                        <td scope="row">ISBN
+                            <%= i %>
+                        </td>
+                        <td scope="row">Title:
+                            <%=i %>
+                        </td>
+                        <td scope="row">Author:
+                            <%=i %>
+                        </td>
+                        <td scope="row">Edition:
+                            <%=i %>
+                        </td>
+                        <td scope="row">For :
+                            <%=i %>
+                        </td>
+                        <td scope="row">Condition:
+                            <%=i %>
+                        </td>
+                    </tr>
+                    <% } %>
+
+            </tbody>
+        </table>
+    </div>
+</div>

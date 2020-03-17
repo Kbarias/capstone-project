@@ -7,7 +7,12 @@ const UserInfoSchema = mongoose.Schema({
     },
     account_status: {
         type: String,
-        default: 'active'
+        default: 'Active'
+    },
+    is_admin: {
+        type: Boolean,
+        default: false,
+        required: true
     },
     rating: Number,
     is_deleted: {

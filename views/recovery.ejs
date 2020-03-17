@@ -1,0 +1,32 @@
+<div class="row mt-5">
+    <div class="col-md-3 m-auto">
+        <div class="card card-body">
+            <!--<h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>  Login</h1>  -->
+            <h1 class="text-center mb-3"><b><i>Agorá</i></b></h1>
+            <h3 class="text-center mb-3">Please enter your registered email address and hit submit.</h3>
+            <%- include ('./partials/messages'); -%>
+                <form action="/users/login" method="POST">
+                    <div class="form-group">
+                        <!--<label for="email">Email</label>-->
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Email" />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </form>
+
+        </div>
+    </div>
+    <div class="row fixed-bottom myfooter">
+        <div class="col-2 mycol">
+            <a class="mya" href="#">about us</a>
+        </div>
+        <div class="col-2 mycol">
+            <a class="mya" href="#">privacy</a>
+        </div>
+        <div class="col-2 mycol">
+            <a class="mya" href="#">terms</a>
+        </div>
+        <div class="col-2 mycol">
+            <a class="mya" href="#">help</a>
+        </div>
+
+    </div>

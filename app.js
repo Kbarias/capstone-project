@@ -12,21 +12,23 @@ require('dotenv/config');
 require('./config/passport')(passport);
 
 //Bodyparser
-app.use(express.urlencoded( { extended: false } ));
+app.use(express.urlencoded({ extended: false }));
 
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
 //Express Session
 app.use(
-   session({
-     secret: 'secret',
-     resave: true,
-     saveUninitialized: true
-   })
- );
+    session({
+        secret: 'secret',
+        resave: true,
+        saveUninitialized: true
+    })
+);
+//for image folder
+app.use(express.static(__dirname + '/views'));
 
- // Passport middleware
+// Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -36,11 +38,12 @@ app.use(flash());
 
 //Global vars
 app.use((req, res, next) => {
-   res.locals.success_msg = req.flash('success_msg');
-   res.locals.error_msg = req.flash('error_msg');
-   res.locals.error = req.flash('error');
-   next();
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    next();
 });
+
 
 //Import routes
 const indexRoute = require('./routes/index.js');
@@ -54,14 +57,15 @@ app.use('/places', placesRoute);
 
 
 
+
 //Connection to database with hidden credentials
 // mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () => 
 //    console.log('Connected to database')
 // );
 
-mongoose.connect('mongodb+srv://kcg-admin:Mn51phLrce3uYPt4@kcg-cluster-t19p2.mongodb.net/agoraDB?retryWrites=true&w=majority', { useNewUrlParser: true }, () =>
+mongoose.connect('mongodb+srv://kcg-admin:Mn51phLrce3uYPt4@kcg-cluster-t19p2.mongodb.net/agoraDB?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }, () =>
     console.log('Connected to database')
 );
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT);
