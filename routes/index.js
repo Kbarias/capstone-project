@@ -14,7 +14,12 @@ router.get('/', (req, res) => {
 //         name: req.user.name //fix
 //     }));
 
-router.get('/dashboard', (req, res) => {
-    res.render('dashboard1');
+//dashboard has to follow by a username, otherwise, page won't load
+router.get('/dashboard/:name', (req, res) => {
+    res.render('dashboard1', { member: req.params.name });
+});
+
+router.get('/dashboard_places/:name', (req, res) => {
+    res.render('dashboard_places', { member: req.params.name });
 });
 module.exports = router;
