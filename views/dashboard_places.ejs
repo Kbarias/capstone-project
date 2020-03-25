@@ -93,9 +93,19 @@
                         <div class="btn-toolbar mb-2 mb-md-0">
                             <!--Get user input for places-->
 
-                            <input id="newlat"><br>
-                            <input id="newlng"><br>
-                            <button onclick="getCoord()">Submit </button><br>
+                            <form>
+                                <div class="form-group">
+                                    <label class="col-form-label text-dark" for="inputDefault">Lattitude</label>
+                                    <input type="text" class="form-control border-dark" placeholder="40.768560" id="newlat">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label text-dark" for="inputDefault">Longtitude</label>
+                                    <input type="text" class="form-control border-dark" placeholder="-73.964968" id="newlng">
+                                </div>
+
+                                <button class="btn btn-primary btn-sm btn-block btn-secondary" onclick="getCoord()">Submit </button><br>
+
+                            </form>
                         </div>
                     </div>
                     <div class="col-6">
@@ -155,8 +165,9 @@
 <!--need fixing, this is code to get the input from screen-->
 <script async defer type="text/javascript">
     function getCoord() {
-        var newlat = document.getElementById("newlat").value;
-        var newlng = document.getElementById("newlng").value;
+        var newlat = parseFloat(document.getElementById("newlat").value);
+        var newlng = parseFloat(document.getElementById("newlng").value);
+        $("#map").load(" #map");
     }
 </script>
 
