@@ -1,0 +1,222 @@
+<style>
+    body {
+        background-color: azure;
+    }
+</style>
+
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/dashboard/name"><b>HOME</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><b>INBOX</b></a>
+    <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> 
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="#">Sign out</a>
+        </li>
+    </ul>
+-->
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-dark sidebar myVerticalNav">
+            <div class="sidebar-sticky">
+                <br>
+                <img class="img-fluid rounded mx-auto d-block bg-white" src="../image/logo.png">
+                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
+                    <span>Welcome <%=member%></span>
+                    <a class="d-flex align-items-center text-muted" href="#">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+                </h3>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link mya2 active" href="http://localhost:3000/dashboard/name">
+                            <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="http://localhost:3000/exchange/name">
+                            <span data-feather="file"></span> EXCHANGE
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="http://localhost:3000/dashboard-places/name">
+                            <span data-feather="shopping-cart"></span> GATHER
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="#">
+                            <span data-feather="users"></span> WANDER
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="http://localhost:3000/dashboard-admin/name">
+                            <span data-feather="users"></span> MANAGE
+                        </a>
+                    </li>
+                </ul>
+                <!--Other text to appear in between-->
+                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
+                    <span></span>
+                    <a class="d-flex align-items-center text-muted" href="#">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+                </h3>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="/users/logout">
+                            <span data-feather="bar-chart-2"></span> LOGOUT
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="#">
+                            <span data-feather="layers"></span> SETTINGS
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="#">
+                            <span data-feather="file-text"></span> HELP
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-6  justify-content-center flex-wrap flex-md-nowrap align-items-top pb-2 mb-3 border-bottom">
+                        <h1 class="h2 text-dark "> Administrator Dashboard</h1>
+                        <h3 class="h3 text-dark"> Agora at a glance</h3>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Number of Active users
+                                <span class="badge badge-primary badge-pill">14</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                User accounts locked out
+                                <span class="badge badge-primary badge-pill">2</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Total Number of Gathering placesl
+                                <span class="badge badge-primary badge-pill">1</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Location pending approval
+                                <span class="badge badge-primary badge-pill">1</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Total number of Tutor Sessions
+                                <span class="badge badge-primary badge-pill">1</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Pending messages
+                                <span class="badge badge-primary badge-pill">1</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <div class="card card-body editCard">
+                            <h1 class="text-center mb-3">
+                                <i class="fas fa-user"></i> <b><i>Edit User</i></b>
+                            </h1>
+                            <%- include ('./partials/messages'); -%>
+                                <form action="/users/register" method="POST">
+                                    <span class="form-group col-auto ">
+                                        <label for="username">Username</label>
+                                    </span>
+                                    <span class="form-group col-auto">
+                                        <label for="fname">First Name, Last Name</label>
+                                    </span>
+
+
+                                    <div class="form-group col-12">
+                                        <label for="email">Email</label>
+                                    </div>
+                                    </fieldset>
+                                    <fieldset class="form-group d-flex ">
+                                        <legend>Account Status</legend>
+                                        <div class="form-check col-6">
+                                            <label class="form-check-label">
+                                      <input class="form-check-input" type="checkbox" value="" checked="">
+                                      Lock/Unlock account
+                                    </label>
+                                        </div>
+                                        <div class="form-check col-6">
+                                            <label class="form-check-label">
+                                      <input class="form-check-input" type="checkbox" value="" unchecked="">
+                                      Disbla/Enable account
+                                    </label>
+                                        </div>
+                                    </fieldset>
+                                    <div class="form-group  ">
+                                        <label>User Role:
+                                        <select class="custom-select">
+                                          <option value="1">Member</option>
+                                          <option value="2">Administrator</option>
+                                                                      </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Reset Password</label>
+                                        <input type="password" id="password" name="Password" class="form-control" placeholder="Reset Password" value="<%= typeof password != 'undefined' ? password : '' %>" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password2">Confirm Password</label>
+                                        <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirm Password" value="<%= typeof password2 != 'undefined' ? password2 : '' %>" />
+                                    </div>
+                                    <div class="">
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                    <button type="submit" class="btn btn-danger btn-block">Delete User Account</button>
+
+
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <h2 class="text-dark">Textbook Lists</h2> -->
+            <div class="table-responsive">
+                <table class="table table-striped table-sm" id="myTable">
+                    <thead>
+                        <tr class="table-dark">
+                            <th scope="col">Username.</th>
+                            <th scope="col">e-Mail</th>
+                            <th scope="col">Last Logged in</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <!--Sample code-->
+                        <% for(var i=0; i < 150; i++) { %>
+                            <tr class="table-secondary">
+
+                                <td scope="row">username :
+                                    <%=i %>
+                                </td>
+                                <td scope="row">email address :
+                                    <%=i %>
+                                </td>
+                                <td scope="row">role :
+                                    <%=i %>
+                                </td>
+                                <td scope="row">last logged on :
+                                    <%=i %>
+                                </td>
+                                <td scope="row">status :
+                                    <%=i %>
+                                </td>
+                            </tr>
+                            <% } %>
+
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>

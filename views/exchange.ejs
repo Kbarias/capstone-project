@@ -1,15 +1,23 @@
+<style>
+    body {
+        background-image: url("../image/books.png");
+        background-repeat: no-repeat;
+        background-color: white;
+        background-size: 25%;
+        background-position: 60% 300px;
+    }
+</style>
+
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/dashboard/name"><b>HOME</b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><b>INBOX</b></a>
-    <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> 
-    <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">Sign out</a>
-        </li>
-    </ul>
--->
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/bookshelf/name"><b>BOOKSHELF</b></a>
+
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/exchange/name"><b>EXCHANGE</b></a>
+
+    <a class="navbar-brand col-sm-6 col-md-2 mr-0" href="http://localhost:3000/history/name"><b>HISTORY</b></a>
 </nav>
+
 
 <div class="container-fluid">
     <div class="row">
@@ -25,7 +33,7 @@
                 </h3>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link mya2 active" href="#">
+                        <a class="nav-link mya2 active" href="http://localhost:3000/dashboard/name">
                             <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
                         </a>
                     </li>
@@ -42,11 +50,6 @@
                     <li class="nav-item">
                         <a class="nav-link mya2" href="#">
                             <span data-feather="users"></span> WANDER
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="http://localhost:3000/dashboard-admin/name">
-                            <span data-feather="users"></span> MANAGE
                         </a>
                     </li>
                 </ul>
@@ -78,45 +81,25 @@
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
-            <!-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                <h1 class="h2">Dashboard</h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
-                    <div class="btn-group mr-2">
-                        <button class="btn btn-sm btn-outline-secondary">Share</button>
-                        <button class="btn btn-sm btn-outline-secondary">Export</button>
-                    </div>
-                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                <span data-feather="calendar"></span>
-                This week
-              </button>
-                </div>
-            </div> -->
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-6  justify-content-between flex-wrap flex-md-nowrap align-items-top pb-2 mb-3 border-bottom">
-                        <h1 class="h2 text-dark "> Dashboard</h1>
-                        <div class="btn-toolbar mb-2 mb-md-0">
-                            <div class="btn-group mr-2">
-                                <button class="btn btn-sm btn-outline-secondary">Share</button>
-                                <button class="btn btn-sm btn-outline-secondary">Export</button>
-                            </div>
-                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                        <span data-feather="calendar"></span>
-                        This week
-                      </button>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <iframe src="https://calendar.google.com/calendar/embed?height=400&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FNew_York&amp;src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;color=%230B8043" style="border:solid 1px #777" width="600"
-                            height="400" frameborder="0" scrolling="yes"></iframe>
+            <div class="container-fluid text-dark">
+                <h1>Welcome to the Exchange.</h1>
+                <h3>The Exchange is where the students can trade books directly with each other. First, students choose to buy, sell, donate, and/or rent any book. Then they decide on a convenient place to make the exchange.</h3>
+                <h5>All payments are handled offline. users are expected to adhere to the <a href="#">Terms & Conditions Agreement</a> </h5>
+
+
+
+                <div class="card border-standard mb-3" style="max-width: 33rem;">
+
+                    <div class="card-body ">
+                        <h2 class="card-text">Find the book you're looking for, then select by clicking it.</h2>
                     </div>
                 </div>
             </div>
             <!-- <h2 class="text-dark">Textbook Lists</h2> -->
-            <div class="table-responsive">
-                <table class="table table-striped table-sm" id="myTable">
+            <div class="table-responsive myTable">
+                <table class="table table-striped table-sm " id="myTable">
                     <thead>
-                        <tr class="table-dark">
+                        <tr class="myTable">
                             <th scope="col">ISBN NO.</th>
                             <th scope="col">Book Title</th>
                             <th scope="col">Author</th>
@@ -129,7 +112,7 @@
 
                         <!--Sample code-->
                         <% for(var i=0; i < 150; i++) { %>
-                            <tr class="table-secondary">
+                            <tr class=" myTable">
                                 <td scope="row">ISBN
                                     <%= i %>
                                 </td>
@@ -154,6 +137,7 @@
                     </tbody>
                 </table>
             </div>
+
         </main>
     </div>
 </div>

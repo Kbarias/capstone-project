@@ -1,0 +1,125 @@
+<style>
+    body {
+        background-image: url("../image/books.png");
+        background-repeat: no-repeat;
+        background-color: white;
+        background-size: 25%;
+        background-position: 60% 300px;
+    }
+</style>
+
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/dashboard/name"><b>HOME</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/bookshelf/name"><b>BOOKSHELF</b></a>
+
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/exchange/name"><b>EXCHANGE</b></a>
+
+    <a class="navbar-brand col-sm-6 col-md-2 mr-0" href="http://localhost:3000/history/name/"><b>HISTORY</b></a>
+</nav>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-dark sidebar myVerticalNav">
+            <div class="sidebar-sticky">
+                <br>
+                <img class="img-fluid rounded mx-auto d-block bg-white" src="../image/logo.png">
+                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
+                    <span>Welcome <%=member%></span>
+                    <a class="d-flex align-items-center text-muted" href="#">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+                </h3>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link mya2 active" href="#">
+                            <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="http://localhost:3000/exchange/name">
+                            <span data-feather="file"></span> EXCHANGE
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="http://localhost:3000/dashboard-places/name">
+                            <span data-feather="shopping-cart"></span> GATHER
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="#">
+                            <span data-feather="users"></span> WANDER
+                        </a>
+                    </li>
+                </ul>
+                <!--Other text to appear in between-->
+                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
+                    <span></span>
+                    <a class="d-flex align-items-center text-muted" href="#">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+                </h3>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="/users/logout">
+                            <span data-feather="bar-chart-2"></span> LOGOUT
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="#">
+                            <span data-feather="layers"></span> SETTINGS
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="#">
+                            <span data-feather="file-text"></span> HELP
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
+            <div class="container-fluid text-dark">
+                <h1>Transaction History
+                </h1>
+
+                <div class="table-responsive myTable">
+                    <table class="table table-striped table-sm " id="myTable">
+                        <thead>
+                            <tr class="myTable">
+                                <th scope="col">Request Date</th>
+                                <th scope="col">Reference Number</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <!--Sample code-->
+                            <% for(var i=0; i < 150; i++) { %>
+                                <tr class=" myTable">
+                                    <td scope="row">
+                                        <%= i %>
+                                    </td>
+                                    <td scope="row">
+                                        <%=i %>
+                                    </td>
+                                    <td scope="row">
+                                        <%=i %>
+                                    </td>
+                                    <td scope="row">
+                                        <%=i %>
+                                    </td>
+
+                                </tr>
+                                <% } %>
+
+                        </tbody>
+                    </table>
+                </div>
+
+        </main>
+        </div>
+    </div>
