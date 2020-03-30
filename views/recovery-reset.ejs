@@ -1,0 +1,50 @@
+<div class="row mt-5" style="align-items: center; margin: 20px;">
+    <div class=" col-md-3 m-auto ">
+        <%- include ('./partials/messages'); -%>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-3 m-auto">
+        <div class="card card-body">
+            <!--<h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>  Login</h1>  -->
+            <h1 class="text-center mb-3"><b><i>Agorá</i></b></h1>
+            <h3 class="text-center mb-3">Please enter your new password.</h3>
+                <form action="/users/recovery/reset" method="POST">
+                    <div class="form-group" style= "display: none;">
+                        <input type="token1" id="token1" name="token1" class="form-control" placeholder="token1" value="<%= typeof token1 != 'undefined' ? token1 : '' %>"/>
+                    </div>
+                    <div class="form-group" >
+                        <label for="Email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Email" value="<%= typeof email != 'undefined' ? email : '' %>"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Create Password" value="<%= typeof password != 'undefined' ? password : '' %>" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password2">Confirm Password</label>
+                        <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirm Password" value="<%= typeof password2 != 'undefined' ? password2 : '' %>" />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </form>
+                <p class="lead mt-4 ">
+                    <br> New to Agora? <a class="mya1" href="/users/register ">Sign up</a>
+                </p>
+        </div>
+    </div>
+    <div class="row fixed-bottom myfooter">
+        <div class="col-2 mycol">
+            <a class="mya" href="#">about us</a>
+        </div>
+        <div class="col-2 mycol">
+            <a class="mya" href="#">privacy</a>
+        </div>
+        <div class="col-2 mycol">
+            <a class="mya" href="#">terms</a>
+        </div>
+        <div class="col-2 mycol">
+            <a class="mya" href="#">help</a>
+        </div>
+
+    </div>
