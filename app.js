@@ -60,6 +60,7 @@ app.use('/places', placesRoute);
 
 
 
+
 //Connection to database with hidden credentials
 // mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () => 
 //    console.log('Connected to database')

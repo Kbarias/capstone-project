@@ -1,6 +1,6 @@
-<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><b>HOME</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/name"><b>HOME</b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><b>INBOX</b></a>
     <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> 
     <ul class="navbar-nav px-3">
@@ -13,12 +13,12 @@
 
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
+        <nav class="col-md-2 d-none d-md-block bg-dark sidebar myVerticalNav">
             <div class="sidebar-sticky">
                 <br>
-                <img class="img-fluid rounded bg-white" src="image/logo.png">
+                <img class="img-fluid rounded mx-auto d-block bg-white" src="../image/logo.png">
                 <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
-                    <span>Welcome %name%</span>
+                    <span>Welcome </span>
                     <a class="d-flex align-items-center text-muted" href="#">
                         <span data-feather="plus-circle"></span>
                     </a>
@@ -30,18 +30,23 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mya2" href="#">
+                        <a class="nav-link mya2" href="/exchange/name">
                             <span data-feather="file"></span> EXCHANGE
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mya2" href="#">
+                        <a class="nav-link mya2" href="/dashboard-places/name">
                             <span data-feather="shopping-cart"></span> GATHER
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link mya2" href="#">
                             <span data-feather="users"></span> WANDER
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="/dashboard-admin/name">
+                            <span data-feather="users"></span> MANAGE
                         </a>
                     </li>
                 </ul>
@@ -72,7 +77,7 @@
             </div>
         </nav>
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
             <!-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                 <h1 class="h2">Dashboard</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
