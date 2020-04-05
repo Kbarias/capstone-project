@@ -54,8 +54,15 @@ app.use('/', indexRoute);
 const usersRoute = require('./routes/users.js');
 app.use('/users', usersRoute);
 
+const dashboardRoute = require('./routes/dashboard.js');
+app.use('/dashboard', dashboardRoute);
+
+const exchangeRoute = require('./routes/exchanges.js');
+app.use('/exchange', exchangeRoute);
+
 const placesRoute = require('./routes/places.js');
 app.use('/places', placesRoute);
+
 
 
 
