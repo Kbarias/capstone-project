@@ -10,12 +10,12 @@
 
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/name"><b>HOME</b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/bookshelf/name"><b>BOOKSHELF</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/bookshelf/<%=id%>/<%=member%>"><b>BOOKSHELF</b></a>
 
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/name"><b>EXCHANGE</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/<%=id%>/<%=member%>"><b>EXCHANGE</b></a>
 
-    <a class="navbar-brand col-sm-6 col-md-2 mr-0" href="/history/name"><b>HISTORY</b></a>
+    <a class="navbar-brand col-sm-6 col-md-2 mr-0" href="/history/<%=id%>/<%=member%>"><b>HISTORY</b></a>
 </nav>
 
 
@@ -24,7 +24,7 @@
         <nav class="col-md-2 d-none d-md-block bg-dark sidebar myVerticalNav">
             <div class="sidebar-sticky">
                 <br>
-                <img class="img-fluid rounded mx-auto d-block bg-white" src="../image/logo.png">
+                <img class="img-fluid rounded mx-auto d-block bg-white" src="/image/logo.png">
                 <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
                     <span>Welcome <%=member%></span>
                     <a class="d-flex align-items-center text-muted" href="#">
@@ -33,17 +33,17 @@
                 </h3>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link mya2 active" href="/dashboard/name">
+                        <a class="nav-link mya2 active" href="/dashboard/admin/<%=id%>/<%=member%>">
                             <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mya2" href="/exchange/name">
+                        <a class="nav-link mya2" href="/exchange/<%=id%>/<%=member%>">
                             <span data-feather="file"></span> EXCHANGE
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mya2" href="/dashboard-places/name">
+                        <a class="nav-link mya2" href="/places/<%=id%>/<%=member%>">
                             <span data-feather="shopping-cart"></span> GATHER
                         </a>
                     </li>

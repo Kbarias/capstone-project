@@ -1,49 +1,15 @@
 const express = require('express');
 const Place = require('../models/Place');
+const PlaceController = require('../controllers/places');
 
 const router = express.Router();
 
-//get all places
-router.get('/', (req, res) => {
-    res.send('These are all the places');
-});
 
-//create new place handle
-router.post('/', async (req,res) => {
-    const place = new Place({
-        gps_coordinates: {
-            latitude: req.body.gps_coordinates.latitude,
-            longitude: req.body.gps_coordinates.latitude
-        },
-        name: req.body.name,
-        capacity: req.body.capacity,
-        rating: req.body.rating,
-        operation_hours: {
-            mon: req.body.operation_hours.mon,
-            tues: req.body.operation_hours.tues,
-            weds: req.body.operation_hours.weds,
-            thurs: req.body.operation_hours.thurs,
-            fri: req.body.operation_hours.fri,
-            sat: req.body.operation_hours.sat,
-            sun: req.body.operation_hours.sun
-        },
-        address: {
-            street: req.body.address.street,
-            city: req.body.address.city,
-            state: req.body.address.state,
-            zipcode: req.body.address.zipcode
-        }
-
-    });
+//GET ALL PLACES
+router.get('/:id/:member', PlaceController.get_all_places);
 
 
-    try {
-        const savedPlace = await place.save();
-        res.json(savedPlace);
-    } catch (err) {
-        res.json( {message:err} );
-    }
-    
-});
+//CREATE NEW PLACE
+router.post('/create', PlaceController.create_a_place);
 
 module.exports = router;

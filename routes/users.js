@@ -3,6 +3,9 @@ const UserController = require('../controllers/users');
 const router = express.Router();
 
 
+//ADD ADMIN
+router.get('/admin-invite/:id', UserController.become_an_admin);
+
 //FORGOT PASSWORD PAGE
 router.get('/recovery', UserController.get_user_recovery_request);
 
