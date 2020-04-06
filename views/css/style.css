@@ -125,3 +125,9 @@
 .nav-item:active {
     text-decoration: underline;
 }
+
+.mytext {
+    text-decoration: none;
+    color: white;
+    font-size: large;
+}

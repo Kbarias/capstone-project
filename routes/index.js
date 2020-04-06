@@ -38,4 +38,13 @@ router.get('/bookshelf/:name', (req, res) => {
 router.get('/history/:name', (req, res) => {
     res.render('history', { member: req.params.name });
 });
+router.get('/gather/:name', (req, res) => {
+    res.render('gather', { member: req.params.name });
+});
+router.get('/gather-create/:name', (req, res) => {
+    res.render('gather-create', { member: req.params.name });
+});
+router.get('/gather-join/:name', (req, res) => {
+    res.render('gather-join', { member: req.params.name });
+});
 module.exports = router;
