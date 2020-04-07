@@ -47,8 +47,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mya2" href="http://localhost:3000/dashboard-places/name">
+                        <a class="nav-link mya2" href="http://localhost:3000/wander/name">
                             <span data-feather="users"></span> WANDER
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="http://localhost:3000/dashboard-admin/name">
+                            <span data-feather="users"></span> MANAGE
                         </a>
                     </li>
                 </ul>
@@ -96,12 +101,13 @@
                                         <th scope="col">Group Name</th>
                                         <th scope="col">Capacity</th>
                                         <th scope="col">Organizer</th>
-                                        <th scope="col">Click for more Details</th>
+                                        <th scope="col">Joined</th>
+                                        <th scope="col">Details</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    <!--Sample code-->
+                                    <!--Sample code to pull data out from DB iterating through all entries.-->
                                     <% for(var i=0; i < 150; i++) { %>
                                         <tr class="table-secondary">
                                             <td scope="row">group name
@@ -112,6 +118,9 @@
                                             </td>
                                             <td scope="row">Organizer
                                                 <%=i %>
+                                            </td>
+                                            <td scope="row">
+                                                Y
                                             </td>
                                             <td scope="row">
                                                 <a class="btn btn-primary justify-content-end" href="#" role="button">Select</a>

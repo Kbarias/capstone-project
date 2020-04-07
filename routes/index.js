@@ -15,15 +15,13 @@ router.get('/', (req, res) => {
 //     }));
 
 //dashboard has to follow by a username, otherwise, page won't load
-router.get('/dashboard/:name', (req, res) => {
-    res.render('dashboard1', { member: req.params.name });
+router.get('/wander/:name', (req, res) => {
+    res.render('wander', { member: req.params.name });
 });
 
-router.get('/dashboard-places/:name', (req, res) => {
-    res.render('dashboard-places', { member: req.params.name });
+router.get('/dashboard-user/:name', (req, res) => {
+    res.render('dashboard-user', { member: req.params.name });
 });
-
-
 
 router.get('/dashboard-admin/:name', (req, res) => {
     res.render('dashboard-admin', { member: req.params.name });

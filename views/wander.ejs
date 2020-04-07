@@ -45,7 +45,7 @@
                 </h3>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link mya2 active" href="http://localhost:3000/dashboard/name">
+                        <a class="nav-link mya2 active" href="http://localhost:3000/dashboard-user/name">
                             <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
                         </a>
                     </li>
@@ -60,8 +60,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mya2" href="http://localhost:3000/dashboard-places/name">
+                        <a class="nav-link mya2" href="http://localhost:3000/wander/name">
                             <span data-feather="users"></span> WANDER
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="http://localhost:3000/dashboard-admin/name">
+                            <span data-feather="users"></span> MANAGE
                         </a>
                     </li>
                 </ul>
@@ -136,6 +141,7 @@
                             <th scope="col">Hours</th>
                             <th scope="col">Gather Type</th>
                             <th scope="col">Capacity</th>
+                            <th scope="col">Select</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -160,6 +166,9 @@
                                 </td>
                                 <td scope="row">Capacity :
                                     <%=i %>
+                                </td>
+                                <td>
+                                    <a class="btn btn-secondary btn-sm" href="#" role="button">Click to Explore</a>
                                 </td>
                             </tr>
                             <% } %>

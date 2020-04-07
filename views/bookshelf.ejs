@@ -10,7 +10,7 @@
 
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/dashboard/name"><b>HOME</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/dashboard-user/name"><b>HOME</b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/bookshelf/name"><b>BOOKSHELF</b></a>
 
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/exchange/name"><b>EXCHANGE</b></a>
@@ -33,7 +33,7 @@
                 </h3>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link mya2 active" href="#">
+                        <a class="nav-link mya2 active" href="http://localhost:3000/dashboard-user/name">
                             <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
                         </a>
                     </li>
@@ -50,6 +50,11 @@
                     <li class="nav-item">
                         <a class="nav-link mya2" href="#">
                             <span data-feather="users"></span> WANDER
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="http://localhost:3000/dashboard-admin/name">
+                            <span data-feather="users"></span> MANAGE
                         </a>
                     </li>
                 </ul>
@@ -163,6 +168,7 @@
                             <th scope="col">Rent/Buy/Sell</th>
                             <th scope="col">Condition</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Click to Select</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -190,6 +196,9 @@
                                 </td>
                                 <td scope="row">Status:
                                     <%=i %>
+                                </td>
+                                <td>
+                                    <a class="btn btn-secondary" href="#" role="button">Select</a>
                                 </td>
                             </tr>
                             <% } %>
