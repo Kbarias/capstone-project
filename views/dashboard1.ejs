@@ -30,7 +30,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mya2" href="/exchange/name">
+                        <a class="nav-link mya2" href="/exchange/<%=id%>/<%=member%>">
                             <span data-feather="file"></span> EXCHANGE
                         </a>
                     </li>
@@ -115,36 +115,30 @@
                             <th scope="col">ISBN NO.</th>
                             <th scope="col">Book Title</th>
                             <th scope="col">Author</th>
-                            <th scope="col">Edition</th>
                             <th scope="col">Rent/Buy/Sell</th>
                             <th scope="col">Condition</th>
                         </tr>
                     </thead>
                     <tbody>
-
-                        <!--Sample code-->
-                        <% for(var i=0; i < 150; i++) { %>
+                        <% books.forEach(function(row) { %>
                             <tr class="table-secondary">
-                                <td scope="row">ISBN
-                                    <%= i %>
+                                <td scope="row">
+                                    <%=row.books.isbn %>
                                 </td>
-                                <td scope="row">Title:
-                                    <%=i %>
+                                <td scope="row">
+                                    <%=row.books.title %>
                                 </td>
-                                <td scope="row">Author:
-                                    <%=i %>
+                                <td scope="row">
+                                    <%=row.books.author %>
                                 </td>
-                                <td scope="row">Edition:
-                                    <%=i %>
+                                <td scope="row">
+                                    <%=row.offered_as %>
                                 </td>
-                                <td scope="row">For :
-                                    <%=i %>
-                                </td>
-                                <td scope="row">Condition:
-                                    <%=i %>
+                                <td scope="row">
+                                    <%=row.condition_desc %>
                                 </td>
                             </tr>
-                            <% } %>
+                        <% }) %>  
 
                     </tbody>
                 </table>

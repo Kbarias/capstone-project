@@ -93,23 +93,23 @@
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Number of Active users
-                                <span class="badge badge-primary badge-pill">14</span>
+                                <span class="badge badge-primary badge-pill"><%=actives%></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 User accounts locked out
-                                <span class="badge badge-primary badge-pill">2</span>
+                                <span class="badge badge-primary badge-pill"><%=blocked%></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Total Number of Gathering placesl
-                                <span class="badge badge-primary badge-pill">1</span>
+                                Total Number of Gathering places
+                                <span class="badge badge-primary badge-pill"><%=places%></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Location pending approval
-                                <span class="badge badge-primary badge-pill">1</span>
+                                Locations pending approval
+                                <span class="badge badge-primary badge-pill"><%=pending%></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Total number of Tutor Sessions
-                                <span class="badge badge-primary badge-pill">1</span>
+                                <span class="badge badge-primary badge-pill"><%=sessions%></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Pending messages
@@ -210,28 +210,31 @@
                         </tr>
                     </thead>
                     <tbody>
-
-                        <!--Sample code-->
-                        <% for(var i=0; i < 150; i++) { %>
+                            
+                        <% users.forEach(function(row) { %>
                             <tr class="table-secondary">
-
-                                <td scope="row">username :
-                                    <%=i %>
+                                <td scope="row">
+                                    <%=row._id.username %>
                                 </td>
-                                <td scope="row">email address :
-                                    <%=i %>
+                                <td scope="row">
+                                    <%=row._id.email %>
                                 </td>
-                                <td scope="row">role :
-                                    <%=i %>
+                                <td scope="row">
+                                    <%=3 %>
                                 </td>
-                                <td scope="row">last logged on :
-                                    <%=i %>
+                                <td scope="row">
+                                    <%if(row.is_admin) {%>
+                                        <%="Admin"%>
+                                    <%}else{%>
+                                        <%="Member" %>
+                                    <%}%>
+                                    
                                 </td>
-                                <td scope="row">status :
-                                    <%=i %>
+                                <td scope="row">
+                                    <%=row.account_status %>
                                 </td>
                             </tr>
-                            <% } %>
+                        <% }) %>    
 
                     </tbody>
                 </table>
