@@ -36,7 +36,6 @@ exports.user_login = (req, res, next) => {
                             if(userinfo.is_admin){
                                 admin = '1';
                             }
-                            
                             passport.authenticate('local', {
                                 successRedirect: '/dashboard/admin/' + user._id + admin + '/' + user.first_name,
                                 failureRedirect: '/users/login',

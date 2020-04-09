@@ -1,6 +1,6 @@
 <style>
     body {
-        background-image: url("../image/books.png");
+        background-image: url("/image/books.png");
         background-repeat: no-repeat;
         background-color: white;
         background-size: 25%;
@@ -11,11 +11,11 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/bookshelf/<%=id%>/<%=member%>"><b>BOOKSHELF</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/bookshelf/<%=id%>/<%=member%>"><b>BOOKSHELF</b></a>
 
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/<%=id%>/<%=member%>"><b>EXCHANGE</b></a>
 
-    <a class="navbar-brand col-sm-6 col-md-2 mr-0" href="/history/<%=id%>/<%=member%>"><b>HISTORY</b></a>
+    <a class="navbar-brand col-sm-6 col-md-2 mr-0" href="/exchange/history/<%=id%>/<%=member%>"><b>HISTORY</b></a>
 </nav>
 
 
@@ -48,8 +48,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mya2" href="#">
+                        <a class="nav-link mya2" href="/places/<%=id%>/<%=member%>">
                             <span data-feather="users"></span> WANDER
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="/dashboard/admin/<%=id%>/<%=member%>">
+                            <span data-feather="users"></span> MANAGE
                         </a>
                     </li>
                 </ul>
@@ -105,6 +110,7 @@
                             <th scope="col">Author</th>
                             <th scope="col">Rent/Buy/Sell</th>
                             <th scope="col">Condition</th>
+                            <th scope="col">Click to Select</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -126,6 +132,9 @@
                                 </td>
                                 <td scope="row">
                                     <%=row.condition_desc %>
+                                </td>
+                                <td>
+                                    <a class="btn btn-secondary" href="#" role="button">View Details</a>
                                 </td>
                             </tr>
                         <% }) %> 

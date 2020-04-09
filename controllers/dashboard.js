@@ -47,15 +47,9 @@ exports.get_admin_dashboard_page = (req, res) => {
 
 exports.get_member_dashboard_page = (req, res) => {
     let userid = req.params.id.slice(0,-1)
-
     User.findOne({_id:userid})
         .then( user => {
-            const books = Merch.find({$and: [ {status:{state:"Available"}} , {is_deleted:{$ne:true}} ] }).populate('book');
-            books.exec(function (err, data){
-                if(err) throw err;
-                res.render('dashboard1', { id:req.params.id , member: user.first_name, books:data});
-            });
-            
+            res.render('dashboard-user', { id:req.params.id , member: user.first_name});
         })
         .catch(err => console.log(err))
 

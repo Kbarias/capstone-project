@@ -19,7 +19,6 @@ module.exports = {
         if(req.isAuthenticated()) {
             let num = req.params.id.length;
             if(req.params.id[num-1] == '1'){
-                console.log(req.params.id);
                 return next();
             }
             else{

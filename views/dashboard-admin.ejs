@@ -41,17 +41,17 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mya2" href="/places/<%=id%>/<%=member%>">
+                        <a class="nav-link mya2" href="/gather/<%=id%>/<%=member%>">
                             <span data-feather="shopping-cart"></span> GATHER
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mya2" href="#">
+                        <a class="nav-link mya2" href="/places/<%=id%>/<%=member%>">
                             <span data-feather="users"></span> WANDER
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mya2" href="/dashboard/<%=id%>/<%=member%>">
+                        <a class="nav-link mya2" href="/dashboard/admin/<%=id%>/<%=member%>">
                             <span data-feather="users"></span> MANAGE
                         </a>
                     </li>
@@ -146,7 +146,7 @@
                                         <div class="form-check col-6">
                                             <label class="form-check-label">
                                       <input class="form-check-input" type="checkbox" value="" unchecked="">
-                                      Disbla/Enable account
+                                      Disable/Enable account
                                     </label>
                                         </div>
                                     </fieldset>
@@ -157,19 +157,14 @@
                                           <option value="2">Administrator</option>
                                                                       </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="password">Reset Password</label>
-                                        <input type="password" id="password" name="Password" class="form-control" placeholder="Reset Password" value="<%= typeof password != 'undefined' ? password : '' %>" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="password2">Confirm Password</label>
-                                        <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirm Password" value="<%= typeof password2 != 'undefined' ? password2 : '' %>" />
-                                    </div>
+
+                                    <button type="submit" class="btn btn-danger col-10 btn-block mb-3">Delete User Account</button>
+
                                     <div class="">
-                                        <button type="button" class="btn btn-primary">Save changes</button>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-success col-5">Save changes</button>
+                                        <button type="button" class="btn btn-secondary col-5" data-dismiss="modal">Cancel</button>
                                     </div>
-                                    <button type="submit" class="btn btn-danger btn-block">Delete User Account</button>
+
 
 
                                 </form>
@@ -207,6 +202,7 @@
                             <th scope="col">Last Logged in</th>
                             <th scope="col">Role</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Click to Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -232,6 +228,9 @@
                                 </td>
                                 <td scope="row">
                                     <%=row.account_status %>
+                                </td>
+                                <td>
+                                    <a class="btn btn-success" href="#" role="button">Edit User</a>
                                 </td>
                             </tr>
                         <% }) %>    

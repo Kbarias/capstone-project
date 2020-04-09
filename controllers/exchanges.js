@@ -8,3 +8,11 @@ exports.get_all_exchanges = (req, res) => {
         res.render('exchange', { id:req.params.id , member: req.params.member, books:data});
     });
 };
+
+exports.get_bookshelf = (req, res) => {
+    res.render('bookshelf', { id:req.params.id, member: req.params.member });
+};
+
+exports.get_history = (req, res) => {
+    res.render('history', { id:req.params.id, member: req.params.name });
+};

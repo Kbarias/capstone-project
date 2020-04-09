@@ -1,0 +1,161 @@
+<style>
+body {
+        background-image: url("/image/background1.png");
+        background-attachment: fixed;
+        background-size: cover;
+        background-color: rgba(0, 0, 0, 1);
+        background-blend-mode: lighten;
+        width: 100%;
+        height: 100vh;
+    }
+}
+</style>
+
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><b>INBOX</b></a>
+    <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> 
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="#">Sign out</a>
+        </li>
+    </ul>
+-->
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-dark sidebar myVerticalNav">
+            <div class="sidebar-sticky">
+                <br>
+                <img class="img-fluid rounded mx-auto d-block bg-white" src="/image/logo.png">
+                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
+                    <span><%=member%></span>
+                    <a class="d-flex align-items-center text-muted" href="#">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+                </h3>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link mya2 active" href="/dashboard/admin/<%=id%>/<%=member%>">
+                            <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="/exchange/<%=id%>/<%=member%>">
+                            <span data-feather="file"></span> EXCHANGE
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="/gather/<%=id%>/<%=member%>">
+                            <span data-feather="shopping-cart"></span> GATHER
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="/places/<%=id%>/<%=member%>">
+                            <span data-feather="users"></span> WANDER
+                        </a>
+                    </li>
+                </ul>
+                <!--Other text to appear in between-->
+                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
+                    <span></span>
+                    <a class="d-flex align-items-center text-muted" href="#">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+                </h3>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="/users/logout">
+                            <span data-feather="bar-chart-2"></span> LOGOUT
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="#">
+                            <span data-feather="layers"></span> SETTINGS
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="#">
+                            <span data-feather="file-text"></span> HELP
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
+            <div class="container-fluid">
+                <div class="row">
+                    <h1 class="h2 text-dark "> Hello,
+                        <%=member%>
+                    </h1>
+                </div>
+                <div class="row justify-content-between">
+                    <div class="col-6  d-flex justify-content-center">
+                        <form>
+                            <div class="form-group  d-flex justify-content-around">
+                                <H3 class="text-dark mb-0">Announcments</H3>
+
+                            </div>
+                            <!-- Insert scrollable table here -->
+                            <!-- start sw-rss-feed code -->
+                            <script type="text/javascript">
+                                //<!-- 
+                                rssfeed_url = new Array();
+                                rssfeed_url[0] = "http://feeds.reuters.com/reuters/TopNews/";
+                                rssfeed_frame_width = "600";
+                                rssfeed_frame_height = "600";
+                                rssfeed_scroll = "on";
+                                rssfeed_scroll_step = "6";
+                                rssfeed_scroll_bar = "on";
+                                rssfeed_target = "_blank";
+                                rssfeed_font_size = "12";
+                                rssfeed_font_face = "";
+                                rssfeed_border = "on";
+                                rssfeed_css_url = "https://feed.surfing-waves.com/css/style6.css";
+                                rssfeed_title = "on";
+                                rssfeed_title_name = "";
+                                rssfeed_title_bgcolor = "#3366ff";
+                                rssfeed_title_color = "#fff";
+                                rssfeed_title_bgimage = "";
+                                rssfeed_footer = "off";
+                                rssfeed_footer_name = "rss feed";
+                                rssfeed_footer_bgcolor = "#fff";
+                                rssfeed_footer_color = "#333";
+                                rssfeed_footer_bgimage = "";
+                                rssfeed_item_title_length = "50";
+                                rssfeed_item_title_color = "#666";
+                                rssfeed_item_bgcolor = "#fff";
+                                rssfeed_item_bgimage = "";
+                                rssfeed_item_border_bottom = "on";
+                                rssfeed_item_source_icon = "off";
+                                rssfeed_item_date = "off";
+                                rssfeed_item_description = "on";
+                                rssfeed_item_description_length = "120";
+                                rssfeed_item_description_color = "#666";
+                                rssfeed_item_description_link_color = "#333";
+                                rssfeed_item_description_tag = "off";
+                                rssfeed_no_items = "0";
+                                rssfeed_cache = "8b8146dd4db58a7fa412bb1367f02a9d";
+                                //-->
+                            </script>
+                            <script type="text/javascript" src="//feed.surfing-waves.com/js/rss-feed.js"></script>
+                            <!-- The link below helps keep this service FREE, and helps other people find the SW widget. Please be cool and keep it! Thanks. -->
+                            <div style="color:#ccc;font-size:10px; text-align:right; width:400px;">powered by <a href="https://surfing-waves.com" rel="noopener" target="_blank" style="color:#ccc;">Surfing Waves</a></div>
+                            <!-- end sw-rss-feed code -->
+
+                        </form>
+
+                    </div>
+                    <div class="col-6 mt-5 pb-5">
+                        <iframe src="https://calendar.google.com/calendar/embed?height=400&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FNew_York&amp;src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;color=%230B8043" style="border:solid 1px #777" width="600"
+                            height="600" frameborder="0" scrolling="yes"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
