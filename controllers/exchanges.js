@@ -14,5 +14,5 @@ exports.get_bookshelf = (req, res) => {
 };
 
 exports.get_history = (req, res) => {
-    res.render('history', { id:req.params.id, member: req.params.name });
+    res.render('history', { id:req.params.id, member: req.params.member });
 };
