@@ -36,7 +36,6 @@ exports.user_login = (req, res, next) => {
                             if(userinfo.is_admin){
                                 admin = '1';
                             }
-                            
                             passport.authenticate('local', {
                                 successRedirect: '/dashboard/admin/' + user._id + admin + '/' + user.first_name,
                                 failureRedirect: '/users/login',
@@ -106,11 +105,19 @@ exports.user_login = (req, res, next) => {
                                             .then()
                                             .catch();
                                         
-                                        passport.authenticate('local', {
-                                            successRedirect: '/dashboard/' + saved_user.first_name,
-                                            failureRedirect: '/users/login',
-                                            failureFlash: true
-                                        })(req, res, next);
+                                        UserInfo.findOne({_id:user._id})
+                                            .then(new_user => {
+                                                    let admin = '0';
+                                                    if(new_user.is_admin){
+                                                        admin = '1';
+                                                    }
+                                                    passport.authenticate('local', {
+                                                    successRedirect: '/dashboard/admin/' + new_user._id + admin + '/' + saved_user.first_name,
+                                                    failureRedirect: '/users/login',
+                                                    failureFlash: true
+                                                })(req, res, next);
+                                            })
+                                        
                                     })
                                     .catch(err => console.log(err));
                             }

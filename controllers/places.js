@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 const Place = require('../models/Place');
 
 exports.get_all_places = (req, res) => {
-    res.render('places' , { id:req.params.id, member: req.params.member});
+    const places = Place.find({$and: [ {is_verified:true} , {is_deleted:false} ] });
+    places.exec(function (err, data){
+        if(err) throw err;
+        res.render('wander' , { id:req.params.id, member: req.params.member, places:data });
+    });
 };
 
 exports.create_a_place = (req, res) => {

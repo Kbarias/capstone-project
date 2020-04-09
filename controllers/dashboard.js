@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
+const UserInfo = require('../models/UserInfo');
+const Place = require('../models/Place');
+const Session = require('../models/Session');
+const Merch = require('../models/Merch');
 const nodemailer = require('nodemailer');
 
 //NODEMAILER CONFIG
@@ -20,21 +24,36 @@ var mailOptions = {
 
 exports.get_admin_dashboard_page = (req, res) => {
     let userid = req.params.id.slice(0,-1)
-    User.findOne({_id:userid})
-        .then( user => {
-            res.render('dashboard-admin', { id:req.params.id, member: user.first_name});
-        })
-        .catch(err => console.log(err))
+    Promise.all([
+        User.findOne({_id:userid}),
+        UserInfo.countDocuments({$and: [ {_id:{$ne:userid}} , {is_deleted:{$ne:true}} ]}),
+        UserInfo.countDocuments({$and:[ {_id:{$ne:userid}} , {account_status:'Active'} , {is_deleted:{$ne:true}} ]}),
+        User.countDocuments({$and:[ {_id:{$ne:userid}} , {account_status:'Blocked'}, {is_deleted:{$ne:true}} ]}),
+        Place.countDocuments( {is_deleted:{$ne:true}} ),
+        Place.countDocuments( {$and: [{is_verified: true} , {is_deleted:{$ne:true}} ]} ),
+        Session.countDocuments( {is_deleted:{$ne:true}} )
+    ])
+    .then(results => {
+        const [admin_user, all_users, actives, blocked, places, pending, sessions] = results;
+        const users = UserInfo.find({$and: [ {_id:{$ne:userid}} , {is_deleted:{$ne:true}} ] }).populate('_id');
+        users.exec(function (err, data){
+            if(err) throw err;
+            res.render('dashboard-admin', { id:req.params.id, member: admin_user.first_name, actives: actives, blocked:blocked, places:places, pending:pending, sessions:sessions, all_users:all_users , users:data});
+        });
+        
+    })
+    .catch(err => console.log(err));
 };
 
 exports.get_member_dashboard_page = (req, res) => {
     let userid = req.params.id.slice(0,-1)
-
     User.findOne({_id:userid})
         .then( user => {
-            res.render('dashboard1', { id:req.params.id , member: user.first_name});
+            res.render('dashboard-user', { id:req.params.id , member: user.first_name});
         })
         .catch(err => console.log(err))
+
+        
 };
 
 exports.send_admin_invite = (req, res) => {

@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const BookSchema = mongoose.Schema({
-    isbn_nums: [{
+    isbn: {
         type: Number,
         required: true
-    }],
-    name: {
+    },
+    title: {
         type: String,
         required: true
     },

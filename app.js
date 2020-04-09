@@ -63,7 +63,8 @@ app.use('/exchange', exchangeRoute);
 const placesRoute = require('./routes/places.js');
 app.use('/places', placesRoute);
 
-
+const gatherRoute = require('./routes/gather.js');
+app.use('/gather', gatherRoute);
 
 
 
