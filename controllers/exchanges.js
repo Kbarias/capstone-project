@@ -31,6 +31,7 @@ exports.get_my_postings = (req, res) => {
 
 exports.get_history = (req, res) => {
     res.render('history', { id:req.params.id, member: req.params.member });
+<<<<<<< HEAD
 };
 
 exports.post_new_book = (req, res) => {
@@ -61,4 +62,6 @@ exports.post_new_book = (req, res) => {
                             .catch(err => console.log(err));
             }
         });
+=======
+>>>>>>> 95ee10752c9f9a3272c7de0e8eea1a10afc4824e
 };
