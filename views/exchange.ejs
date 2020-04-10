@@ -108,6 +108,7 @@
                             <th scope="col">ISBN NO.</th>
                             <th scope="col">Book Title</th>
                             <th scope="col">Author</th>
+                            <th scope="col">Edition</th>
                             <th scope="col">Rent/Buy/Sell</th>
                             <th scope="col">Condition</th>
                             <th scope="col">Click to Select</th>
@@ -115,17 +116,19 @@
                     </thead>
                     <tbody>
 
-                        <!--Sample code-->
                         <% books.forEach(function(row) { %>
                             <tr class="table-secondary">
                                 <td scope="row">
-                                    <%=row.books.isbn %>
+                                    <%=row.book.isbn %>
                                 </td>
                                 <td scope="row">
-                                    <%=row.books.title %>
+                                    <%=row.book.title %>
                                 </td>
                                 <td scope="row">
-                                    <%=row.books.author %>
+                                    <%=row.book.author %>
+                                </td>
+                                <td scope="row">
+                                    <%=row.book.edition %>
                                 </td>
                                 <td scope="row">
                                     <%=row.offered_as %>

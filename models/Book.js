@@ -5,6 +5,10 @@ const BookSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    edition: {
+        type: Number,
+        required: true
+    },
     title: {
         type: String,
         required: true
@@ -13,10 +17,6 @@ const BookSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    subjects: [{
-        type: String,
-        required: true
-    }],
     is_deleted: {
         type: Boolean,
         default: false

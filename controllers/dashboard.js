@@ -23,7 +23,7 @@ var mailOptions = {
 };
 
 exports.get_admin_dashboard_page = (req, res) => {
-    let userid = req.params.id.slice(0,-1)
+    let userid = req.params.id.slice(0,-1);
     Promise.all([
         User.findOne({_id:userid}),
         UserInfo.countDocuments({$and: [ {_id:{$ne:userid}} , {is_deleted:{$ne:true}} ]}),
