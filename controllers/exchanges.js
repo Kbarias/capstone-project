@@ -1,6 +1,7 @@
 const express = require('express');
 const Merch = require('../models/Merch');
 const Book = require('../models/Book');
+const Exchange = require('../models/Exchange');
 
 exports.get_all_exchanges = (req, res) => {
     const books = Merch.find({$and: [ {status:{state:"Available"}} , {is_deleted:{$ne:true}} ] }).populate('book');
@@ -10,12 +11,21 @@ exports.get_all_exchanges = (req, res) => {
     });
 };
 
-exports.get_bookshelf = (req, res) => {
-    let userid = req.params.id.slice(0,-1)
+exports.get_my_bookshelf = (req, res) => {
+    let userid = req.params.id.slice(0,-1);
+    const renting = Exchange.find({$and: [ {buyer: userid} , {status:{state:"Renting"}} ] }).populate('user');
+    renting.exec(function (err, data){
+        if(err) throw err;
+        res.render('bookshelf', { id:req.params.id , member: req.params.member, books:data});
+    });
+};
+
+exports.get_my_postings = (req, res) => {
+    let userid = req.params.id.slice(0,-1);
     const books = Merch.find({$and: [{owner: userid} , {is_deleted:{$ne:true}} ] }).populate('book');
     books.exec(function (err, data){
         if(err) throw err;
-        res.render('bookshelf', { id:req.params.id , member: req.params.member, books:data});
+        res.render('postings', { id:req.params.id , member: req.params.member, books:data});
     });
 };
 
@@ -36,7 +46,7 @@ exports.post_new_book = (req, res) => {
                         new_merch.save()
                             .then(new_posting => {
                                 req.flash('success_msg', 'You have successfully posted a book!');
-                                res.redirect('/exchange/bookshelf/' + req.params.id +'/' + req.params.member);
+                                res.redirect('/exchange/postings/' + req.params.id +'/' + req.params.member);
                             })
                     })
                     .catch(err => console.log(err));
@@ -46,7 +56,7 @@ exports.post_new_book = (req, res) => {
                         new_merch.save()
                             .then(new_posting => {
                                 req.flash('success_msg', 'You have successfully posted a book!');
-                                res.redirect('/exchange/bookshelf/' + req.params.id +'/' + req.params.member);
+                                res.redirect('/exchange/postings/' + req.params.id +'/' + req.params.member);
                             })
                             .catch(err => console.log(err));
             }
