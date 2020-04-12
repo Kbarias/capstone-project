@@ -96,102 +96,117 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
 
             <div class="row">
-                <h1 class="h1 text-dark "> Wander to a new place.</h1>
-                <h4 class="h4 text-dark"> Look for a new hangout spot or place to study with the Wander feature. Here you can browse for meetup locations that address your needs, or add a new place to be listed.</h3>
+                <h1 class="h1 text-dark "> Location (need to pull %locationName% from DB).</h1>
             </div>
-
-            <div class="row mt-3">
-                <div class="col-2">
-                    <!-- spacing -->
-                </div>
-                <div>
-                    <h2 class=" h2 text-dark"> Find a new meetup spot.</h2>
-                </div>
+            <div class="row">
+                <h4 class="h4 text-dark"> Display details of a location, please rate and comment responsibly</h4>
             </div>
-            <div class="row mb-3">
-                <div class="col-2">
-                    <!-- spacing -->
-                </div>
-                <div class="col-8 navbar navbar-expand-lg navbar-light bg-light">
-                    <div class="search-container container-fluid col-12 mx-0 px-0 justify-content-between">
-                        <form class="form-inline col-12 mx-0 px-0" action="/action_page.php">
-                            <div class="col-5 mx-0 px-0">
-                                <input class="col-12 mx-0 px-0" type="text" placeholder="Find: cafe, library, diner,etc.." name="pointOfInterest">
-                            </div>
-                            <div class="col-6 mx-0 px-0">
-                                <input class="col-12 mx-0 px-0" type="text" class="col-sm-8" placeholder="Near: address, neighborhood, city, state, or zip" name="address">
-                            </div>
-                            <div class="col mx-0 px-0">
-                                <button class="mx-0 px-0" type="submit"><i class="fa fa-search"></i></button>
-                            </div>
-                        </form>
+            <div class="row mt-4">
+                <form class="container-fluid col-6 pt-5 justify-content bg-light font-weight-bold text-dark">
+                    <div class="form-group row">
+                        <label for="locationName" class="col-sm-4 col-form-label">1. Location name:</label>
+                        <div class="col-sm-8">
+                            <label type="text" class="form-control" id="locationName" placeholder="Location Name"></label>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-
-            <div class="container-fluid">
-
-                <!-- <h2 class="text-dark">Textbook Lists</h2> -->
-                <div class="row">
-                    <div class="table-responsive myTable col-6 px-0">
-                        <table class="table table-striped table-sm" id="myTable">
-                            <thead>
-                                <tr class="myTable">
-                                    <th scope="col">Location Name</th>
-                                    <th scope="col">Address</th>
-                                    <th scope="col">Hours</th>
-                                    <th scope="col">Capacity</th>
-                                    <th scope="col">Rating</th>
-                                    <th scope="col">Select</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                <!--Sample code-->
-                                <% for(var i=0; i < 150; i++) { %>
-                                    <tr class="myTable">
-
-                                        <td scope="row">place :
-                                            <%=i %>
-                                        </td>
-                                        <td scope="row">address :
-                                            <%=i %>
-                                        </td>
-                                        <td scope="row">hours :
-                                            <%=i %>
-                                        </td>
-
-                                        <td scope="row">Capacity :
-                                            <%=i %>
-                                        </td>
-                                        <td scope="row">
-                                            <!--change this number eg 3 to whatever the database has and run the loop to show how many stars -->
-                                            <% for (var star=0; star< 3; star++){ %>
-                                                <span class="fa fa-star checked"></span>
-                                                <% } %>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-secondary btn-sm" href="http://localhost:3000/wander-detail/name" role="button">Click to Explore</a>
-                                        </td>
-                                    </tr>
-                                    <% } %>
-
-                            </tbody>
-                        </table>
+                    <div class="form-group row">
+                        <label for="inputAddress" class="col-sm-4 col-form-label">2. Address:</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control border-dark col-12" id="exampleTextarea" rows="3" style="height: 96px;">
+                                Gregory's Coffee
+                                878 Lexington
+                                New York, NY 10065
+                            </textarea>
+                        </div>
                     </div>
-                    <div class="col-6">
-                        <div id="map">
+                    <div class="form-group row">
+                        <label for="inputURL" class="col-sm-4 col-form-label">3. Website:</label>
+                        <div class="col-sm-8">
+                            <a class="nav-link mya2 form-control" href="#"></a>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputHours" class="col-sm-4 col-form-label">4.Hours of operation:</label>
 
-                            <p>This is a map</p>
+
+                        <div class="col-sm-8 form-inline justify-content-around">
+
+                            <div class="badge-dark col-3">
+                                <label for="Mon">Monday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="starttime1" name="starttime1"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime1" name="endtime1"></label>
+                            <div class="badge-dark col-3">
+                                <label for="Mon">Tuesday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime2" name="starttime2"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime2" name="endtime2"></label>
+                            <div class="badge-dark col-3">
+                                <label for="Mon">Wednesday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime3" name="starttime3"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime3" name="endtime3"></label>
+                            <div class="badge-dark col-3">
+                                <label for="Mon">Thursday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime4" name="starttime4"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime4" name="endtime4"></label>
+                            <div class="badge-dark col-3">
+                                <label for="Mon">Friday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime5" name="starttime5"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime5" name="endtime5"></label>
+                            <div class="badge-success col-3">
+                                <label for="Mon">Saturday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime6" name="starttime6"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime6" name="endtime6"></label>
+                            <div class="badge-danger col-3">
+                                <label for="Mon">Sunday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime7" name="starttime7"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime7" name="endtime7"></label>
+
 
                         </div>
+
+
+                    </div>
+                    <div class="form-group row">
+                        <label for="description" class="col-sm-4 col-form-label">6. Description:</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="description" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row pb-5">
+                        <label for="ratings" class="col-sm-4 col-form-label">6. Current rating:</label>
+                        <div class="col-sm-8">
+                            <% for (var star=0; star< 5; star++){ %>
+                                <span class="fa fa-star checked"></span>
+                                <% } %>
+                        </div>
+                    </div>
+
+                </form>
+                <div class="col-6">
+                    <div id="map">
+
+                        <p>This is a map</p>
+
                     </div>
                 </div>
             </div>
         </main>
     </div>
 </div>
+
 <!--need fixing, this is code to get the input from screen-->
 <script async defer type="text/javascript">
     function getCoord() {

@@ -48,7 +48,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mya2" href="#">
+                        <a class="nav-link mya2" href="http://localhost:3000/wander/name">
                             <span data-feather="users"></span> WANDER
                         </a>
                     </li>
@@ -91,27 +91,31 @@
                 <h4>Your bookshelf is a collection of all the books in your possesion displayed in the table below. This list contains books that you have purchased, received, and/or are renting from other students. Your bookshelf is automatically updated
                     when an exchange is completed. To view more details, click the item you want to select.</h4>
 
-                <div class="card border-standard mb-3" style="max-width:100%;margin-top: 0%">
+                <div class="card border-standard mb-1" style="max-width:100%;margin-top: 0%">
 
-                    <div class="card-body ">
+                    <div class="card-body pb-1 ">
                         <h3 class="card-text">Enter a new book you would like to offer.</h3>
 
-                        <div>
+                        <div class="container-fluid justify-content-between">
                             <div class="form-group d-inline-flex">
-                                <label class="col-form-label col-form-label-sm" for="inputSmall">ISBN No.</label>
-                                <input class="form-control form-control-sm" type="text" placeholder="ISBN Number only" id="inputSmall">
+                                <label class="col-form-label col-form-label-sm" for="isbnNo">ISBN No.</label>
+                                <input class="form-control form-control-sm" type="text" placeholder="ISBN Number only" id="isbnNo">
                             </div>
                             <div class="form-group d-inline-flex">
-                                <label class="col-form-label col-form-label-sm" for="inputSmall">Title:</label>
-                                <input class="form-control form-control-sm" type="text" placeholder="Title" id="inputSmall">
+                                <label class="col-form-label col-form-label-sm" for="title">Title:</label>
+                                <input class="form-control form-control-sm" type="text" placeholder="Title" id="title">
                             </div>
                             <div class="form-group d-inline-flex">
-                                <label class="col-form-label col-form-label-sm" for="inputSmall">Author:</label>
-                                <input class="form-control form-control-sm" type="text" placeholder="Author" id="inputSmall">
+                                <label class="col-form-label col-form-label-sm" for="author">Author:</label>
+                                <input class="form-control form-control-sm" type="text" placeholder="Author" id="author">
                             </div>
                             <div class="form-group d-inline-flex">
-                                <label class="col-form-label col-form-label-sm" for="inputSmall">Edition</label>
-                                <input class="form-control form-control-sm" type="text" placeholder="Edition" id="inputSmall">
+                                <label class="col-form-label col-form-label-sm" for="edition">Edition</label>
+                                <input class="form-control form-control-sm" type="text" placeholder="Edition" id="edition">
+                            </div>
+                            <div class="form-group d-inline-flex">
+                                <label class="col-form-label col-form-label-sm" for="publisher">Publisher</label>
+                                <input class="form-control form-control-sm" type="text" placeholder="Publisher" id="publisher">
                             </div>
                             <div class="form-group d-inline-flex">
                                 <select class="custom-select">
@@ -123,7 +127,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div>
+                        <div class="row container-fluid justify-content-between">
                             <div class="form-group d-inline-flex">
                                 <select class="custom-select">
                                   <option selected="">Condition</option>
@@ -137,7 +141,7 @@
                             <div class="form-group d-inline-flex">
                                 <label class="control-label"> Offering Price: </label>
                                 <div class="form-group">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">$</span>
                                         </div>
@@ -148,8 +152,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <div>
+                                <label for="myfile">Upload a book image:</label>
+                                <input type="file" id="myfile" name="myfile">
+                            </div>
 
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-success align-content-between col-2">Submit</button>
                         </div>
 
 
@@ -168,7 +176,8 @@
                             <th scope="col">Rent/Buy/Sell</th>
                             <th scope="col">Condition</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Click to Select</th>
+                            <th scope="col">Requests pending</th>
+                            <th scope="col">View Details</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -197,8 +206,12 @@
                                 <td scope="row">Status:
                                     <%=i %>
                                 </td>
-                                <td>
-                                    <a class="btn btn-secondary" href="#" role="button">Select</a>
+                                <td scope="row">
+                                    <a class="btn btn-sm btn-secondary" href="http://localhost:3000/textbook-owner-details/name" role="button">Click to review</a>
+                                    <%=i %>
+                                </td>
+                                <td scope="row">
+                                    <a class="btn btn-sm btn-secondary" href="http://localhost:3000/textbook-details/name" role="button">Select</a>
                                 </td>
                             </tr>
                             <% } %>

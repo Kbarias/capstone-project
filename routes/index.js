@@ -33,6 +33,12 @@ router.get('/exchange/:name', (req, res) => {
 router.get('/bookshelf/:name', (req, res) => {
     res.render('bookshelf', { member: req.params.name });
 });
+router.get('/textbook-details/:name', (req, res) => {
+    res.render('textbook-details', { member: req.params.name });
+});
+router.get('/textbook-owner-details/:name', (req, res) => {
+    res.render('textbook-owner-details', { member: req.params.name });
+});
 router.get('/history/:name', (req, res) => {
     res.render('history', { member: req.params.name });
 });
@@ -44,5 +50,17 @@ router.get('/gather-create/:name', (req, res) => {
 });
 router.get('/gather-join/:name', (req, res) => {
     res.render('gather-join', { member: req.params.name });
+});
+router.get('/tutor-create/:name', (req, res) => {
+    res.render('tutor-create', { member: req.params.name });
+});
+router.get('/tutor-join/:name', (req, res) => {
+    res.render('tutor-join', { member: req.params.name });
+});
+router.get('/wander-detail/:name', (req, res) => {
+    res.render('wander-detail', { member: req.params.name });
+});
+router.get('/wander-add/:name', (req, res) => {
+    res.render('wander-add', { member: req.params.name });
 });
 module.exports = router;

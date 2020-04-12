@@ -4,7 +4,7 @@
         background-repeat: no-repeat;
         background-color: white;
         background-size: 25%;
-        background-position: 60% 300px;
+        background-position: 55% 300px;
     }
 </style>
 
@@ -15,7 +15,7 @@
 
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/exchange/name"><b>EXCHANGE</b></a>
 
-    <a class="navbar-brand col-sm-6 col-md-2 mr-0" href="http://localhost:3000/history/name/"><b>HISTORY</b></a>
+    <a class="navbar-brand col-sm-6 col-md-2 mr-0" href="http://localhost:3000/history/name"><b>HISTORY</b></a>
 </nav>
 
 
@@ -27,13 +27,13 @@
                 <img class="img-fluid rounded mx-auto d-block bg-white" src="../image/logo.png">
                 <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
                     <span>Welcome <%=member%></span>
-                    <a class="d-flex align-items-center text-muted" href="http://localhost:3000/dashboard-user/name">
+                    <a class="d-flex align-items-center text-muted" href="#">
                         <span data-feather="plus-circle"></span>
                     </a>
                 </h3>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link mya2 active" href="#">
+                        <a class="nav-link mya2 active" href="http://localhost:3000/dashboard-user/name">
                             <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
                         </a>
                     </li>
@@ -70,7 +70,7 @@
                         <a class="nav-link mya2" href="/users/logout">
                             <span data-feather="bar-chart-2"></span> LOGOUT
                         </a>
-                    </li>
+                    </li>fs
                     <li class="nav-item">
                         <a class="nav-link mya2" href="#">
                             <span data-feather="layers"></span> SETTINGS
@@ -87,48 +87,63 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
             <div class="container-fluid text-dark">
-                <h1>Transaction History
-                </h1>
-
-                <div class="table-responsive myTable">
-                    <table class="table table-striped table-sm" id="myTable">
-                        <thead>
-                            <tr class="myTable">
-                                <th scope="col">Request Date</th>
-                                <th scope="col">Reference Number</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Details</th>
-                                <th scope="col">Click to View</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            <!--Sample code-->
-                            <% for(var i=0; i < 150; i++) { %>
-                                <tr class=" myTable">
-                                    <td scope="row">
-                                        <%= i %>
-                                    </td>
-                                    <td scope="row">
-                                        <%=i %>
-                                    </td>
-                                    <td scope="row">
-                                        <%=i %>
-                                    </td>
-                                    <td scope="row">
-                                        <%=i %>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-secondary" href="http://localhost:3000/textbook-details/name" role="button">View Details</a>
-                                    </td>
-
-                                </tr>
-                                <% } %>
-
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <h1 class="h1 text-dark "> Details for Book Title (need to pull %booktitle% from DB).</h1>
                 </div>
+                <div class="row">
+                    <h4 class="h4 text-dark"> Display details of a specific textbook.</h4>
+                </div>
+                <hr>
+                <div class="row justify-content-between">
+                    <div class="col-4">
+
+                        <h3>Author:</h3>
+                        <h4>Publisher:</h4>
+                        <h4>Edition:</h4>
+                        <h4>ISBN No.</h4>
+                        <h4>MISC.</h4>
+                        <ul>
+                            <li>Condition:</li>
+                            <li>Other stuffs here</li>
+                        </ul>
+                        <p>Textbook Image here </p>
+                        <p><img src="../image/marvin.jpg" style="width: 40%;" alt="A Great HTML Resource"></p>
+                        <p>Add a link to Amazon for the book <a href="https://www.amazon.com/HTML5-Masterminds-3rd-revolutionary-applications-ebook/dp/B07KYB26T2/ref=sr_1_1?dchild=1&keywords=how+to+html5&qid=1586653659&s=digital-text&sr=1-1" target="_blank">Web site</a></p>
+                        <hr>
+                        <!-- And add a copyright notice.-->
+                        <p>&#169; ACME Publishing, 2020</p>
+                    </div>
+                    <div class="col-4">
+                        <h3>Owner:</h3>
+                        <h4>Ratings:</h4>
+                        <% for (var star=0; star< 5; star++){ %>
+                            <span class="fa fa-star checked"></span>
+                            <% } %>
+                    </div>
+                    <div class="col-4">
+                        <h3>For: rent/sale/lend/free</h3>
+                        <h4>Price:</h4>
+                        <h4>Date available:</h4>
+                        <h4>Avaialbe period:</h4>
+                        <ul>
+                            <li>from:</li>
+                            <li>to:</li>
+                        </ul>
+                        <h4> Add comment:</h4>
+                        <div class="col-sm-12">
+                            <textarea class="col-sm-12" id="description" rows="5"></textarea>
+                        </div>
+                        <br>
+                        <a class="btn btn-success btn-lg" href="http://localhost:3000/bookshelf/name" role="button">Submit Request</a>
+                        <br>
+                        <br>
+                        <h4 class="text-info">Once you click submit, the offering party will be notified and you will receive email notification if request is accepted.</h4>
+                        <hr>
+                        <h4 class="text-info">You can view the status of the request in your bookshelf.</h4>
+                    </div>
+                </div>
+            </div>
 
         </main>
-        </div>
     </div>
+</div>
