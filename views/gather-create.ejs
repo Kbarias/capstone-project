@@ -94,7 +94,6 @@
                         <label for="staticEmail" class="col-sm-4 col-form-label">1. Select a group type:</label>
                         <div class="col-sm-8">
                             <select class="custom-select">
-                                <option selected="">Group Type</option>
                                 <option value="1">Private</option>
                                 <option value="2">Public</option>
                             </select>
@@ -107,14 +106,41 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputUserName" class="col-sm-4 col-form-label">3. Invite up to 9 members:</label>
-                        <div class="col-sm-8 form-inline">
-                            <input class="form-control col-sm-6 " type="search" id="inputUserName" placeholder="member name">
-                            <button class="btn btn-outline-success col-sm-2 my-2 my-sm-0" type="submit">Search</button>
-                            <button class="btn btn-outline-success col-sm-2 my-2 my-sm-0" type="submit">Add</button>
-                            <button class="btn btn-outline-success col-sm-2 my-2 my-sm-0" type="submit">Remove</button>
-                        </div>
+                        <h6 class="text-dark col-sm-4 col-form-label">3. Add members to your group.</h2>
+                            <div class="table-responsive myTable">
+                                <table class="table table-striped table-sm " id="myTable">
+                                    <thead>
+                                        <tr class="myTable">
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Username</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Click to Select</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <% users.forEach(function(row) { %>
+                                                <tr class="table-secondary">
+                                                    <td scope="row">
+                                                        <%=row._id.first_name %>
+                                                        <%=row._id.last_name %>
+                                                    </td>
+                                                    <td scope="row">
+                                                        <%=row._id.username %>
+                                                    </td>
+                                                    <td scope="row">
+                                                        <%=row._id.email %>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-secondary" href="#" role="button">Select</a>
+                                                    </td>
+                                                </tr>
+                                            <% }) %> 
+                
+                                    </tbody>
+                                </table>
+                            </div>
                     </div>
+                    
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label d-flex justify-content-center"> Members added:</label>
                         <div class="col-sm-8">
