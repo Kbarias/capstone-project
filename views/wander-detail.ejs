@@ -1,0 +1,245 @@
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        background-image: url("/image/wander-bg.png");
+        background-color: white;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: 45%;
+        background-position: 65% 80%;
+        width: 100%;
+        height: 100vh;
+    }
+    
+    #map {
+        height: 100%;
+        width: 100%;
+    }
+</style>
+
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=id%>"><b>HOME</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="places/wander-add/<%=id%>/<%=id%>"><b>ADD</b></a>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-dark sidebar myVerticalNav">
+            <div class="sidebar-sticky">
+                <br>
+                <img class="img-fluid rounded mx-auto d-block bg-white" src="/image/logo.png">
+                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
+                    <span>Welcome <%=member%></span>
+                    <a class="d-flex align-items-center text-muted" href="#">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+                </h3>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link mya2 active" href="/dashboard/admin/<%=id%>/<%=id%>">
+                            <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="/exchange/<%=id%>/<%=member%>">
+                            <span data-feather="file"></span> EXCHANGE
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="/gather/<%=id%>/<%=member%>">
+                            <span data-feather="shopping-cart"></span> GATHER
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="/places/<%=id%>/<%=member%>">
+                            <span data-feather="users"></span> WANDER
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="/dashboard/admin/<%=id%>/<%=member%>">
+                            <span data-feather="users"></span> MANAGE
+                        </a>
+                    </li>
+                </ul>
+                <!--Other text to appear in between-->
+                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
+                    <span></span>
+                    <a class="d-flex align-items-center text-muted" href="#">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+                </h3>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="/users/logout">
+                            <span data-feather="bar-chart-2"></span> LOGOUT
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="#">
+                            <span data-feather="layers"></span> SETTINGS
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mya2" href="#">
+                            <span data-feather="file-text"></span> HELP
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
+
+            <div class="row">
+                <h1 class="h1 text-dark "> Location (need to pull %locationName% from DB).</h1>
+            </div>
+            <div class="row">
+                <h4 class="h4 text-dark"> Display details of a location, please rate and comment responsibly</h4>
+            </div>
+            <div class="row mt-4">
+                <form class="container-fluid col-6 pt-5 justify-content bg-light font-weight-bold text-dark">
+                    <div class="form-group row">
+                        <label for="locationName" class="col-sm-4 col-form-label">1. Location name:</label>
+                        <div class="col-sm-8">
+                            <label type="text" class="form-control" id="locationName" placeholder="Location Name"></label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputAddress" class="col-sm-4 col-form-label">2. Address:</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control border-dark col-12" id="exampleTextarea" rows="3" style="height: 96px;">
+                                Gregory's Coffee
+                                878 Lexington
+                                New York, NY 10065
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputURL" class="col-sm-4 col-form-label">3. Website:</label>
+                        <div class="col-sm-8">
+                            <a class="nav-link mya2 form-control" href="#"></a>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputHours" class="col-sm-4 col-form-label">4.Hours of operation:</label>
+
+
+                        <div class="col-sm-8 form-inline justify-content-around">
+
+                            <div class="badge-dark col-3">
+                                <label for="Mon">Monday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="starttime1" name="starttime1"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime1" name="endtime1"></label>
+                            <div class="badge-dark col-3">
+                                <label for="Mon">Tuesday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime2" name="starttime2"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime2" name="endtime2"></label>
+                            <div class="badge-dark col-3">
+                                <label for="Mon">Wednesday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime3" name="starttime3"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime3" name="endtime3"></label>
+                            <div class="badge-dark col-3">
+                                <label for="Mon">Thursday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime4" name="starttime4"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime4" name="endtime4"></label>
+                            <div class="badge-dark col-3">
+                                <label for="Mon">Friday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime5" name="starttime5"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime5" name="endtime5"></label>
+                            <div class="badge-success col-3">
+                                <label for="Mon">Saturday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime6" name="starttime6"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime6" name="endtime6"></label>
+                            <div class="badge-danger col-3">
+                                <label for="Mon">Sunday</label>
+                            </div>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime7" name="starttime7"></label>
+                            <label for="to">To</label>
+                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime7" name="endtime7"></label>
+
+
+                        </div>
+
+
+                    </div>
+                    <div class="form-group row">
+                        <label for="description" class="col-sm-4 col-form-label">6. Description:</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="description" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row pb-5">
+                        <label for="ratings" class="col-sm-4 col-form-label">6. Current rating:</label>
+                        <div class="col-sm-8">
+                            <% for (var star=0; star< 5; star++){ %>
+                                <span class="fa fa-star checked"></span>
+                                <% } %>
+                        </div>
+                    </div>
+
+                </form>
+                <div class="col-6">
+                    <div id="map">
+
+                        <p>This is a map</p>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!--need fixing, this is code to get the input from screen-->
+<script async defer type="text/javascript">
+    function getCoord() {
+        var newlat = parseFloat(document.getElementById("newlat").value);
+        var newlng = parseFloat(document.getElementById("newlng").value);
+        $("#map").load(" #map");
+    }
+</script>
+
+<script>
+    function initMap() {
+        var location = {
+            lat: 40.768560, //need default value or data poll from DB
+            lng: -73.964968 //need default value or data poll from DB
+
+        };
+        var map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 17,
+            center: location
+        });
+        var marker = new google.maps.Marker({
+            position: location,
+            map: map
+
+        });
+    }
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDw9i5kS-0ajreM29FC1d2ifdXypgk2JQ0
+&callback=initMap" type="text/javascript">
+</script>
+
+<!--sample location:
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1510.8780331939784!2d-73.96472090523616!3d40.76738959330323!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c258ebe8836e8f%3A0x306c53c6456af436!2sHunter%20College%20Leon%20%26%20Toby%20Cooperman%20Library!5e0!3m2!1sen!2sus!4v1585064383050!5m2!1sen!2sus" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+
+-->

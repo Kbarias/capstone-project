@@ -23,3 +23,11 @@ exports.join_gathering = (req, res) => {
     //list the tutors
     res.render('gather-join', {id: req.params.id ,  member: req.params.member });
 };
+
+exports.create_tutoring_session = (req, res) => {
+    res.render('tutor-create', { member: req.params.name });
+};
+
+exports.join_tutoring_session = (req, res) => {
+    res.render('tutor-join', { member: req.params.name });
+};

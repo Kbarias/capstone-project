@@ -44,3 +44,11 @@ exports.create_a_place = (req, res) => {
         res.json( {message:err} );
     }
 };
+
+exports.get_create_place_page = (req, res) => {
+    res.render('wander-detail', { id:req.params.id, member: req.params.member});
+};
+
+exports.add_new_place = (req, res) => {
+    res.render('wander-add', { id:req.params.id, member: req.params.member});
+};

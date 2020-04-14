@@ -87,18 +87,18 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent text-dark">
             <div class="container-fluid">
                 <div class="row">
-                    <H1> My Groups</H1>
+                    <H1> Tutoring Sessions</H1>
                 </div>
                 <!-- List of groups -->
                 <div class="row">
                     <div class="col-lg-6">
-                        <H2>All Groups</H2>
+                        <H2>All Tutoring Sessions</H2>
 
                         <div class="table-responsive">
                             <table class="table table-striped table-sm" id="myTable">
                                 <thead>
                                     <tr class="table-dark">
-                                        <th scope="col">Group Name</th>
+                                        <th scope="col">Session Name</th>
                                         <th scope="col">Capacity</th>
                                         <th scope="col">Organizer</th>
                                         <th scope="col">Joined</th>
@@ -110,7 +110,7 @@
                                     <!--Sample code to pull data out from DB iterating through all entries.-->
                                     <% for(var i=0; i < 150; i++) { %>
                                         <tr class="table-secondary">
-                                            <td scope="row">group name
+                                            <td scope="row">Session name
                                                 <%= i %>
                                             </td>
                                             <td scope="row">Capacity
@@ -135,14 +135,14 @@
                     </div>
                     <!-- Group details starts here -->
                     <div class="col-lg-6">
-                        <H2> Group Details</H2>
+                        <H2> Tutoring Session Details</H2>
                         <div class="form-group mt-5 pt-5 pl-3 bg-dark">
                             <!-- Group Name -->
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label mytext">Group Name:</label>
+                                <label class="col-sm-3 col-form-label mytext">Session Name:</label>
                                 <div class="col-sm-9 mytext">
                                     <p>
-                                        Group
+                                        Session
                                         <%=member%>
                                     </p>
                                 </div>
@@ -185,7 +185,7 @@
                             </div>
                             <!-- Meeting Location -->
                             <div class="form-group row">
-                                <label class="col-3 mytext" for="Location">Meeting Location:</label>
+                                <label class="col-3 mytext" for="Location">Session Location:</label>
 
                                 <textarea class="form-control border-dark col-8" id="exampleTextarea" rows="3" style="height: 96px;">
                                     Gregory's Coffee

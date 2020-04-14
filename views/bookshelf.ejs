@@ -90,8 +90,6 @@
                 <h1>My Bookshelf</h1>
                 <h4>Your bookshelf is a collection of all the books you are currently renting. To view more details, click the item you want to select.</h4>
 
-                
-                </div>
             </div>
             <h2 class="text-dark">Textbooks you are currently renting.</h2>
             <div class="table-responsive myTable">
@@ -103,8 +101,8 @@
                             <th scope="col">Author</th>
                             <th scope="col">Owner</th>
                             <th scope="col">Return Date</th>
-                            <th scope="col">Return Place</th>
-                            <th scope="col">Click to Select</th>
+                            <th scope="col">Return Place</th> -->
+                            <th scope="col">View Details</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -121,6 +119,9 @@
                                     <td scope="row">
                                         <%=row.book.author %>
                                     </td>
+                                    <td scope="row">Edition:
+                                        row.book.edition
+                                    </td>
                                     <td scope="row">
                                         <%=row.offered_as %>
                                     </td>
@@ -130,8 +131,12 @@
                                     <td scope="row">
                                         <%=row.status.state %>
                                     </td>
-                                    <td>
-                                        <a class="btn btn-secondary" href="#" role="button">Select</a>
+                                    <td scope="row">
+                                        <a class="btn btn-sm btn-secondary" href="exchange/textbook-owner-details/<%=id%>/<%=member%>" role="button">Click to review</a>
+                                        <%=i %>
+                                    </td>
+                                    <td scope="row">
+                                        <a class="btn btn-sm btn-secondary" href="exchange/textbook-details/<%=id%>/<%=member%>" role="button">Select</a>
                                     </td>
                                 </tr>
                             <% }) %> 

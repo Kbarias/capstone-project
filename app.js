@@ -29,7 +29,6 @@ app.use(
 app.use(express.static(__dirname + '/views'));
 
 
-
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());

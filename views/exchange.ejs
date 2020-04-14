@@ -90,12 +90,8 @@
                 <h1>Welcome to the Exchange.</h1>
                 <h3>The Exchange is where the students can trade books directly with each other. First, students choose to buy, sell, donate, and/or rent any book. Then they decide on a convenient place to make the exchange.</h3>
                 <h5>All payments are handled offline. users are expected to adhere to the <a href="#">Terms & Conditions Agreement</a> </h5>
-
-
-
-                <div class="card border-standard mb-3" style="max-width: 33rem;">
-
-                    <div class="card-body ">
+                <div class="card border-standard mb-3 mt-3 pt-0 pb-0" style="max-width: 33rem;">
+                    <div class="card-body pt-0 pb-0 ">
                         <h2 class="card-text">Find the book you're looking for, then select by clicking it.</h2>
                     </div>
                 </div>
@@ -137,7 +133,7 @@
                                     <%=row.condition_desc %>
                                 </td>
                                 <td>
-                                    <a class="btn btn-secondary" href="#" role="button">View Details</a>
+                                    <a class="btn btn-sm btn-secondary" href="/exchange/textbook-details/<%=id%>/<%=member%>/<%=row._id%>" role="button">View Details</a>
                                 </td>
                             </tr>
                         <% }) %> 

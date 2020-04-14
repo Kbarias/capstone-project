@@ -13,4 +13,9 @@ router.get('/history/:id/:member', auth.ensureAuthenticated, ExchangeController.
 
 router.post('/post-book/:id/:member', auth.ensureAuthenticated, ExchangeController.post_new_book);
 
+router.get('/textbook-details/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.get_textbook_details);
+
+router.get('/textbook-owner-details/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.get_textbook_owner);
+
+router.post('/request/:id/:member', auth.ensureAuthenticated, ExchangeController.post_request);
 module.exports = router;
