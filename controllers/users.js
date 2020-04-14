@@ -36,11 +36,16 @@ exports.user_login = (req, res, next) => {
                             if(userinfo.is_admin){
                                 admin = '1';
                             }
-                            passport.authenticate('local', {
-                                successRedirect: '/dashboard/admin/' + user._id + admin + '/' + user.first_name,
-                                failureRedirect: '/users/login',
-                                failureFlash: true
-                            })(req, res, next);
+                            userinfo.last_login = new Date();
+                            
+                            userinfo.save()
+                                .then(log => {
+                                    passport.authenticate('local', {
+                                        successRedirect: '/dashboard/admin/' + user._id + admin + '/' + user.first_name,
+                                        failureRedirect: '/users/login',
+                                        failureFlash: true
+                                    })(req, res, next);
+                                })
                         })
                 }
                 else {
@@ -102,21 +107,28 @@ exports.user_login = (req, res, next) => {
                                 user.save()
                                     .then(saved_user => {
                                         Token.findOneAndDelete({token:token})
-                                            .then()
+                                            .then(deleted_token => {
+                                                UserInfo.findOne({_id:user._id})
+                                                    .then(new_user => {
+                                                            let admin = '0';
+                                                            if(new_user.is_admin){
+                                                                admin = '1';
+                                                            }
+                                                            new_user.last_login = new Date();
+
+                                                            new_user.save()
+                                                                .then(saved_user => {
+                                                                    passport.authenticate('local', {
+                                                                        successRedirect: '/dashboard/admin/' + new_user._id + admin + '/' + saved_user.first_name,
+                                                                        failureRedirect: '/users/login',
+                                                                        failureFlash: true
+                                                                    })(req, res, next);
+                                                                })
+                                                            
+                                                    })
+                                            })
                                             .catch();
                                         
-                                        UserInfo.findOne({_id:user._id})
-                                            .then(new_user => {
-                                                    let admin = '0';
-                                                    if(new_user.is_admin){
-                                                        admin = '1';
-                                                    }
-                                                    passport.authenticate('local', {
-                                                    successRedirect: '/dashboard/admin/' + new_user._id + admin + '/' + saved_user.first_name,
-                                                    failureRedirect: '/users/login',
-                                                    failureFlash: true
-                                                })(req, res, next);
-                                            })
                                         
                                     })
                                     .catch(err => console.log(err));
@@ -211,41 +223,42 @@ exports.user_registration = (req, res) => {
                     
                                     //save user to database
                                     newUser.save()
-                                        .then()
-                                        .catch(err => console.log(err));
-                    
-                                    //create userInfo document for this new user
-                                    const userinfo = new UserInfo({
-                                        _id: newUser.id,
-                                    });
-                    
-                                    // Create a verification token for this user
-                                    var token = new Token({ _userId: newUser._id, token: crypto.randomBytes(16).toString('hex') });
-                                        
-                                    // Save the verification token
-                                    token.save(function (err) {
-                                        if (err) { return res.status(500).send({ msg: err.message }); }
+                                        .then(saved_user => {
+                                                //create userInfo document for this new user
+                                                const userinfo = new UserInfo({
+                                                    _id: newUser.id,
+                                                });
+                                                // Create a verification token for this user
+                                                var token = new Token({ _userId: newUser._id, token: crypto.randomBytes(16).toString('hex') });
+
+
+                                                // Save the verification token
+                                                token.save(function (err) {
+                                                    if (err) { return res.status(500).send({ msg: err.message }); }
+                                            
+                                                    // Send the email
+                                                    mailOptions.to = newUser.email;
+                                                    mailOptions.text = 'Hello,\n\n' + 'Please verify your Agora account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/users'+ '\/login'+ '\/confirmation\/' + token.token + '\n and logging in'+ '.\n';
                                 
-                                        // Send the email
-                                        mailOptions.to = newUser.email;
-                                        mailOptions.text = 'Hello,\n\n' + 'Please verify your Agora account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/users'+ '\/login'+ '\/confirmation\/' + token.token + '\n and logging in'+ '.\n';
-                    
-                                        transporter.sendMail(mailOptions, function (err) {
-                                            if(err) { 
-                                                console.log(err);
-                                            } else {
-                                                console.log('A verification email has been sent to ' + user.email + '.');
-                                            }
-                                        });
-                                    });
-                    
-                                    //save userInfo to database and redirect to login page
-                                    userinfo.save()
-                                        .then(user => {
-                                            req.flash('success_msg', 'A verification email has been sent to ' + newUser.email + '.');
-                                            res.redirect('/users/login');
+                                                    transporter.sendMail(mailOptions, function (err) {
+                                                        if(err) { 
+                                                            console.log(err);
+                                                        } else {
+                                                            console.log('A verification email has been sent to ' + user.email + '.');
+                                                        }
+                                                    });
+                                                    //save userInfo to database and redirect to login page
+                                                    userinfo.save()
+                                                        .then(user => {
+                                                            req.flash('success_msg', 'A verification email has been sent to ' + newUser.email + '.');
+                                                            res.redirect('/users/login');
+                                                        })
+                                                        .catch(err => console.log(err));
+                                                });
                                         })
                                         .catch(err => console.log(err));
+                    
+
                                 }))
                         }
                     });

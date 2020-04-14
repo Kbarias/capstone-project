@@ -15,6 +15,9 @@ const UserInfoSchema = mongoose.Schema({
         required: true
     },
     rating: Number,
+    last_login: {
+        type: Date
+    },
     is_deleted: {
         type: Boolean,
         default: false
