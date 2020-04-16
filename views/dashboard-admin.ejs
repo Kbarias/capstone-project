@@ -117,77 +117,71 @@
                             </li>
                         </ul>
                     </div>
+                    <%if(editing){%>
                     <div class="col-6">
                         <div class="card card-body editCard">
                             <h1 class="text-center mb-3">
                                 <i class="fas fa-user"></i> <b><i>Edit User</i></b>
                             </h1>
-                                <form action="/users/register" method="POST">
-                                    <span class="form-group col-auto ">
-                                        <label for="username">Username</label>
-                                    </span>
-                                    <span class="form-group col-auto">
-                                        <label for="fname">First Name, Last Name</label>
-                                    </span>
+                            <form action="/users/<%=id%>/<%=member%>/role/<%=editing._id._id%>" method="POST">
+                                <span class="form-group col-auto ">
+                                    <h4>Username: </h4>
+                                    <h5><%=editing._id.username%> </h5>
+                                    <h4>First Name: </h4>
+                                    <h5><%=editing._id.first_name%> </h5>
+                                    <h4>Last Name: </h4> 
+                                    <h5><%=editing._id.last_name%></h5>
+                                    <h4>Email: </h4> 
+                                    <h5><%=editing._id.email%></h5>
+                                    <h4>Role: </h4>
+                                    <%if(editing.is_admin) {%>
+                                        <h5><%="Admin"%></h5>
+                                    <%}else{%>
+                                        <h5><%="Member" %></h5>
+                                    <%}%>
+                                </span>
 
-
-                                    <div class="form-group col-12">
-                                        <label for="email">Email</label>
+                                </fieldset>
+                                <fieldset class="form-group d-flex ">
+                                    <legend>Account Status:</legend>
+                                    <h5><%=editing.account_status%></h5>
+                                    <div class="form-check col-6">
+                                        <label class="form-check-label">
+                                        <%if(editing.account_status == 'Active') {%>
+                                            <input class="form-check-input" type="checkbox" value="Blocked" name="block" id="block">
+                                                Block account
+                                        <%} else {%>
+                                            <input class="form-check-input" type="checkbox" value="Active" name="activate" id="activate">
+                                                Unblock account
+                                        <%}%>
+                                  
+                                        </label>
                                     </div>
-                                    </fieldset>
-                                    <fieldset class="form-group d-flex ">
-                                        <legend>Account Status</legend>
-                                        <div class="form-check col-6">
-                                            <label class="form-check-label">
-                                      <input class="form-check-input" type="checkbox" value="" checked="">
-                                      Lock/Unlock account
-                                    </label>
-                                        </div>
-                                        <div class="form-check col-6">
-                                            <label class="form-check-label">
-                                      <input class="form-check-input" type="checkbox" value="" unchecked="">
-                                      Disable/Enable account
-                                    </label>
-                                        </div>
-                                    </fieldset>
-                                    <div class="form-group  ">
-                                        <label>User Role:
-                                        <select class="custom-select">
-                                          <option value="1">Member</option>
-                                          <option value="2">Administrator</option>
-                                                                      </select>
-                                    </div>
+                                </fieldset>
+                                <div class="form-group  ">
+                                    <label>User Role:
+                                    <select class="custom-select" name="role" id="role">
+                                        <option value="0">Edit Role</option>
+                                        <option value="1">Member</option>
+                                        <option value="2">Administrator</option>
+                                    </select>
+                                </div>
 
-                                    <button type="submit" class="btn btn-danger col-10 btn-block mb-3">Delete User Account</button>
+                                <div class="">
+                                    <button type="submit" class="btn btn-success col-5">Save changes</button>
+                                    <a class="btn btn-secondary col-5" href="/dashboard/admin/<%=id%>/<%=member%>" role="button">Cancel</a>
+                                    
+                                </div>
 
-                                    <div class="">
-                                        <button type="button" class="btn btn-success col-5">Save changes</button>
-                                        <button type="button" class="btn btn-secondary col-5" data-dismiss="modal">Cancel</button>
-                                    </div>
+                                
 
+                            </form>
+                            <a class="btn btn-danger col-10 btn-block mb-3" href="/users/delete/<%=editing._id._id%>" role="button">Delete User</a>
 
-
-                                </form>
                         </div>
                     </div>
+                    <%}%>
 
-
-                    <div class="col-6">
-                        <div class="card card-body editCard">
-                            <h1 class="text-center mb-3">
-                                <i class="fas fa-user"></i> <b><i>Invite a member to be an Administrator</i></b>
-                            </h1>
-                                <form action="/dashboard/admin/invite/<%=id%>/<%=member%>" method="POST">
-                                    <div class="form-group">
-                                        <label for="useremail"></label>
-                                        <input type="email" id="useremail" name="useremail" class="form-control" placeholder="Enter a registered email" />
-                                    </div>
-                                    <button type="submit" class="btn btn-danger btn-block">Invite User</button>
-
-
-                                </form>
-                        </div>
-                    </div>
 
                 </div>
             </div>
@@ -230,7 +224,7 @@
                                     <%=row.account_status %>
                                 </td>
                                 <td>
-                                    <a class="btn btn-success" href="#" role="button">Edit User</a>
+                                    <a class="btn btn-success" href="/dashboard/admin/<%=id%>/<%=member%>/<%=row._id._id%>" role="button">Edit User</a>
                                 </td>
                             </tr>
                         <% }) %>    

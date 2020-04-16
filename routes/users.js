@@ -33,4 +33,11 @@ router.post('/login', UserController.user_login);
 //LOGOUT HANDLE
 router.get('/logout', UserController.user_logout);
 
+//DELETE USER
+router.get('/delete/:userid', UserController.delete_user);
+
+//CHANGE USER ROLE/ BLOCK OR UNBLOCK USER
+router.post('/:id/:member/role/:userid', UserController.edit_user);
+
+
 module.exports = router;

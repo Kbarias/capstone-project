@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const User = require('../models/User');
+const UserInfo = require('../models/UserInfo');
 
 module.exports = function(passport){
     passport.use(
@@ -20,16 +21,27 @@ module.exports = function(passport){
                         return done(null, false, {message: 'Please verify your email to login. Check your email.'});
                     }
 
-                    //match password in database
-                    bcrypt.compare(password, user.password, (err, isMatch) => {
-                        if(err) throw err;
+                    UserInfo.findOne({_id:user._id})
+                        .then(userinfo => {
+                            //if user email is not verified
+                            if(userinfo.account_status == 'Blocked'){
+                                return done(null, false, {message: 'Your account has been blocked. Check your email for a message from an administrator.'});
+                            }
+                            else{
+                                //match password in database
+                                bcrypt.compare(password, user.password, (err, isMatch) => {
+                                    if(err) throw err;
 
-                        if(isMatch) {
-                            return done(null, user);
-                        } else {
-                            return done(null, false, {message: 'Password incorrect'});
-                        }
-                    });
+                                    if(isMatch) {
+                                        return done(null, user);
+                                    } else {
+                                        return done(null, false, {message: 'Password incorrect'});
+                                    }
+                                });
+                            }
+                        })
+
+
                 })
                 .catch(err => console.log(err));
         })
