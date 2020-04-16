@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const UserInfo = require('../models/UserInfo');
@@ -5,6 +6,7 @@ const passport = require('passport');
 const crypto =  require('crypto');
 const nodemailer = require('nodemailer');
 const Token = require('../models/Token');
+const AdminToken = require('../models/AdminToken');
 
 //NODEMAILER CONFIG
 var transporter = nodemailer.createTransport({ 
@@ -36,11 +38,16 @@ exports.user_login = (req, res, next) => {
                             if(userinfo.is_admin){
                                 admin = '1';
                             }
-                            passport.authenticate('local', {
-                                successRedirect: '/dashboard/admin/' + user._id + admin + '/' + user.first_name,
-                                failureRedirect: '/users/login',
-                                failureFlash: true
-                            })(req, res, next);
+                            userinfo.last_login = new Date();
+                            
+                            userinfo.save()
+                                .then(log => {
+                                    passport.authenticate('local', {
+                                        successRedirect: '/dashboard/admin/' + user._id + admin + '/' + user.first_name,
+                                        failureRedirect: '/users/login',
+                                        failureFlash: true
+                                    })(req, res, next);
+                                })
                         })
                 }
                 else {
@@ -102,21 +109,28 @@ exports.user_login = (req, res, next) => {
                                 user.save()
                                     .then(saved_user => {
                                         Token.findOneAndDelete({token:token})
-                                            .then()
+                                            .then(deleted_token => {
+                                                UserInfo.findOne({_id:user._id})
+                                                    .then(new_user => {
+                                                            let admin = '0';
+                                                            if(new_user.is_admin){
+                                                                admin = '1';
+                                                            }
+                                                            new_user.last_login = new Date();
+
+                                                            new_user.save()
+                                                                .then(saved_user => {
+                                                                    passport.authenticate('local', {
+                                                                        successRedirect: '/dashboard/admin/' + new_user._id + admin + '/' + saved_user.first_name,
+                                                                        failureRedirect: '/users/login',
+                                                                        failureFlash: true
+                                                                    })(req, res, next);
+                                                                })
+                                                            
+                                                    })
+                                            })
                                             .catch();
                                         
-                                        UserInfo.findOne({_id:user._id})
-                                            .then(new_user => {
-                                                    let admin = '0';
-                                                    if(new_user.is_admin){
-                                                        admin = '1';
-                                                    }
-                                                    passport.authenticate('local', {
-                                                    successRedirect: '/dashboard/admin/' + new_user._id + admin + '/' + saved_user.first_name,
-                                                    failureRedirect: '/users/login',
-                                                    failureFlash: true
-                                                })(req, res, next);
-                                            })
                                         
                                     })
                                     .catch(err => console.log(err));
@@ -211,41 +225,42 @@ exports.user_registration = (req, res) => {
                     
                                     //save user to database
                                     newUser.save()
-                                        .then()
-                                        .catch(err => console.log(err));
-                    
-                                    //create userInfo document for this new user
-                                    const userinfo = new UserInfo({
-                                        _id: newUser.id,
-                                    });
-                    
-                                    // Create a verification token for this user
-                                    var token = new Token({ _userId: newUser._id, token: crypto.randomBytes(16).toString('hex') });
-                                        
-                                    // Save the verification token
-                                    token.save(function (err) {
-                                        if (err) { return res.status(500).send({ msg: err.message }); }
+                                        .then(saved_user => {
+                                                //create userInfo document for this new user
+                                                const userinfo = new UserInfo({
+                                                    _id: newUser.id,
+                                                });
+                                                // Create a verification token for this user
+                                                var token = new Token({ _userId: newUser._id, token: crypto.randomBytes(16).toString('hex') });
+
+
+                                                // Save the verification token
+                                                token.save(function (err) {
+                                                    if (err) { return res.status(500).send({ msg: err.message }); }
+                                            
+                                                    // Send the email
+                                                    mailOptions.to = newUser.email;
+                                                    mailOptions.text = 'Hello,\n\n' + 'Please verify your Agora account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/users'+ '\/login'+ '\/confirmation\/' + token.token + '\n and logging in'+ '.\n';
                                 
-                                        // Send the email
-                                        mailOptions.to = newUser.email;
-                                        mailOptions.text = 'Hello,\n\n' + 'Please verify your Agora account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/users'+ '\/login'+ '\/confirmation\/' + token.token + '\n and logging in'+ '.\n';
-                    
-                                        transporter.sendMail(mailOptions, function (err) {
-                                            if(err) { 
-                                                console.log(err);
-                                            } else {
-                                                console.log('A verification email has been sent to ' + user.email + '.');
-                                            }
-                                        });
-                                    });
-                    
-                                    //save userInfo to database and redirect to login page
-                                    userinfo.save()
-                                        .then(user => {
-                                            req.flash('success_msg', 'A verification email has been sent to ' + newUser.email + '.');
-                                            res.redirect('/users/login');
+                                                    transporter.sendMail(mailOptions, function (err) {
+                                                        if(err) { 
+                                                            console.log(err);
+                                                        } else {
+                                                            console.log('A verification email has been sent to ' + user.email + '.');
+                                                        }
+                                                    });
+                                                    //save userInfo to database and redirect to login page
+                                                    userinfo.save()
+                                                        .then(user => {
+                                                            req.flash('success_msg', 'A verification email has been sent to ' + newUser.email + '.');
+                                                            res.redirect('/users/login');
+                                                        })
+                                                        .catch(err => console.log(err));
+                                                });
                                         })
                                         .catch(err => console.log(err));
+                    
+
                                 }))
                         }
                     });
@@ -372,20 +387,210 @@ exports.user_password_reset = (req, res) => {
 };
 
 exports.become_an_admin = (req, res) => {
-    UserInfo.findOne({_id:req.params.id})
+    let errors = [];
+    //find a token in DB with the userid of this person
+    AdminToken.findOneAndDelete({_userId: req.params.id}).populate('_userId')
         .then(user => {
-            if(!user){
-                errors.push({msg: 'We were unable to find a user with that email.'});
-                res.render('login' , {errors, token});
-            }
-            else{
-                user.is_admin = !user.is_admin;
-                user.save()
+            //a token was found with this person's matching id
+            if(user){
+                user._userId.is_admin = !user._userId.is_admin;
+                user._userId.save()
                     .then(saved => {
                         req.flash('success_msg', 'You are now an administrator for Agora!');
                         res.redirect('/users/login');
                     })
                     .catch(err => console.log(err));
             }
+            else {
+                errors.push({msg: 'We were unable to find an administrator with that email.'});
+                res.render('login' , {errors});
+            }
         })
+
+};
+
+exports.delete_user = (req, res) => {
+    res.send('deleting: ' + req.params.userid);
+};
+
+exports.edit_user = (req, res) => {
+    //let userid = req.params.id.slice(0,-1);
+    const {block, activate, role} = req.body;
+    //no information entered
+    if(!block && !activate && role == 0){
+        res.redirect('/dashboard/admin/' + req.params.id + '/' + req.params.member + '/' + req.params.userid);
+    }
+    //no role change
+    else if(role == 0){
+        //just blocking user
+        if(block == 'Blocked'){
+            UserInfo.findOneAndUpdate({_id:req.params.userid} , {account_status:'Blocked'}, {new: true}).populate('_id')
+                .then(blocked_user => {
+                    //Create and send email informing user of status change
+                    mailOptions.to = blocked_user._id.email;
+                    mailOptions.subject = 'Your Agora account is blocked';
+                    mailOptions.text = 'Hello,\n\n' + 'Your account has recently been blocked. Please reach out to an Agora Administrator for information.';
+                    transporter.sendMail(mailOptions, function (err) {
+                        if(err) { 
+                            console.log(err);
+                        }
+                    });
+
+                    req.flash('success_msg', 'You have successfully blocked ' + blocked_user._id.email + ' and an email was sent to them.');
+                    res.redirect('/dashboard/admin/' + req.params.id + '/' + req.params.member);
+                })
+                .catch(err => console.log(err));
+        }
+        //just activating user
+        else {
+            UserInfo.findOneAndUpdate({_id:req.params.userid} , {account_status:'Active'}, {new: true}).populate('_id')
+                .then(blocked_user => {
+                    //Create and send email informing user of status change
+                    mailOptions.to = blocked_user._id.email;
+                    mailOptions.subject = 'Your Agora account is unblocked';
+                    mailOptions.text = 'Hello,\n\n' + 'Your account has recently been unblocked. You can now login using the link: \nhttp:\/\/' + req.headers.host + '\/users'+ '\/login'+'.\n';
+                    transporter.sendMail(mailOptions, function (err) {
+                        if(err) { 
+                            console.log(err);
+                        }
+                    });
+
+                    req.flash('success_msg', 'You have successfully unblocked ' + blocked_user._id.email + '.');
+                    res.redirect('/dashboard/admin/' + req.params.id + '/' + req.params.member);
+                })
+                .catch(err => console.log(err));
+        }
+    }
+    //changing role to member
+    else if(role == 1){
+        //also blocking user
+        if(block == 'Blocked'){
+            UserInfo.findOneAndUpdate({_id:req.params.userid} , {account_status:'Blocked', is_admin:false}, {new: true}).populate('_id')
+                .then(blocked_user => {
+                    mailOptions.to = blocked_user._id.email;
+                    mailOptions.subject = 'Your Agora account is blocked';
+                    mailOptions.text = 'Hello,\n\n' + 'Your account has recently been blocked and your role has changed to "member". Please reach out to an Agora Administrator for information.';
+                    transporter.sendMail(mailOptions, function (err) {
+                        if(err) { 
+                            console.log(err);
+                        }
+                    });
+
+                    req.flash('success_msg', 'You have successfully blocked ' + blocked_user._id.email + ' and changed their role to "admin". An email was sent to them.');
+                    res.redirect('/dashboard/admin/' + req.params.id + '/' + req.params.member);
+                })
+                .catch(err => console.log(err));
+        }
+        //also activating user
+        else if(activate == 'Active'){
+            UserInfo.findOneAndUpdate({_id:req.params.userid} , {account_status:'Active', is_admin:false}, {new: true}).populate('_id')
+                .then(blocked_user => {
+                    mailOptions.to = blocked_user._id.email;
+                    mailOptions.subject = 'Your account is activated';
+                    mailOptions.text = 'Hello,\n\n' + 'Your account has recently been unblocked and your role has changed to "member". You can now login using the link: \nhttp:\/\/' + req.headers.host + '\/users'+ '\/login'+'.\n';
+                    transporter.sendMail(mailOptions, function (err) {
+                        if(err) { 
+                            console.log(err);
+                        }
+                    });
+
+                    req.flash('success_msg', 'You have successfully unblocked ' + blocked_user._id.email + ' and changed their role to "member".');
+                    res.redirect('/dashboard/admin/' + req.params.id + '/' + req.params.member);
+                })
+                .catch(err => console.log(err));
+        }
+        //just changing role not status
+        else {
+            UserInfo.findOneAndUpdate({_id:req.params.userid} , {is_admin:false}, {new: true}).populate('_id')
+                .then(blocked_user => {
+                    mailOptions.to = blocked_user._id.email;
+                    mailOptions.subject = 'Your Agora account role has changed';
+                    mailOptions.text = 'Hello,\n\n' + 'Your account role has recently changed to "member". You can now login using the link: \nhttp:\/\/' + req.headers.host + '\/users'+ '\/login'+'.\n';
+                    transporter.sendMail(mailOptions, function (err) {
+                        if(err) { 
+                            console.log(err);
+                        }
+                    });
+
+                    req.flash('success_msg', 'You have successfully changed ' + blocked_user._id.email + ' to a "member".');
+                    res.redirect('/dashboard/admin/' + req.params.id + '/' + req.params.member);
+                })
+                .catch(err => console.log(err));
+        }
+    }
+    //changing role to admin
+    else if(role == 2){
+        //also blocking user
+        if(block == 'Blocked'){
+            UserInfo.findOneAndUpdate({_id:req.params.userid} , {account_status:'Blocked'}, {new: true}).populate('_id')
+                .then(blocked_user => {
+                    var token = new AdminToken({ _userId: blocked_user._id, token: crypto.randomBytes(16).toString('hex') });
+
+                    //create and save an admin token for authorization
+                    token.save(function (err) {
+                        if (err) { return res.status(500).send({ msg: err.message }); }
+
+                        mailOptions.to = blocked_user._id.email;
+                        mailOptions.subject = 'Your Agora account is blocked';
+                        mailOptions.text = 'Hello,\n\n' + 'Your account has recently been blocked and you have been invited to become an Agora Admin. Please click on the link to confirm your participation: \nhttp:\/\/' + req.headers.host + '\/users'+ '\/admin-invite'+ '\/'+ blocked_user._id._id +'.\n';
+                        transporter.sendMail(mailOptions, function (err) {
+                            if(err) { 
+                                console.log(err);
+                            }
+                        });
+
+                        req.flash('success_msg', 'You have successfully blocked ' + blocked_user._id.email + ' and invited them to become an admin. An email was sent to them.');
+                        res.redirect('/dashboard/admin/' + req.params.id + '/' + req.params.member);
+                    });
+
+                })
+                .catch(err => console.log(err));
+        }
+        //also activating user
+        else if(activate == 'Active'){
+            UserInfo.findOneAndUpdate({_id:req.params.userid} , {account_status:'Active'}, {new: true}).populate('_id')
+                .then(user => {
+                    var token = new AdminToken({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') });
+
+                    token.save(function (err) {
+                        if (err) { return res.status(500).send({ msg: err.message }); }
+                        mailOptions.to = user._id.email;
+                        mailOptions.subject = 'Your Agora account is activated';
+                        mailOptions.text = 'Hello,\n\n' + 'Your account has recently been unblocked and you have been invited to be an Agora administrator. Please click on the link to confirm your participation: \nhttp:\/\/' + req.headers.host + '\/users'+ '\/admin-invite'+ '\/'+ user._id._id +'.\n';
+                        transporter.sendMail(mailOptions, function (err) {
+                            if(err) { 
+                                console.log(err);
+                            }
+                        });
+
+                        req.flash('success_msg', 'You have successfully unblocked ' + user._id.email + ' and invited them to become an admin. An email was sent to them.');
+                        res.redirect('/dashboard/admin/' + req.params.id + '/' + req.params.member);
+                    });
+                })
+                .catch(err => console.log(err));
+        }
+        //just changing role not status
+        else {
+            UserInfo.findOne({_id:req.params.userid}).populate('_id')
+                .then(user => {
+                    var token = new AdminToken({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') });           
+                    token.save(function (err) {
+                        if (err) { return res.status(500).send({ msg: err.message }); }
+
+                        mailOptions.to = user._id.email;
+                        mailOptions.subject = 'Agora Administrator Invitation';
+                        mailOptions.text = 'Hello,\n\n' + 'You have been invited to become an Agora Administrator. Please click on the link to confirm your participation: \nhttp:\/\/' + req.headers.host + '\/users'+ '\/admin-invite'+ '\/'+ user._id._id +'.\n';
+                        transporter.sendMail(mailOptions, function (err) {
+                            if(err) { 
+                                console.log(err);
+                            }
+                        });
+
+                        req.flash('success_msg', 'You have successfully invited ' + user._id.email + ' to become an Agora admin. They were sent an email.');
+                        res.redirect('/dashboard/admin/' + req.params.id + '/' + req.params.member);
+                    });
+                })
+                .catch(err => console.log(err));
+        }
+    }
 };

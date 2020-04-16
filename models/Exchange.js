@@ -40,7 +40,11 @@ const ExchangeSchema = mongoose.Schema({
         rent_info: {
             start_date: Date,
             return_date: Date,
-            days_late: Number
+            days_late: Number,
+            place: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Place'
+            }
         },
         purchase_date: Date
     },

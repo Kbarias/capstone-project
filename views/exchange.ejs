@@ -11,8 +11,8 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/postings/<%=id%>/<%=member%>"><b>MY POSTINGS</b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/bookshelf/<%=id%>/<%=member%>"><b>BOOKSHELF</b></a>
-
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/<%=id%>/<%=member%>"><b>EXCHANGE</b></a>
 
     <a class="navbar-brand col-sm-6 col-md-2 mr-0" href="/exchange/history/<%=id%>/<%=member%>"><b>HISTORY</b></a>
@@ -90,12 +90,8 @@
                 <h1>Welcome to the Exchange.</h1>
                 <h3>The Exchange is where the students can trade books directly with each other. First, students choose to buy, sell, donate, and/or rent any book. Then they decide on a convenient place to make the exchange.</h3>
                 <h5>All payments are handled offline. users are expected to adhere to the <a href="#">Terms & Conditions Agreement</a> </h5>
-
-
-
-                <div class="card border-standard mb-3" style="max-width: 33rem;">
-
-                    <div class="card-body ">
+                <div class="card border-standard mb-3 mt-3 pt-0 pb-0" style="max-width: 33rem;">
+                    <div class="card-body pt-0 pb-0 ">
                         <h2 class="card-text">Find the book you're looking for, then select by clicking it.</h2>
                     </div>
                 </div>
@@ -108,6 +104,7 @@
                             <th scope="col">ISBN NO.</th>
                             <th scope="col">Book Title</th>
                             <th scope="col">Author</th>
+                            <th scope="col">Edition</th>
                             <th scope="col">Rent/Buy/Sell</th>
                             <th scope="col">Condition</th>
                             <th scope="col">Click to Select</th>
@@ -115,17 +112,19 @@
                     </thead>
                     <tbody>
 
-                        <!--Sample code-->
                         <% books.forEach(function(row) { %>
                             <tr class="table-secondary">
                                 <td scope="row">
-                                    <%=row.books.isbn %>
+                                    <%=row.book.isbn %>
                                 </td>
                                 <td scope="row">
-                                    <%=row.books.title %>
+                                    <%=row.book.title %>
                                 </td>
                                 <td scope="row">
-                                    <%=row.books.author %>
+                                    <%=row.book.author %>
+                                </td>
+                                <td scope="row">
+                                    <%=row.book.edition %>
                                 </td>
                                 <td scope="row">
                                     <%=row.offered_as %>
@@ -134,7 +133,7 @@
                                     <%=row.condition_desc %>
                                 </td>
                                 <td>
-                                    <a class="btn btn-secondary" href="#" role="button">View Details</a>
+                                    <a class="btn btn-sm btn-secondary" href="/exchange/textbook-details/<%=id%>/<%=member%>/<%=row._id%>" role="button">View Details</a>
                                 </td>
                             </tr>
                         <% }) %> 

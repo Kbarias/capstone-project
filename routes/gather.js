@@ -9,4 +9,7 @@ router.get('/create/:id/:member', auth.ensureAuthenticated , GatherController.cr
 
 router.get('/join/:id/:member', auth.ensureAuthenticated, GatherController.join_gathering);
  
+router.get('/tutor-create/:id/:member', auth.ensureAuthenticated, GatherController.create_tutoring_session);
+
+router.get('/tutor-join/:id/:member', auth.ensureAuthenticated, GatherController.join_tutoring_session);
 module.exports = router;

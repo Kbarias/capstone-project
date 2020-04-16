@@ -29,7 +29,6 @@ app.use(
 app.use(express.static(__dirname + '/views'));
 
 
-
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
@@ -73,7 +72,7 @@ app.use('/gather', gatherRoute);
 //    console.log('Connected to database')
 // );
 
-mongoose.connect('mongodb+srv://kcg-admin:Mn51phLrce3uYPt4@kcg-cluster-t19p2.mongodb.net/agoraDB?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }, () =>
+mongoose.connect('mongodb+srv://kcg-admin:Mn51phLrce3uYPt4@kcg-cluster-t19p2.mongodb.net/agoraDB?retryWrites=true&w=majority', { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true , useFindAndModify: false}, () =>
     console.log('Connected to database')
 );
 
