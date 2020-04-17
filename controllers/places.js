@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Place = require('../models/Place');
 
 exports.get_all_places = (req, res) => {
+    Place.find()
+        .then(place => {
+            console.log(place);
+        })
     const places = Place.find({$and: [ {is_verified:true} , {is_deleted:false} ] });
     places.exec(function (err, data){
         if(err) throw err;

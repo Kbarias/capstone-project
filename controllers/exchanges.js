@@ -42,37 +42,37 @@ exports.get_history = (req, res) => {
 
 exports.post_new_book = (req, res) => {
     let userid = req.params.id.slice(0,-1);
-    const { isbn, title, author, edition, offer, condition, price} = req.body;
+    const { isbn, title, author, edition, offer, condition, price, first, second, third} = req.body;
+    res.send(isbn + " " + title + " " + author + " " + edition + " " + offer + " " + condition + " " + price + " " + first + second + third);
 
-
-    Book.findOne({$and: [ {isbn:isbn}, {title: { '$regex': new RegExp('^' + title + '$', "i")}} , {edition:edition}]} )
-        .then(book => {
-            if (!book){
-                //create new book entry
-                var new_book = new Book({isbn:isbn , edition: edition, title: title, author: author});
-                new_book.save()
-                    .then(book => {
-                        //create a merch entry for user
-                        var new_merch = new Merch({book: new_book._id, owner: userid, condition_desc: condition, cost: price, offered_as: offer, status:{state:'Available'}});
-                        new_merch.save()
-                            .then(new_posting => {
-                                req.flash('success_msg', 'You have successfully posted a book!');
-                                res.redirect('/exchange/postings/' + req.params.id +'/' + req.params.member);
-                            })
-                    })
-                    .catch(err => console.log(err));
-            }
-            else{
-                //if the book was found, create a new merch entry for user
-                var new_merch = new Merch({book: book._id, owner: userid, condition_desc: condition, cost: price, offered_as: offer, status:{state:'Available'}});
-                        new_merch.save()
-                            .then(new_posting => {
-                                req.flash('success_msg', 'You have successfully posted a book!');
-                                res.redirect('/exchange/postings/' + req.params.id +'/' + req.params.member);
-                            })
-                            .catch(err => console.log(err));
-            }
-        });
+    // Book.findOne({$and: [ {isbn:isbn}, {title: { '$regex': new RegExp('^' + title + '$', "i")}} , {edition:edition}]} )
+    //     .then(book => {
+    //         if (!book){
+    //             //create new book entry
+    //             var new_book = new Book({isbn:isbn , edition: edition, title: title, author: author});
+    //             new_book.save()
+    //                 .then(book => {
+    //                     //create a merch entry for user
+    //                     var new_merch = new Merch({book: new_book._id, owner: userid, condition_desc: condition, cost: price, offered_as: offer, status:{state:'Available'}});
+    //                     new_merch.save()
+    //                         .then(new_posting => {
+    //                             req.flash('success_msg', 'You have successfully posted a book!');
+    //                             res.redirect('/exchange/postings/' + req.params.id +'/' + req.params.member);
+    //                         })
+    //                 })
+    //                 .catch(err => console.log(err));
+    //         }
+    //         else{
+    //             //if the book was found, create a new merch entry for user
+    //             var new_merch = new Merch({book: book._id, owner: userid, condition_desc: condition, cost: price, offered_as: offer, status:{state:'Available'}});
+    //                     new_merch.save()
+    //                         .then(new_posting => {
+    //                             req.flash('success_msg', 'You have successfully posted a book!');
+    //                             res.redirect('/exchange/postings/' + req.params.id +'/' + req.params.member);
+    //                         })
+    //                         .catch(err => console.log(err));
+    //         }
+    //     });
 };
 
 exports.get_textbook_details = (req, res) => {
