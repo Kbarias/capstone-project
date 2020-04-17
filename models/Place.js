@@ -8,6 +8,8 @@ const PlaceSchema = mongoose.Schema({
     name: { type: String, required: true},
     capacity: Number,
     rating: Number,
+    website: String,
+    description: String,
     operation_hours: {
         mon: { type: String, required: true},
         tues: { type: String, required: true},

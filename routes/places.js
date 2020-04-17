@@ -10,10 +10,12 @@ const router = express.Router();
 router.get('/:id/:member', auth.ensureAuthenticated, PlaceController.get_all_places);
 
 //CREATE NEW PLACE
-router.post('/create', auth.ensureAuthenticated, PlaceController.create_a_place);
+router.post('/create/:id/:member', auth.ensureAuthenticated, PlaceController.create_a_place);
 
-router.get('/wander-detail/:id/:member', auth.ensureAuthenticated, PlaceController.get_create_place_page);
+//GET PLACE DETAILS PAGE
+router.get('/wander-detail/:id/:member/:placeid', auth.ensureAuthenticated, PlaceController.get_place_detail);
 
-router.get('/wander-add/:id/:member', auth.ensureAuthenticated, PlaceController.add_new_place);
+//GET ADD NEW PLACE PAGE
+router.get('/wander-add/:id/:member', auth.ensureAuthenticated, PlaceController.get_add_new_place_page);
 
 module.exports = router;
