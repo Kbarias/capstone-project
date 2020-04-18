@@ -63,7 +63,8 @@ exports.create_a_place = (req, res) => {
                                     street: response.results[0].address_components.number + " " + response.results[0].address_components.formatted_street,
                                     city: response.results[0].address_components.city,
                                     state: response.results[0].address_components.state,
-                                    zipcode: response.results[0].address_components.zip
+                                    zipcode: response.results[0].address_components.zip,
+                                    full_address: response.results[0].formatted_address
                                 },
                                 is_verified: true
 
@@ -100,7 +101,8 @@ exports.create_a_place = (req, res) => {
                                     street: response.results[0].address_components.number + " " + response.results[0].address_components.formatted_street,
                                     city: response.results[0].address_components.city,
                                     state: response.results[0].address_components.state,
-                                    zipcode: response.results[0].address_components.zip
+                                    zipcode: response.results[0].address_components.zip,
+                                    full_address: response.results[0].formatted_address
                                 }
                             });
                             newplace.save()

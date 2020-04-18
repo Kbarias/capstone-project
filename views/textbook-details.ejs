@@ -127,12 +127,14 @@
                     <div class="col-4">
                         <h3>For: <%=merch.offered_as%></h3>
                         <h4>Price: $<%=merch.cost%></h4>
-                        <h4>Date available:</h4>
-                        <h4>Available period:</h4>
-                        <ul>
-                            <li>from:</li>
-                            <li>to:</li>
-                        </ul>
+                        <%if(merch.offered_as == 'For Rent'){%>
+                            <h4>Available period:</h4>
+                            <ul>
+                                <li>from: <%=merch.availability_pariod.start%></li>
+                                <li>to: <%=merch.availability_pariod.end%></li>
+                            </ul>
+                        <%}%>
+
                         <form action="/exchange/request/<%=id%>/<%=member%>" method="POST">
                             <h4> Add comment:</h4>
                             <div class="col-sm-12">
