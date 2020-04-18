@@ -96,7 +96,7 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
 
             <div class="row">
-                <h1 class="h1 text-dark "> Location (need to pull %locationName% from DB).</h1>
+                <h1 class="h1 text-dark "><%=place.name%></h1>
             </div>
             <div class="row">
                 <h4 class="h4 text-dark"> Display details of a location, please rate and comment responsibly</h4>
@@ -106,23 +106,23 @@
                     <div class="form-group row">
                         <label for="locationName" class="col-sm-4 col-form-label">1. Location name:</label>
                         <div class="col-sm-8">
-                            <label type="text" class="form-control" id="locationName" placeholder="Location Name"></label>
+                            <%=place.name%>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputAddress" class="col-sm-4 col-form-label">2. Address:</label>
                         <div class="col-sm-8">
-                            <textarea class="form-control border-dark col-12" id="exampleTextarea" rows="3" style="height: 96px;">
-                                Gregory's Coffee
-                                878 Lexington
-                                New York, NY 10065
-                            </textarea>
+                            <%=place.address.street%>,
+                            <%=place.address.city%>,
+                            <%=place.address.state%>,
+                            <%=place.address.zipcode%>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputURL" class="col-sm-4 col-form-label">3. Website:</label>
                         <div class="col-sm-8">
-                            <a class="nav-link mya2 form-control" href="#"></a>
+                            
+                            <a href="<%=place.website%>"><%=place.website%></a>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -134,45 +134,31 @@
                             <div class="badge-dark col-3">
                                 <label for="Mon">Monday</label>
                             </div>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="starttime1" name="starttime1"></label>
-                            <label for="to">To</label>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime1" name="endtime1"></label>
+                            <%=place.operation_hours.mon%>
                             <div class="badge-dark col-3">
                                 <label for="Mon">Tuesday</label>
                             </div>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime2" name="starttime2"></label>
-                            <label for="to">To</label>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime2" name="endtime2"></label>
+                            <%=place.operation_hours.tues%>
                             <div class="badge-dark col-3">
                                 <label for="Mon">Wednesday</label>
                             </div>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime3" name="starttime3"></label>
-                            <label for="to">To</label>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime3" name="endtime3"></label>
+                            <%=place.operation_hours.weds%>
                             <div class="badge-dark col-3">
                                 <label for="Mon">Thursday</label>
                             </div>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime4" name="starttime4"></label>
-                            <label for="to">To</label>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime4" name="endtime4"></label>
+                            <%=place.operation_hours.thurs%>
                             <div class="badge-dark col-3">
                                 <label for="Mon">Friday</label>
                             </div>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime5" name="starttime5"></label>
-                            <label for="to">To</label>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime5" name="endtime5"></label>
+                            <%=place.operation_hours.fri%>
                             <div class="badge-success col-3">
                                 <label for="Mon">Saturday</label>
                             </div>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime6" name="starttime6"></label>
-                            <label for="to">To</label>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime6" name="endtime6"></label>
+                            <%=place.operation_hours.sat%>
                             <div class="badge-danger col-3">
                                 <label for="Mon">Sunday</label>
                             </div>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime7" name="starttime7"></label>
-                            <label for="to">To</label>
-                            <label type="time" class="col-sm-3 my-3 my-sm-0" id="endtime7" name="endtime7"></label>
+                            <%=place.operation_hours.sun%>
 
 
                         </div>
@@ -182,13 +168,13 @@
                     <div class="form-group row">
                         <label for="description" class="col-sm-4 col-form-label">6. Description:</label>
                         <div class="col-sm-8">
-                            <textarea class="form-control" id="description" rows="5"></textarea>
+                            <%=place.description%>
                         </div>
                     </div>
                     <div class="form-group row pb-5">
                         <label for="ratings" class="col-sm-4 col-form-label">6. Current rating:</label>
                         <div class="col-sm-8">
-                            <% for (var star=0; star< 5; star++){ %>
+                            <% for (var star=0; star< place.rating; star++){ %>
                                 <span class="fa fa-star checked"></span>
                                 <% } %>
                         </div>

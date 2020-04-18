@@ -23,8 +23,8 @@
 
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=id%>"><b>HOME</b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="places/wander-add/<%=id%>/<%=id%>"><b>ADD</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="places/wander-add/<%=id%>/<%=member%>"><b>ADD</b></a>
 </nav>
 
 <div class="container-fluid">
@@ -41,7 +41,7 @@
                 </h3>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link mya2 active" href="/dashboard/admin/<%=id%>/<%=id%>">
+                        <a class="nav-link mya2 active" href="/dashboard/admin/<%=id%>/<%=member%>">
                             <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
                         </a>
                     </li>
@@ -94,7 +94,7 @@
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
-
+            <%- include ('./partials/messages'); -%>
             <div class="row">
                 <h1 class="h1 text-dark "> Add a new location.</h1>
             </div>
@@ -102,30 +102,45 @@
                 <h4 class="h4 text-dark"> Add a new hangout spot to be listed. (Requires administrator verification and approval)</h4>
             </div>
             <div class="row mt-5">
-                <form class="container-fluid col-6 pt-5 justify-content bg-light font-weight-bold text-dark">
+                <form action="/places/create/<%=id%>/<%=member%>" method="POST" class="container-fluid col-6 pt-5 justify-content bg-light font-weight-bold text-dark">
                     <div class="form-group row">
                         <label for="locationName" class="col-sm-4 col-form-label">1. Enter a location name:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="locationName" placeholder="Location Name">
+                            <input type="text" class="form-control" id="locationName" placeholder="Location Name" name="placename" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputAddress" class="col-sm-4 col-form-label">2. Enter the address:</label>
                         <div class="col-sm-8">
                             <div class="">
-                                <input class="form-control" id="inputAddress" type="text">
-                                <button type="submit"><i class="fa fa-search"></i></button>
+                                <input placeholder="Street address" class="form-control" id="inputAddress" type="text" name="streetaddress" required>
+                                <input placeholder="City" class="form-control" id="inputAddress" type="text" name="city" required>
+                                <input placeholder="State" class="form-control" id="inputAddress" type="text" name="state" required>
+                                <input placeholder="Zipcode" class="form-control" id="inputAddress" type="text" name="zipcode" required>
+                                <!-- <button type="submit"><i class="fa fa-search"></i></button> -->
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputURL" class="col-sm-4 col-form-label">3. Enter website, if available:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="inputURL" placeholder="Website">
+                            <input type="text" class="form-control" id="inputURL" placeholder="Website" name="website">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputHours" class="col-sm-4 col-form-label">4. Enter hours of operation:</label>
+                        <label for="capacity" class="col-sm-4 col-form-label">4. Enter the capacity of the location:</label>
+                        <div class="col-sm-8">
+                            <input type="number" min="0" class="form-control" id="capacity" placeholder="Capacity" name="capacity" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="rating" class="col-sm-4 col-form-label">5. Give the location a rating:</label>
+                        <div class="col-sm-8">
+                            <input type="number" min="1" max="5" class="form-control" id="rating" placeholder="Rating (1 - 5 scale)" name="rating" >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputHours" class="col-sm-4 col-form-label">6. Enter hours of operation:</label>
 
 
                         <div class="col-sm-8 form-inline justify-content-around">
@@ -133,45 +148,45 @@
                             <div class="badge-dark col-3">
                                 <label for="Mon">Monday</label>
                             </div>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="starttime1" name="starttime1">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="starttime1" name="monday1">
                             <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime1" name="endtime1">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime1" name="monday2">
                             <div class="badge-dark col-3">
                                 <label for="Mon">Tuesday</label>
                             </div>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime2" name="starttime2">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime2" name="tuesday1">
                             <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime2" name="endtime2">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime2" name="tuesday2">
                             <div class="badge-dark col-3">
                                 <label for="Mon">Wednesday</label>
                             </div>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime3" name="starttime3">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime3" name="wednesday1">
                             <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime3" name="endtime3">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime3" name="wednesday2">
                             <div class="badge-dark col-3">
                                 <label for="Mon">Thursday</label>
                             </div>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime4" name="starttime4">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime4" name="thursday1">
                             <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime4" name="endtime4">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime4" name="thursday2">
                             <div class="badge-dark col-3">
                                 <label for="Mon">Friday</label>
                             </div>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime5" name="starttime5">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime5" name="friday1">
                             <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime5" name="endtime5">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime5" name="friday2">
                             <div class="badge-success col-3">
                                 <label for="Mon">Saturday</label>
                             </div>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime6" name="starttime6">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime6" name="saturday1">
                             <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime6" name="endtime6">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime6" name="saturday2">
                             <div class="badge-danger col-3">
                                 <label for="Mon">Sunday</label>
                             </div>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime7" name="starttime7">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime7" name="sunday1">
                             <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime7" name="endtime7">
+                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime7" name="sunday2">
 
 
                         </div>
@@ -179,13 +194,13 @@
 
                     </div>
                     <div class="form-group row">
-                        <label for="description" class="col-sm-4 col-form-label">6. Enter a brief description:</label>
+                        <label for="description" class="col-sm-4 col-form-label">7. Enter a brief description:</label>
                         <div class="col-sm-8">
-                            <textarea class="form-control" id="description" rows="5"></textarea>
+                            <textarea class="form-control" id="description" rows="5" name="description" required></textarea>
                         </div>
                     </div>
                     <div class="form-group row pb-5">
-                        <label for="createButton" class="col-sm-4 col-form-label">6. Click the button</label>
+                        <label for="createButton" class="col-sm-4 col-form-label">8. Click the button</label>
                         <div class="col-sm-8">
                             <button class="btn btn-outline-success col-sm-8 my-2 my-sm-0" type="submit">ADD</button>
                         </div>

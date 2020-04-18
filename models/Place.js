@@ -8,6 +8,8 @@ const PlaceSchema = mongoose.Schema({
     name: { type: String, required: true},
     capacity: Number,
     rating: Number,
+    website: String,
+    description: String,
     operation_hours: {
         mon: { type: String, required: true},
         tues: { type: String, required: true},
@@ -21,7 +23,8 @@ const PlaceSchema = mongoose.Schema({
         street: { type: String, required: true},
         city: { type: String, required: true},
         state: { type: String, required: true},
-        zipcode: { type: String, required: true}
+        zipcode: { type: String, required: true},
+        full_address: { type: String, required: true}
     },
     is_deleted: {
         type: Boolean,

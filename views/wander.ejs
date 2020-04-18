@@ -103,7 +103,7 @@
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
-
+            <%- include ('./partials/messages'); -%>
             <div class="row">
                 <h1 class="h1 text-dark "> Wander to a new place.</h1>
                 <h4 class="h4 text-dark"> Look for a new hangout spot or place to study with the Wander feature. Here you can browse for meetup locations that address your needs, or add a new place to be listed.</h3>
@@ -164,10 +164,19 @@
                                             <%=row.name %>
                                         </td>
                                         <td scope="row">
-                                            <%=row.address %>
+                                            <%=row.address.street %>
+                                            <%=row.address.city %>
+                                            <%=row.address.state %>
+                                            <%=row.address.zipcode %>
                                         </td>
                                         <td scope="row">
-                                            <%=row.operation_hours %>
+                                            Mon: <%=row.operation_hours.mon %>,
+                                            Tues: <%=row.operation_hours.tues %>,
+                                            Weds: <%=row.operation_hours.weds %>,
+                                            Thurs: <%=row.operation_hours.thurs %>,
+                                            Fri: <%=row.operation_hours.fri %>,
+                                            Sat: <%=row.operation_hours.sat %>,
+                                            Sun: <%=row.operation_hours.sun %>
                                         </td>
                                         <td scope="row">
                                             <%=row.capacity %>
@@ -176,7 +185,7 @@
                                             <%=row.rating %>
                                         </td>
                                         <td>
-                                            <a class="btn btn-secondary btn-sm" href="/places/wander-detail/<%=id%>/<%=member%>" role="button">Click to Explore</a>
+                                            <a class="btn btn-secondary btn-sm" href="/places/wander-detail/<%=id%>/<%=member%>/<%=row._id%>" role="button">Click to Explore</a>
                                         </td>
                                     </tr>
                                 <% }) %> 
