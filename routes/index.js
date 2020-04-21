@@ -26,7 +26,12 @@ router.get('/dashboard-user/:name', (req, res) => {
 router.get('/dashboard-admin/:name', (req, res) => {
     res.render('dashboard-admin', { member: req.params.name });
 });
-
+router.get('/manage-location/:name', (req, res) => {
+    res.render('manage-location', { member: req.params.name });
+});
+router.get('/location-review/:name', (req, res) => {
+    res.render('location-review', { member: req.params.name });
+});
 router.get('/exchange/:name', (req, res) => {
     res.render('exchange', { member: req.params.name });
 });
@@ -62,5 +67,8 @@ router.get('/wander-detail/:name', (req, res) => {
 });
 router.get('/wander-add/:name', (req, res) => {
     res.render('wander-add', { member: req.params.name });
+});
+router.get('/user-profile/:name', (req, res) => {
+    res.render('user-profile', { member: req.params.name });
 });
 module.exports = router;

@@ -12,7 +12,7 @@
 
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/dashboard/name"><b>HOME</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/dashboard-user/name"><b>HOME</b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/gather-join/name"><b>GROUPS</b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><b>TUTORING</b></a>
 
@@ -21,67 +21,7 @@
 <div class="container-fluid">
     <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-dark sidebar myVerticalNav">
-            <div class="sidebar-sticky">
-                <br>
-                <img class="img-fluid rounded mx-auto d-block bg-white" src="../image/logo.png">
-                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
-                    <span>Welcome <%=member%></span>
-                    <a class="d-flex align-items-center text-muted" href="#">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h3>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link mya2 active" href="http://localhost:3000/dashboard/name">
-                            <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="http://localhost:3000/exchange/name">
-                            <span data-feather="file"></span> EXCHANGE
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="http://localhost:3000/gather/name">
-                            <span data-feather="shopping-cart"></span> GATHER
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="http://localhost:3000/wander/name">
-                            <span data-feather="users"></span> WANDER
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="http://localhost:3000/dashboard-admin/name">
-                            <span data-feather="users"></span> MANAGE
-                        </a>
-                    </li>
-                </ul>
-                <!--Other text to appear in between-->
-                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
-                    <span></span>
-                    <a class="d-flex align-items-center text-muted" href="#">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h3>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="/users/logout">
-                            <span data-feather="bar-chart-2"></span> LOGOUT
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="#">
-                            <span data-feather="layers"></span> SETTINGS
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="#">
-                            <span data-feather="file-text"></span> HELP
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <%- include ('./partials/sidebar'); -%>
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent text-dark">
