@@ -15,7 +15,9 @@ router.post('/post-book/:id/:member', auth.ensureAuthenticated, ExchangeControll
 
 router.get('/textbook-details/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.get_textbook_details);
 
-router.get('/textbook-owner-details/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.get_textbook_owner);
+router.get('/textbook-owner-details/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.owner_get_textbook);
 
-router.post('/request/:id/:member', auth.ensureAuthenticated, ExchangeController.post_request);
+router.post('/request/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.post_request);
+
+router.get('/request/delete/:id/:member/:requestid', auth.ensureAuthenticated, ExchangeController.delete_request);
 module.exports = router;

@@ -21,6 +21,10 @@ const ExchangeSchema = mongoose.Schema({
         ref: 'Merch',
         required: true
     },
+    offer: {
+        type: String,
+        required: true
+    },
     place: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Place',

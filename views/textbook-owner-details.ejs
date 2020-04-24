@@ -133,34 +133,37 @@
                                 <thead>
                                     <tr class="myTable">
                                         <th scope="col">Name</th>
-                                        <th scope="col">Date requested</th>
-                                        <th scope="col">Ratings</th>
+                                        <th scope="col">First Requested Date</th>
+                                        <th scope="col">Second Requested Date</th>
+                                        <th scope="col">Third Requested Date</th>
                                         <th scope="col">Check to accept</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    <!--Sample code-->
-                                    <% for(var i=0; i < 6; i++) { %>
+                                    <% requests.forEach(function(row) { %>
                                         <tr class=" myTable">
-                                            <td scope="row">name
-                                                <%= i %>
-                                            </td>
-                                            <td scope="row">Date
-                                                <%=i %>
+                                            <td scope="row">
+                                                <%= row.requester.username %>
                                             </td>
                                             <td scope="row">
-                                                <% for (var star=0; star< 4; star++){ %>
-                                                    <span class="fa fa-star checked"></span>
-                                                    <% } %>
+                                                <%=row.requested_times.first_date %>
+                                                <%=row.requested_times.first_time %>
+                                            </td>
+                                            <td scope="row">
+                                                <%=row.requested_times.sec_date %>
+                                                <%=row.requested_times.sec_time %>
+                                            </td>
+                                            <td scope="row">
+                                                <%=row.requested_times.third_date %>
+                                                <%=row.requested_times.third_time %>
                                             </td>
 
                                             <td scope="row">
-                                                <input type="checkbox" id="checkbox1" name="checkbox1" class="" unchecked="">
+                                                <input type="radio" id="checkbox1" name="checkbox1" class="" unchecked="">
                                             </td>
 
                                         </tr>
-                                        <% } %>
+                                        <% })%>
 
                                 </tbody>
                             </table>

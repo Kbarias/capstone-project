@@ -135,23 +135,189 @@
                             </ul>
                         <%}%>
 
-                        <form action="/exchange/request/<%=id%>/<%=member%>" method="POST">
-                            <h4> Add comment:</h4>
-                            <div class="col-sm-12">
-                                <textarea class="col-sm-12" id="description" rows="5"></textarea>
-                            </div>
-                            <br>
-                            <button type="submit" class="btn btn-success align-content-between ">Submit Request</button>
-                            <br>
-                            <br>
-                            <h4 class="text-info">Once you click submit, the offering party will be notified and you will receive email notification if request is accepted.</h4>
-                            <hr>
-                            <h4 class="text-info">You can view the status of the request in your bookshelf.</h4>
-                        </form>
                     </div>
                 </div>
-            </div>
 
+                <form id="merch" onsubmit="return isValidForm()" action="/exchange/request/<%=id%>/<%=member%>/<%=merch._id%>" method="POST">
+                    <h3>Make a request</h3>
+                    
+                    <label for="message">Send message to the owner:</label>
+                    <br>
+                    <textarea name="message" id="message" cols="30" rows="5"></textarea>
+                    <br>
+
+                    <label for="place">Choose one location to make the exchange:</label>
+                    <div class="table-responsive myTable">
+                        <table id="places" class="table table-striped table-sm">
+                            <thead>
+                                <tr class="table-dark">
+                                    <th scope="col">Location Name</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Hours</th>
+                                    <th scope="col">Capacity</th>
+                                    <th scope="col">Rating</th>
+                                    <th scope="col">Select</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <% places.forEach(function(row) { %>
+                                    <tr class="table-secondary">
+                                        <td id="place-name" name="place-name" scope="row" >
+                                            <%=row.name %>
+                                        </td>
+                                        <td id="place-address" name="place-address" scope="row">
+                                            <%=row.address.street %>,
+                                            <%=row.address.city %>,
+                                            <%=row.address.state %>,
+                                            <%=row.address.zipcode %>
+                                        </td>
+                                        <td scope="row">
+                                            Mon :<%=row.operation_hours.mon %>,
+                                            Tues: <%=row.operation_hours.tues %>,
+                                            Wed: <%=row.operation_hours.weds %>,
+                                            Thurs: <%=row.operation_hours.thurs %>,
+                                            Fri: <%=row.operation_hours.fri %>,
+                                            Sat: <%=row.operation_hours.sat %>,
+                                            Sun: <%=row.operation_hours.sun %>
+                                        </td>
+                                        <td scope="row">
+                                            <%=row.capacity %>
+                                        </td>
+                                        <td scope="row">
+                                            <%=row.rating %>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-secondary btn-sm" onclick="addItem(this)">Add location</button>
+                                        </td>
+                                    </tr>
+                                <% }) %> 
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="dynamic-list" style="font-size: 16px;"></div>
+
+                    <div id="list" style="font-size: 16px; visibility:hidden;">
+                        <input id="first" name="first">
+                    </div>
+
+                    <label for="firsts">Choose a time to make the exchange at this place:</label>
+                    <input name="first_date" type="date" required>
+                    <input name="first_time" type="time" required>
+                    <br>
+
+                    <label for="seconds">Choose a second time to make the exchange at this place:</label>
+                    <input name="sec_date" type="date" required>
+                    <input name="sec_time" type="time" required>
+                    <br>
+
+                    <label for="thirds">Choose a third time to make the exchange at this place:</label>
+                    <input name="third_date" type="date" required>
+                    <input name="third_time" type="time" required>
+                    <br>
+
+
+                    <button type="submit" class="btn btn-success align-content-between ">Submit Request</button>
+                </form>
+
+                <h4 class="text-info">Once you click submit, the offering party will be notified and you will receive email notification if request is accepted.</h4>
+                <hr>
+                <h4 class="text-info">You can view the status of the request in your bookshelf.</h4>
+
+            </div>
         </main>
     </div>
 </div>
+
+
+<script type="text/javascript">
+
+    function isValidForm(){
+        var list = document.getElementById("dynamic-list");
+        var count = list.getElementsByTagName('input').length;
+        if(count < 1)
+        {
+            alert("Choose a location for the exchange.");
+            return false;
+        }
+        alert("Validations successful!");
+        return true;
+    }
+
+    document.getElementById('merch').onsubmit = function() {
+        return isValidForm();
+    };
+
+
+
+    //script to select
+    function addItem(x){
+        var list = document.getElementById("dynamic-list");
+        var count = list.getElementsByTagName('input').length;
+        if(count == 1){
+            return;
+        }
+        var inde = x.parentNode.parentNode.rowIndex;
+        var name = document.getElementById("places").rows[inde].cells[0].innerHTML.replace(/\s\s+/g, ' ');
+        var address = document.getElementById("places").rows[inde].cells[1].innerHTML.replace(/\s\s+/g, ' ');
+
+        var tags = list.getElementsByTagName('input');
+        for(var ind = 0; ind < count; ind++){
+            if(tags[ind].value == (name + ": " + address)){
+                alert("That location was already selected");
+                return;
+            }
+        }
+
+        var inp = document.createElement('input');
+        inp.style.border = '2px solid blue';
+        inp.style.borderRadius = '25px';
+        inp.style.padding = '10px';
+        inp.style.display = 'block';
+        inp.readOnly = true;
+        list.appendChild(inp);
+    
+        inp.required = true;
+        inp.value = name + ": " + address;
+
+        var list2 = document.getElementById("list");
+        var values = list2.getElementsByTagName('input')
+        for(var ind = 0; ind < 1; ind++){
+            if(!values[ind].value){
+                values[ind].value = inp.value;
+                break;
+            }
+        }
+
+        inp.size = inp.value.length;
+        //create your delete button after you click try it
+        var del = document.createElement('button');
+        del.style.textDecoration = 'none';
+        del.innerHTML = 'Remove this location?';
+        del.style.color = 'white';
+        del.style.borderRadius = '25px';
+        del.style.backgroundColor = 'red';
+        //assign a function for it when clicked
+        del.onclick = function() { deleteButton(inp,this)}; 
+        list.appendChild(del);
+    }
+
+    function deleteButton(x,y) {
+	  
+      var parent = document.getElementById('dynamic-list');
+      //remove the input field
+      parent.removeChild(x);
+      //remove the button
+      parent.removeChild(y);
+      
+      var list2 = document.getElementById("list");
+        var values = list2.getElementsByTagName('input')
+        for(var ind = 0; ind < 1; ind++){
+            if(values[ind].value == x.value){
+                values[ind].value = null;
+                break;
+            }
+        }
+  }
+</script>
