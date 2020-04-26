@@ -23,16 +23,12 @@ exports.get_my_bookshelf = (req, res) => {
     });
 };
 
-exports.get_my_postings = (req, res) => {
+exports.get_post_a_book_page = (req, res) => {
     let userid = req.params.id.slice(0,-1);
-    const books = Merch.find({$and: [{owner: userid} , {is_deleted:{$ne:true}} ] }).populate('book');
     const places = Place.find({$and: [{is_verified: true} , {is_deleted:false} ] });
     
     places.exec(function (err, place) {
-        books.exec(function (err, data){
-            if(err) throw err;
-            res.render('postings', { id:req.params.id , member: req.params.member, books:data, places:place});
-        });
+        res.render('postbook', { id:req.params.id , member: req.params.member, places:place});
     });
 
 };
@@ -65,13 +61,12 @@ exports.post_new_book = (req, res) => {
 
     Promise.all([
         //get place ids from DB
-        Place.findOne({'address.full_address':first.split(':')[1].trim()}),
-        Place.findOne({'address.full_address':second.split(':')[1].trim()}),
-        Place.findOne({'address.full_address':third.split(':')[1].trim()}),
+        Place.findOne({'address.full_address':(first.split(':')[1].trim())}),
+        Place.findOne({'address.full_address':(second.split(':')[1].trim())}),
+        Place.findOne({'address.full_address':(third.split(':')[1].trim())}),
     ])
     .then(results =>{
         const [placeone ,placetwo, placethree] = results;
-        
         //search if the book entry already exists in DB
         Book.findOne({$and: [ {isbn:isbn}, {title: { '$regex': new RegExp('^' + title + '$', "i")}} , {edition:edition}]} )
         .then(book => {
@@ -82,20 +77,19 @@ exports.post_new_book = (req, res) => {
                     .then(book => {
                         //create a merch entry for user
                         var new_merch = new Merch({book: new_book._id, owner: userid, condition_desc: condition, cost: price, offered_as: offer, status:{state:'Available'}, 'availability_pariod.start': start_input, 'availability_pariod.end':end_input});
-                        new_merch.suggested_places.push(placeone[0]._id, placetwo[0]._id, placethree[0]._id);
+                        new_merch.suggested_places.push(placeone._id, placetwo._id, placethree._id);
                         new_merch.save()
                             .then(new_posting => {
                                 req.flash('success_msg', 'You have successfully posted a book!');
                                 res.redirect('/exchange/postings/' + req.params.id +'/' + req.params.member);
                             })
-                        console.log(new_merch);
                     })
                     .catch(err => console.log(err));
             }
             else{
                 //if the book was found, create a new merch entry for user
                 var new_merch = new Merch({book: book._id, owner: userid, condition_desc: condition, cost: price, offered_as: offer, status:{state:'Available'}, 'availability_pariod.start': start_input, 'availability_pariod.end':end_input});
-                new_merch.suggested_places.push(placeone[0]._id, placetwo[0]._id, placethree[0]._id);
+                new_merch.suggested_places.push(placeone._id, placetwo._id, placethree._id);
                 new_merch.save()
                     .then(new_posting => {
                         req.flash('success_msg', 'You have successfully posted a book!');
@@ -106,6 +100,16 @@ exports.post_new_book = (req, res) => {
         });
     })
 
+};
+
+exports.get_myposts = (req, res) => {
+    let userid = req.params.id.slice(0,-1);
+    const books = Merch.find({$and: [{owner: userid} , {is_deleted:{$ne:true}} ] }).populate('book');
+
+    books.exec(function (err, data){
+        if(err) throw err;
+        res.render('myposts', { id:req.params.id , member: req.params.member, books:data});
+    });
 };
 
 exports.get_textbook_details = (req, res) => {

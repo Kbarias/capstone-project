@@ -5,13 +5,15 @@ const router = express.Router();
 
 router.get('/:id/:member', auth.ensureAuthenticated, ExchangeController.get_all_exchanges);
 
-router.get('/postings/:id/:member', auth.ensureAuthenticated, ExchangeController.get_my_postings);
+router.get('/postings/:id/:member', auth.ensureAuthenticated, ExchangeController.get_post_a_book_page);
 
 router.get('/bookshelf/:id/:member', auth.ensureAuthenticated, ExchangeController.get_my_bookshelf);
 
 router.get('/history/:id/:member', auth.ensureAuthenticated, ExchangeController.get_history);
 
 router.post('/post-book/:id/:member', auth.ensureAuthenticated, ExchangeController.post_new_book);
+
+router.get('/myposts/:id/:member', auth.ensureAuthenticated, ExchangeController.get_myposts);
 
 router.get('/textbook-details/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.get_textbook_details);
 
