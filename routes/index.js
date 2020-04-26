@@ -71,4 +71,7 @@ router.get('/wander-add/:name', (req, res) => {
 router.get('/user-profile/:name', (req, res) => {
     res.render('user-profile', { member: req.params.name });
 });
+router.get('/disclaimer', (req, res) => {
+    res.render('disclaimer', { member: req.params.name });
+});
 module.exports = router;
