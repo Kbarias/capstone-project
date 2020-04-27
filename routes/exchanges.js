@@ -11,6 +11,8 @@ router.post('/post-book/:id/:member', auth.ensureAuthenticated, ExchangeControll
 
 router.get('/myposts/:id/:member', auth.ensureAuthenticated, ExchangeController.get_myposts);
 
+router.get('/deletepost/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.delete_book_post);
+
 router.get('/bookshelf/:id/:member', auth.ensureAuthenticated, ExchangeController.get_my_bookshelf);
 
 router.get('/history/:id/:member', auth.ensureAuthenticated, ExchangeController.get_history);

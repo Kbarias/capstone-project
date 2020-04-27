@@ -127,7 +127,11 @@
                         </h5>
                         <hr>
                         <h4>Requesting members:</h4>
-                        <h5 class="text-danger">Note: Please only select one to accept.</h5>
+                        <%if(merch.status.state == 'Being Rented'){%>
+                            <h4 class="text-danger">Note: There will be no requests until the book has been returned and you set the book as available again on the Exchange.</h4>
+                        <%} else {%>
+                            <h3>Please accept a request</h3>
+                        <%}%>
                         <form id="request" onsubmit="return isValidForm()" action="/exchange/accept-request/<%=id%>/<%=member%>/<%=merch._id%>" method="POST">
                             <div class="table-responsive myTable">
                                 <table class="table table-striped table-sm" id="myTable">
@@ -181,27 +185,38 @@
                             </div>
 
                             <input type="text" id="di" name="ID" style="visibility: hidden;">
-                            <h4> Add comment:</h4>
-                            <div class="col-sm-12">
-                                <textarea class="col-sm-12" id="message" rows="2" name="message"></textarea>
-                            </div>
 
-                            <a class="btn btn-danger btn-lg" href="/exchange/textbook-owner-details/<%=id%>/<%=member%>/<%=merch._id%>" role="button">Cancel</a>
-                            <button type="submit" class="btn btn-success btn-lg">Submit</button>
-                            <h4 class="text-danger">Once you click <b>confirmed</b>, the requesting party will be notified and you will receive email notification if the offer is confirmed.</h4>
-                            <h5 class="text-warning">The text book will then be removed from the list of avaialable items to be exchanged.</h5>
+                            <%if(merch.status.state == 'Available'){%>
+                                <h4> Add comment:</h4>
+                                <div class="col-sm-12">
+                                    <textarea class="col-sm-12" id="message" rows="2" name="message"></textarea>
+                                </div>
+
+                                <a class="btn btn-danger btn-lg" href="/exchange/textbook-owner-details/<%=id%>/<%=member%>/<%=merch._id%>" role="button">Cancel</a>
+                                <button type="submit" class="btn btn-success btn-lg">Submit</button>
+                                <h4 class="text-danger">Once you click <b>confirmed</b>, the requesting party will be notified and you will receive email notification if the offer is confirmed.</h4>
+                                <h5 class="text-warning">The text book will then be removed from the list of avaialable items to be exchanged.</h5>
+                            <%}%>
+                            
 
                         </form>
                     </div>
                     <div class="col-4">
+                        <%if(merch.status.state == 'Being Rented'){%>
+                            <h4 class="text-danger">Currently: <%=merch.status.state%></h4>
+                        <%} else {%>
+                            <h3>Currently: <%=merch.status.state%></h3>
+                        <%}%>
                         <h3>For: <%=merch.offered_as%></h3>
                         <h4>Price: $<%=merch.cost%></h4>
                         <%if(merch.offered_as == 'For Rent'){%>
                             <h4>Weeks Available: <%=merch.availability_period%></h4>
-                            
                         <%}%>
                         <br>
-
+                        <%if(merch.status.state == 'Available'){%>
+                            <a class="btn btn-danger btn-lg" href="/exchange/postings/<%=id%>/<%=member%>" role="button">Delete Posting</a>
+                        <%}%>
+                        <a class="btn btn-danger btn-lg" href="/exchange/postings/<%=id%>/<%=member%>" role="button">Delete Posting</a>
                         <hr>
                         <h4 class="text-info">Please coordinate with the requester accordingly for the exchange. You can view the status of the request in your bookshelf.</h4>
                     </div>

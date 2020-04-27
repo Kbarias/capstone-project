@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const Merch = require('../models/Merch');
 const Book = require('../models/Book');
@@ -5,6 +6,24 @@ const Exchange = require('../models/Exchange');
 const UserInfo = require('../models/UserInfo');
 const Place = require('../models/Place');
 const Request = require('../models/Request');
+const nodemailer = require('nodemailer');
+
+//NODEMAILER CONFIG
+var transporter = nodemailer.createTransport({ 
+    service: 'gmail', 
+    auth: { 
+        user: 'TheAgoraProject1@gmail.com', 
+        pass: 'vr0gVBroj3ct' 
+    } 
+});
+
+var mailOptions = { 
+    from: 'TheAgoraProject1@gmail.com', 
+    to: '', 
+    subject: 'Account Verification Token', 
+    text: '' 
+};
+
 
 exports.get_all_exchanges = (req, res) => {
     const books = Merch.find({$and: [ {'status.state':"Available"} , {is_deleted:{$ne:true}} ] }).populate('book');
@@ -31,6 +50,19 @@ exports.get_post_a_book_page = (req, res) => {
         res.render('postbook', { id:req.params.id , member: req.params.member, places:place});
     });
 
+};
+
+exports.delete_book_post = (req, res) => {
+    let userid = req.params.id.slice(0,-1);
+    //find the merch posting and delete it, find all requests and send email saying no longer available
+    Promise.all([
+        Merch.findOneAndUpdate({_id:merchid, owner:userid}, {is_deleted:true}),
+        Request.updateMany({merch:merchid, is_deleted:false}, {is_deleted:true})
+    ])
+    .then(results => {
+        const [the_merch, requests] = results;
+
+    })
 };
 
 exports.post_new_book = (req, res) => {
@@ -198,14 +230,20 @@ exports.post_request = (req, res) => {
 };
 
 exports.accept_request = (req, res) => {
+    
     let userid = req.params.id.slice(0,-1);
     const {accept, message, ID} = req.body;
+    
     Promise.all([
-        Request.findOne({_id:ID}).populate('requester').populate('merch'),
-        Merch.findOne({_id:req.params.merchid})
+        Request.findOne({_id:ID}).populate('requester').populate('merch').populate('book').populate('owner').populate('place'),
+        Merch.findOne({_id:req.params.merchid}),
+        Request.updateMany({ _id:{$ne:ID}, merch:req.params.merchid, is_deleted:false}, { status: 'Denied' }),
+        Request.updateOne({_id:ID}, {status:'Accepted'})
     ])
     .then(results => {
-        const [request_info, merch] = results;
+       
+        const [request_info, merch, updates] = results;
+
         let start = null;
         let end = null;
         let the_state = null;
@@ -219,7 +257,7 @@ exports.accept_request = (req, res) => {
            
             end = mydate.toISOString().split('T')[0];
 
-            the_state = 'Renting';
+            the_state = 'Being Rented';
         }
 
         if(request_info.merch.offered_as == 'For Sale'){
@@ -231,41 +269,46 @@ exports.accept_request = (req, res) => {
 
         }
 
-        //update the requests for this merch that are not this one, and set them to 'denied'
-        Request.updateMany({merch:req.params.merchid , requester:{$ne:request_info._id}}, { status: 'Denied' })
-            .then(updated_reqs => {
-                var newExchange = new Exchange({
-                    book: request_info.book,
-                    owner: userid,
-                    buyer: request_info.requester,
-                    merch: req.params.merchid,
-                    offer: request_info.merch.offered_as,
+        var newExchange = new Exchange({
+            book: request_info.book,
+            owner: userid,
+            buyer: request_info.requester._id,
+            merch: req.params.merchid,
+            offer: request_info.merch.offered_as,
+            place: request_info.place._id,
+            meeting_date: accept.split(' ')[1],
+            meet_time: accept.split(' ')[2] + accept.split(' ')[3],
+            status: {
+                state: the_state,
+                rent_info: {
+                    start_date: start,
+                    return_date: end,
                     place: request_info.place,
-                    meeting_date: accept.split(' ')[1],
-                    meet_time: accept.split(' ')[2] + accept.split(' ')[3],
-                    status: {
-                        state: the_state,
-                        rent_info: {
-                            start_date: start,
-                            return_date: end,
-                            place: request_info.place,
-                        },
-                        purchase_date: start
-                    }     
-                });
-        
-                newExchange.save()
-                    .then(saved_ex => {
-                        merch.status.state = the_state;
-                        merch.status.exchange_id = newExchange._id;
-                        merch.save()
-                            .then(saved_merch => {
-                                //update request of this user
-                                Request.updateOne({requester:request_info.requester}, {status:'Accepted'})
-                                    .then(updated_req => {
-                                        res.send(newExchange);
-                                    })
-                            })
+                },
+                purchase_date: start
+            }     
+        });
+
+        newExchange.save()
+            .then(saved_ex => {
+                
+                merch.status.state = the_state;
+                merch.status.exchange_id = newExchange._id;
+                merch.save()
+                    .then(saved_merch => {
+                        // res.send(newExchange);
+                        mailOptions.to = request_info.requester.email;
+                        mailOptions.subject = 'Your book request has been accepted!';
+                        mailOptions.text = 'Hello,\n\n' + 'Your recent request for '+ request_info.book.title + ' being offered by ' + request_info.owner.username + 
+                                ' has been accepted. Your meeting date is ' + newExchange.meeting_date + ' at ' + newExchange.meet_time + '. Your meeting location is ' + request_info.place.address.full_address + '. You can look at your My History page on Agora for these details.';
+                        transporter.sendMail(mailOptions, function (err) {
+                            if(err) { 
+                                console.log(err);
+                            }
+                        });
+
+                        req.flash('success_msg', 'You accepted ' + request_info.requester.username + "'s request.");
+                        res.redirect('/exchange/history/' + req.params.id + '/' + req.params.member);
                     })
             })
 

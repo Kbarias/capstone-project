@@ -211,6 +211,7 @@
                                     </td>
                                     <td scope="row">
                                         <%= row.owner.username %>
+                                        <br>
                                         <%= row.owner.email %>
                                     </td>
                                     <td scope="row">
@@ -229,10 +230,15 @@
                                         <%= row.status%>
                                     </td>
                                     <td>
-                                        <a class="btn btn-secondary" href="/exchange/textbook-details/<%=id%>/<%=member%>/<%=row.merch%>" role="button">View Book Posting</a>
+                                        <%if(row.status == 'Pending'){%>
+                                            <a class="btn btn-secondary" href="/exchange/textbook-details/<%=id%>/<%=member%>/<%=row.merch%>" role="button">View Book Posting</a>
+                                        <%}%>
+                                        
                                     </td>
                                     <td>
-                                        <a class="btn btn-danger" href="/exchange/request/delete/<%=id%>/<%=member%>/<%=row._id%>" role="button">Delete Request</a>
+                                        <%if(row.status == 'Pending'){%>
+                                            <a class="btn btn-danger" href="/exchange/request/delete/<%=id%>/<%=member%>/<%=row._id%>" role="button">Delete Request</a>
+                                        <%}%>
                                     </td>
 
                                 </tr>
