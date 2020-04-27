@@ -16,7 +16,7 @@ exports.get_all_exchanges = (req, res) => {
 
 exports.get_my_bookshelf = (req, res) => {
     let userid = req.params.id.slice(0,-1);
-    const renting = Exchange.find({$and: [ {buyer: userid} , {status:{state:"Renting"}} ] }).populate('user');
+    const renting = Exchange.find({$and: [ {buyer: userid} , {'status.state':"Renting"} ] }).populate('book').populate('owner').populate('status.rent_info.place');
     renting.exec(function (err, data){
         if(err) throw err;
         res.render('bookshelf', { id:req.params.id , member: req.params.member, books:data});
@@ -33,30 +33,14 @@ exports.get_post_a_book_page = (req, res) => {
 
 };
 
-exports.get_history = (req, res) => {
-    let userid = req.params.id.slice(0,-1);
-    Promise.all([
-        Request.find({requester:userid, is_deleted:false}),
-        Exchange.find({owner:userid}).populate('book').populate('buyer'),
-        Exchange.find({buyer:userid})
-    ])
-    .then(myhistory =>{
-        //my_requests: outgoing requests I have made, sold: transactions where i have been the seller, bought: transactions where I have been the buyer
-        const [my_requests, sold, bought] = myhistory;
-        res.render('history', { id:req.params.id, member: req.params.member, requests:my_requests, sold_books:sold, bought_books:bought });
-    })
-};
-
 exports.post_new_book = (req, res) => {
     let userid = req.params.id.slice(0,-1);
-    const { isbn, title, author, edition, offer, condition, price, start, end, first, second, third} = req.body;
+    const { isbn, title, author, edition, offer, condition, price, weeks, first, second, third} = req.body;
 
-    let start_input = start;
-    let end_input = end;
-    console.log(start + " " + end);
+    let week_input = weeks;
+
     if(offer == 'To Donate' || offer == 'For Sale'){
-        start_input = null;
-        end_input = null;
+        week_input = null;
     }
 
     Promise.all([
@@ -76,24 +60,24 @@ exports.post_new_book = (req, res) => {
                 new_book.save()
                     .then(book => {
                         //create a merch entry for user
-                        var new_merch = new Merch({book: new_book._id, owner: userid, condition_desc: condition, cost: price, offered_as: offer, status:{state:'Available'}, 'availability_pariod.start': start_input, 'availability_pariod.end':end_input});
+                        var new_merch = new Merch({book: new_book._id, owner: userid, condition_desc: condition, cost: price, offered_as: offer, status:{state:'Available'}, availability_period: week_input});
                         new_merch.suggested_places.push(placeone._id, placetwo._id, placethree._id);
                         new_merch.save()
                             .then(new_posting => {
                                 req.flash('success_msg', 'You have successfully posted a book!');
-                                res.redirect('/exchange/postings/' + req.params.id +'/' + req.params.member);
+                                res.redirect('/exchange/myposts/' + req.params.id +'/' + req.params.member);
                             })
                     })
                     .catch(err => console.log(err));
             }
             else{
                 //if the book was found, create a new merch entry for user
-                var new_merch = new Merch({book: book._id, owner: userid, condition_desc: condition, cost: price, offered_as: offer, status:{state:'Available'}, 'availability_pariod.start': start_input, 'availability_pariod.end':end_input});
+                var new_merch = new Merch({book: book._id, owner: userid, condition_desc: condition, cost: price, offered_as: offer, status:{state:'Available'}, availability_period: week_input});
                 new_merch.suggested_places.push(placeone._id, placetwo._id, placethree._id);
                 new_merch.save()
                     .then(new_posting => {
                         req.flash('success_msg', 'You have successfully posted a book!');
-                        res.redirect('/exchange/postings/' + req.params.id +'/' + req.params.member);
+                        res.redirect('/exchange/myposts/' + req.params.id +'/' + req.params.member);
                     })
                     .catch(err => console.log(err));
             }
@@ -112,6 +96,20 @@ exports.get_myposts = (req, res) => {
     });
 };
 
+exports.get_history = (req, res) => {
+    let userid = req.params.id.slice(0,-1);
+    Promise.all([
+        Request.find({requester:userid, is_deleted:false}).populate('book').populate('owner'),
+        Exchange.find({owner:userid}).populate('book').populate('buyer'),
+        Exchange.find({buyer:userid}).populate('book').populate('buyer').populate('owner')
+    ])
+    .then(myhistory =>{
+        //my_requests: outgoing requests I have made, sold: transactions where i have been the seller, bought: transactions where I have been the buyer
+        const [my_requests, sold, bought] = myhistory;
+        res.render('history', { id:req.params.id, member: req.params.member, requests:my_requests, sold_books:sold, bought_books:bought });
+    })
+};
+
 exports.get_textbook_details = (req, res) => {
     Merch.findOne({_id:req.params.merchid}).populate('book').populate('owner').populate('suggested_places')
     .then(merch => {
@@ -126,7 +124,7 @@ exports.owner_get_textbook = (req, res) => {
     let userid = req.params.id.slice(0,-1);
     Promise.all([
         Merch.findOne({_id:req.params.merchid, is_deleted:false}).populate('book').populate('owner'),
-        Request.find({merch:req.params.merchid, is_deleted:false}).populate('requester')
+        Request.find({merch:req.params.merchid, status:'Pending', is_deleted:false}).populate('requester').populate('place')
     ])
     .then(results => {
         const [merch, requests] = results;
@@ -192,10 +190,86 @@ exports.post_request = (req, res) => {
             }
             else{
                 req.flash('error_msg', 'You already have an existing request.');
-                res.redirect('/exchange/postings/' + req.params.id +'/' + req.params.member);
+                res.redirect('/exchange/' + req.params.id +'/' + req.params.member);
             }
         })
     })
+
+};
+
+exports.accept_request = (req, res) => {
+    let userid = req.params.id.slice(0,-1);
+    const {accept, message, ID} = req.body;
+    Promise.all([
+        Request.findOne({_id:ID}).populate('requester').populate('merch'),
+        Merch.findOne({_id:req.params.merchid})
+    ])
+    .then(results => {
+        const [request_info, merch] = results;
+        let start = null;
+        let end = null;
+        let the_state = null;
+
+        if(request_info.merch.offered_as == 'For Rent'){
+            let days = request_info.merch.availability_period * 7;
+            let mydate = new Date(accept.split(' ')[1]);
+            start = new Date(accept.split(' ')[1]);
+            start = start.toISOString().split('T')[0];
+            mydate.setDate(mydate.getDate() + days);
+           
+            end = mydate.toISOString().split('T')[0];
+
+            the_state = 'Renting';
+        }
+
+        if(request_info.merch.offered_as == 'For Sale'){
+            the_state = 'Sold';
+        }
+
+        if(request_info.merch.offered_as == 'To Donate'){
+            the_state = 'Donated';
+
+        }
+
+        //update the requests for this merch that are not this one, and set them to 'denied'
+        Request.updateMany({merch:req.params.merchid , requester:{$ne:request_info._id}}, { status: 'Denied' })
+            .then(updated_reqs => {
+                var newExchange = new Exchange({
+                    book: request_info.book,
+                    owner: userid,
+                    buyer: request_info.requester,
+                    merch: req.params.merchid,
+                    offer: request_info.merch.offered_as,
+                    place: request_info.place,
+                    meeting_date: accept.split(' ')[1],
+                    meet_time: accept.split(' ')[2] + accept.split(' ')[3],
+                    status: {
+                        state: the_state,
+                        rent_info: {
+                            start_date: start,
+                            return_date: end,
+                            place: request_info.place,
+                        },
+                        purchase_date: start
+                    }     
+                });
+        
+                newExchange.save()
+                    .then(saved_ex => {
+                        merch.status.state = the_state;
+                        merch.status.exchange_id = newExchange._id;
+                        merch.save()
+                            .then(saved_merch => {
+                                //update request of this user
+                                Request.updateOne({requester:request_info.requester}, {status:'Accepted'})
+                                    .then(updated_req => {
+                                        res.send(newExchange);
+                                    })
+                            })
+                    })
+            })
+
+    });
 
 };
 

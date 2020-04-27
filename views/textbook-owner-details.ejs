@@ -128,71 +128,80 @@
                         <hr>
                         <h4>Requesting members:</h4>
                         <h5 class="text-danger">Note: Please only select one to accept.</h5>
-                        <div class="table-responsive myTable">
-                            <table class="table table-striped table-sm" id="myTable">
-                                <thead>
-                                    <tr class="myTable">
-                                        <th scope="col">Name</th>
-                                        <th scope="col">First Requested Date</th>
-                                        <th scope="col">Second Requested Date</th>
-                                        <th scope="col">Third Requested Date</th>
-                                        <th scope="col">Check to accept</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% requests.forEach(function(row) { %>
-                                        <tr class=" myTable">
-                                            <td scope="row">
-                                                <%= row.requester.username %>
-                                            </td>
-                                            <td scope="row">
-                                                <%=row.requested_times.first_date %>
-                                                <%=row.requested_times.first_time %>
-                                            </td>
-                                            <td scope="row">
-                                                <%=row.requested_times.sec_date %>
-                                                <%=row.requested_times.sec_time %>
-                                            </td>
-                                            <td scope="row">
-                                                <%=row.requested_times.third_date %>
-                                                <%=row.requested_times.third_time %>
-                                            </td>
-
-                                            <td scope="row">
-                                                <input type="radio" id="checkbox1" name="checkbox1" class="" unchecked="">
-                                            </td>
-
+                        <form id="request" onsubmit="return isValidForm()" action="/exchange/accept-request/<%=id%>/<%=member%>/<%=merch._id%>" method="POST">
+                            <div class="table-responsive myTable">
+                                <table class="table table-striped table-sm" id="myTable">
+                                    <thead>
+                                        <tr class="myTable">
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Place</th>
+                                            <th scope="col">First Requested Date</th>
+                                            <th scope="col">Second Requested Date</th>
+                                            <th scope="col">Third Requested Date</th>
+                                            <th scope="col">Check to accept</th>
                                         </tr>
-                                        <% })%>
+                                    </thead>
+                                    <tbody>
+                                        <% requests.forEach(function(row) { %>
+                                            <tr class=" myTable">
+                                                <td scope="row">
+                                                    <%= row.requester.username %>
+                                                </td>
+                                                <td scope="row">
+                                                    <%= row.place.name %>
+                                                    <br>
+                                                    <%= row.place.address.full_address %>
+                                                </td>
+                                                <td scope="row">
+                                                    <%=row.requested_times.first_date %>
+                                                    <%=row.requested_times.first_time %>
+                                                    <input type="checkbox" name = 'accept' style="visibility: hidden;" onclick="selectTime(this)" >
+                                                </td>
+                                                <td scope="row">
+                                                    <%=row.requested_times.sec_date %>
+                                                    <%=row.requested_times.sec_time %>
+                                                    <input type="checkbox" name = 'accept' style="visibility: hidden;" onclick="selectTime(this)" >
+                                                </td>
+                                                <td scope="row">
+                                                    <%=row.requested_times.third_date %>
+                                                    <%=row.requested_times.third_time %>
+                                                    <input type="checkbox" name = 'accept' style="visibility: hidden;" onclick="selectTime(this)" >
+                                                </td>
 
-                                </tbody>
-                            </table>
-                        </div>
+                                                <td>
+                                                    <button id='do-it' type="button" class="btn btn-secondary btn-sm" onclick="select(this, '<%= row._id %>')">Select Request</button>
+                                                </td>
+
+                                                
+                                            </tr>
+                                            <% })%>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <input type="text" id="di" name="ID" style="visibility: hidden;">
+                            <h4> Add comment:</h4>
+                            <div class="col-sm-12">
+                                <textarea class="col-sm-12" id="message" rows="2" name="message"></textarea>
+                            </div>
+
+                            <a class="btn btn-danger btn-lg" href="/exchange/textbook-owner-details/<%=id%>/<%=member%>/<%=merch._id%>" role="button">Cancel</a>
+                            <button type="submit" class="btn btn-success btn-lg">Submit</button>
+                            <h4 class="text-danger">Once you click <b>confirmed</b>, the requesting party will be notified and you will receive email notification if the offer is confirmed.</h4>
+                            <h5 class="text-warning">The text book will then be removed from the list of avaialable items to be exchanged.</h5>
+
+                        </form>
                     </div>
                     <div class="col-4">
                         <h3>For: <%=merch.offered_as%></h3>
                         <h4>Price: $<%=merch.cost%></h4>
-                        <h4>Date available:</h4>
                         <%if(merch.offered_as == 'For Rent'){%>
-                            <h4>Available period:</h4>
-                            <ul>
-                                <li>from: <%=merch.availability_pariod.start%></li>
-                                <li>to: <%=merch.availability_pariod.end%></li>
-                            </ul>
+                            <h4>Weeks Available: <%=merch.availability_period%></h4>
+                            
                         <%}%>
-                        <h4> Add comment:</h4>
-                        <div class="col-sm-12">
-                            <textarea class="col-sm-12" id="description" rows="2"></textarea>
-                        </div>
                         <br>
-                        <a class="btn btn-success btn-lg" href="#" role="button">Accept</a>
-                        <a class="btn btn-success btn-lg" href="#" role="button">Clear/Reset confirmation</a>
-                        <hr>
-                        <a class="btn btn-danger col-12 btn-lg" href="exchange/postings/<%=id%>/<%=member%>" role="button">   Confirm   </a>
-                        <br>
-                        <br>
-                        <h4 class="text-danger">Once you click <b>confirmed</b>, the requesting party will be notified and you will receive email notification if the offer is confirmed.</h4>
-                        <h5 class="text-warning">The text book will then be removed from the list of avaialable items to be exchanged.</h5>
+
                         <hr>
                         <h4 class="text-info">Please coordinate with the requester accordingly for the exchange. You can view the status of the request in your bookshelf.</h4>
                     </div>
@@ -203,18 +212,62 @@
     </div>
 </div>
 
-<!--NEED A WAY TO GET A TIME RENTAL TIME PERIOD FROM OWNERS-->
-<!-- <%if(merch.offered_as == 'For Rent'){%>
-    <h4>Choose a time period for your rental:</h4>
-    <label for="start">Start Date</label>
-    <input type="date" id="start" name="start">
-    <label for="end">End Date</label>
-    <input type="date" id="end" name="end">
-<%} %>
-<h4>Enter 3 possible meeting dates and places for the exchange:</h4>
-    <label for="first">First date</label>
-    <input type="date" id="first" name="first">
-    <label for="second">Second date</label>
-    <input type="date" id="second" name="second">
-    <label for="third">Third date</label>
-    <input type="date" id="third" name="third"> -->
+<script type="text/javascript">
+    var row = 0;
+    function isValidForm(){
+        var table = document.getElementById("myTable").querySelectorAll('input');
+        
+        for(var j = 0; j < table.length; j++){
+            if(table[j].checked == true){
+                break;
+            }
+            if((j == table.length -1) && (table[j].checked == false)){
+                alert("Please Accept a request.");
+                return false;
+            }
+        }
+        alert("Validations successful!");
+        return true;
+    };
+
+    document.getElementById('request').onsubmit = function() {
+        return isValidForm();
+    };
+
+    function select(x, w){
+        document.getElementById('di').value = w;
+
+        var inde = x.parentNode.parentNode.rowIndex;
+        if(inde != row && row!= 0){
+            var inps = document.getElementById("myTable").rows[row].querySelectorAll('input');
+            for(var i = 0; i < 3; i ++){
+                inps[i].style.visibility = 'hidden';
+                inps[i].checked = false;
+            }
+        }
+        row = inde;
+        var inps = document.getElementById("myTable").rows[inde].querySelectorAll('input');
+        var count = document.getElementById("myTable").rows[inde].getElementsByTagName('input').length;
+
+        var first_req = document.getElementById("myTable").rows[inde].cells[2].innerHTML.split('<')[0].replace(/\s\s+/g, ' ');
+        var sec_req = document.getElementById("myTable").rows[inde].cells[3].innerHTML.split('<')[0].replace(/\s\s+/g, ' ');
+        var third_req = document.getElementById("myTable").rows[inde].cells[4].innerHTML.split('<')[0].replace(/\s\s+/g, ' ');
+
+        inps[0].value = first_req;
+        inps[1].value = sec_req;
+        inps[2].value = third_req;
+        for(var i = 0; i < count; i ++){
+            inps[i].style.visibility = 'visible';
+        }
+    };
+
+    //script to select
+    function selectTime(x){
+        alert(x.value);
+        var checkboxes = document.getElementsByName('accept');
+        checkboxes.forEach((item) => {
+            if (item !== x) item.checked = false;
+        })
+    };
+
+</script>

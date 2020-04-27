@@ -102,7 +102,6 @@
                             <th scope="col">Owner</th>
                             <th scope="col">Return Date</th>
                             <th scope="col">Return Place</th> 
-                            <th scope="col">View Details</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,25 +118,18 @@
                                     <td scope="row">
                                         <%=row.book.author %>
                                     </td>
-                                    <td scope="row">Edition:
-                                        row.book.edition
+                                    <td scope="row">
+                                        <%=row.owner.username%>
+                                        <%=row.owner.email%>
                                     </td>
                                     <td scope="row">
-                                        <%=row.offered_as %>
+                                        <%=row.status.rent_info.return_date %>
                                     </td>
                                     <td scope="row">
-                                        <%=row.condition_desc %>
+                                        <%=row.status.rent_info.place.name %>
+                                        <%=row.status.rent_info.place.full_address %>
                                     </td>
-                                    <td scope="row">
-                                        <%=row.status.state %>
-                                    </td>
-                                    <td scope="row">
-                                        <a class="btn btn-sm btn-secondary" href="exchange/textbook-owner-details/<%=id%>/<%=member%>" role="button">Click to review</a>
-                                        <%=i %>
-                                    </td>
-                                    <td scope="row">
-                                        <a class="btn btn-sm btn-secondary" href="exchange/textbook-details/<%=id%>/<%=member%>" role="button">Select</a>
-                                    </td>
+
                                 </tr>
                             <% }) %> 
 

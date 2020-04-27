@@ -27,10 +27,7 @@ const MerchSchema = mongoose.Schema({
         state: { type: String, required: true},
         exchange_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Exchange'}
     },
-    availability_pariod: {
-        start: String,
-        end: String
-    },
+    availability_period: Number,
     suggested_places: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Place',

@@ -91,6 +91,95 @@
                 <h1>My History
                 </h1>
 
+                <h4>Books I Sold/Rented/Donated</h4>
+                <div class="table-responsive myTable">
+                    <table class="table table-striped table-sm" id="myTable">
+                        <thead>
+                            <tr class="myTable">
+                                <th scope="col">Exchange Date</th>
+                                <th scope="col">Reference Number</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Book</th>
+                                <th scope="col">Buyer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% sold_books.forEach(function(row) { %>
+                                <tr class=" myTable">
+                                    <td scope="row">
+                                        <%= row.meeting_date %>
+                                    </td>
+                                    <td scope="row">
+                                        <%=row._id %>
+                                    </td>
+                                    <td scope="row">
+                                        <%=row.status.state%>
+                                        <br>
+                                        <%if(row.status.state == 'Renting'){%>               
+                                            Start Date: <%=row.status.rent_info.start_date%>
+                                            <br>
+                                            Return Date: <%=row.status.rent_info.return_date%>
+                                        <%}%>
+                                    </td>
+                                    <td scope="row">
+                                        <%=row.book.title %>
+                                    </td>
+                                    <td scope="row">
+                                        <%=row.buyer.username %>
+                                        <%=row.buyer.email %>
+                                    </td>
+                                </tr>
+                                <% }) %>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4>Books I Bought</h4>
+                <div class="table-responsive myTable">
+                    <table class="table table-striped table-sm" id="myTable">
+                        <thead>
+                            <tr class="myTable">
+                                <th scope="col">Exchange Date</th>
+                                <th scope="col">Reference Number</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Book</th>
+                                <th scope="col">Seller</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% bought_books.forEach(function(row) { %>
+                                <tr class=" myTable">
+                                    <td scope="row">
+                                        <%= row.meeting_date %>
+                                    </td>
+                                    <td scope="row">
+                                        <%=row._id %>
+                                    </td>
+                                    <td scope="row">
+                                        <%=row.status.state%>
+                                        <br>
+                                        <%if(row.status.state == 'Renting'){%>               
+                                            Start Date: <%=row.status.rent_info.start_date%>
+                                            <br>
+                                            Return Date: <%=row.status.rent_info.return_date%>
+                                        <%}%>
+                                    </td>
+                                    <td scope="row">
+                                        <%=row.book.title %>
+                                    </td>
+                                    <td scope="row">
+                                        <%=row.buyer.username %>
+                                        <%=row.buyer.email %>
+                                    </td>
+
+                                </tr>
+                                <% }) %>
+
+                        </tbody>
+                    </table>
+                </div>
+
                 <h4>Requests I've made</h4>
                 <div class="table-responsive myTable">
                     <table class="table table-striped table-sm" id="myTable">
@@ -98,6 +187,8 @@
                             <tr class="myTable">
                                 <th scope="col">Request Date</th>
                                 <th scope="col">Reference Number</th>
+                                <th scope="col">Book</th>
+                                <th scope="col">Seller</th>
                                 <th scope="col">Request Time 1</th>
                                 <th scope="col">Request Time 2</th>
                                 <th scope="col">Request Time 3</th>
@@ -114,6 +205,13 @@
                                     </td>
                                     <td scope="row">
                                         <%= row._id %>
+                                    </td>
+                                    <td scope="row">
+                                        <%= row.book.title %>
+                                    </td>
+                                    <td scope="row">
+                                        <%= row.owner.username %>
+                                        <%= row.owner.email %>
                                     </td>
                                     <td scope="row">
                                         <%= row.requested_times.first_date%>
@@ -143,74 +241,7 @@
                         </tbody>
                     </table>
                 </div>
-
-                <h4>Books I Sold/Rented/Donated</h4>
-                <div class="table-responsive myTable">
-                    <table class="table table-striped table-sm" id="myTable">
-                        <thead>
-                            <tr class="myTable">
-                                <th scope="col">Exchange Date</th>
-                                <th scope="col">Reference Number</th>
-                                <th scope="col">Book</th>
-                                <th scope="col">Buyer</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% sold_books.forEach(function(row) { %>
-                                <tr class=" myTable">
-                                    <td scope="row">
-                                        <%= row.meeting_date %>
-                                    </td>
-                                    <td scope="row">
-                                        <%=row._id %>
-                                    </td>
-                                    <td scope="row">
-                                        <%=row.book.title %>
-                                    </td>
-                                    <td scope="row">
-                                        <%=row.buyer.username %>
-                                    </td>
-                                </tr>
-                                <% }) %>
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <h4>Books I Bought</h4>
-                <div class="table-responsive myTable">
-                    <table class="table table-striped table-sm" id="myTable">
-                        <thead>
-                            <tr class="myTable">
-                                <th scope="col">Exchange Date</th>
-                                <th scope="col">Reference Number</th>
-                                <th scope="col">Book</th>
-                                <th scope="col">Seller</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% bought_books.forEach(function(row) { %>
-                                <tr class=" myTable">
-                                    <td scope="row">
-                                        <%= row.meeting_date %>
-                                    </td>
-                                    <td scope="row">
-                                        <%=row._id %>
-                                    </td>
-                                    <td scope="row">
-                                        <%=row.book.title %>
-                                    </td>
-                                    <td scope="row">
-                                        <%=row.buyer.username %>
-                                    </td>
-
-                                </tr>
-                                <% }) %>
-
-                        </tbody>
-                    </table>
-                </div>
-
+            </div>
         </main>
         </div>
     </div>
