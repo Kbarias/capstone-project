@@ -214,9 +214,8 @@
                         <%}%>
                         <br>
                         <%if(merch.status.state == 'Available'){%>
-                            <a class="btn btn-danger btn-lg" href="/exchange/postings/<%=id%>/<%=member%>" role="button">Delete Posting</a>
+                            <a class="btn btn-danger btn-lg" href="/exchange/deletepost/<%=id%>/<%=member%>/<%=merch._id%>" role="button">Delete Posting</a>
                         <%}%>
-                        <a class="btn btn-danger btn-lg" href="/exchange/postings/<%=id%>/<%=member%>" role="button">Delete Posting</a>
                         <hr>
                         <h4 class="text-info">Please coordinate with the requester accordingly for the exchange. You can view the status of the request in your bookshelf.</h4>
                     </div>

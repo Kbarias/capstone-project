@@ -56,12 +56,30 @@ exports.delete_book_post = (req, res) => {
     let userid = req.params.id.slice(0,-1);
     //find the merch posting and delete it, find all requests and send email saying no longer available
     Promise.all([
-        Merch.findOneAndUpdate({_id:merchid, owner:userid}, {is_deleted:true}),
-        Request.updateMany({merch:merchid, is_deleted:false}, {is_deleted:true})
+        Merch.findOneAndUpdate({_id:req.params.merchid, owner:userid}, {is_deleted:true})
     ])
     .then(results => {
-        const [the_merch, requests] = results;
 
+        const cursor = Request.find({merch:req.params.merchid, is_deleted:false}).populate('requester').populate('book').populate('owner').cursor();
+        
+        //send everyone an email the post was deleted
+        cursor.on('data', function(doc) {
+            mailOptions.to = doc.requester.email;
+            mailOptions.subject = 'The book you requested has been deleted';
+            mailOptions.text = 'Hello,\n\n' + 'Your recent request for '+ doc.book.title + ' being offered by ' + doc.owner.username + 
+                    ' has been deleted because the owner deleted the posting.';
+            transporter.sendMail(mailOptions, function (err) {
+                if(err) { 
+                    console.log(err);
+                }
+            });
+          });
+        //update all requests for this merch as deleted
+        Request.updateMany({merch:req.params.merchid, is_deleted:false}, {is_deleted:true})
+            .then(updated => {
+                req.flash('success_msg', 'You have successfully deleted your book posting.');
+                res.redirect('/exchange/myposts/' + req.params.id + '/' + req.params.member);
+            })
     })
 };
 
@@ -242,7 +260,7 @@ exports.accept_request = (req, res) => {
     ])
     .then(results => {
        
-        const [request_info, merch, updates] = results;
+        const [request_info, merch] = results;
 
         let start = null;
         let end = null;
