@@ -11,5 +11,7 @@ router.get('/join/:id/:member', auth.ensureAuthenticated, GatherController.join_
  
 router.get('/tutor-create/:id/:member', auth.ensureAuthenticated, GatherController.create_tutoring_session);
 
-router.get('/tutor-join/:id/:member', auth.ensureAuthenticated, GatherController.join_tutoring_session);
-module.exports = router;
+router.get('/tutor-join/:id/:member/:sessionid', auth.ensureAuthenticated, GatherController.join_tutoring_session);
+
+router.get('/tutor-join-info/:id/:member/:sessinfo?', auth.ensureAuthenticated, GatherController.get_tutoring_session_info);
+module.exports = router; 
