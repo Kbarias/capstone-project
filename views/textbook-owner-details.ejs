@@ -213,11 +213,18 @@
                             <h4>Weeks Available: <%=merch.availability_period%></h4>
                         <%}%>
                         <br>
+                        <%if(merch.status.state == 'Being Rented'){%>
+                            <a class="btn btn-warning btn-lg" href="/exchange/repostbook/<%=id%>/<%=member%>/<%=merch._id%>" role="button">Post back to the Exchange</a>
+                            <h4 class="text-warning">Once you get back your book from the renter, you can post the book back up to the exchange.</h4>
+                        <%}%>
+                        <br>
                         <%if(merch.status.state == 'Available'){%>
                             <a class="btn btn-danger btn-lg" href="/exchange/deletepost/<%=id%>/<%=member%>/<%=merch._id%>" role="button">Delete Posting</a>
                         <%}%>
                         <hr>
-                        <h4 class="text-info">Please coordinate with the requester accordingly for the exchange. You can view the status of the request in your bookshelf.</h4>
+                        <%if(merch.status.state == 'Available'){%>
+                            <h4 class="text-info">Please coordinate with the requester accordingly for the exchange. You can view the status of the request in your History.</h4>
+                        <%}%>
                     </div>
                 </div>
             </div>

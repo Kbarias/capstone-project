@@ -35,7 +35,7 @@ exports.get_all_exchanges = (req, res) => {
 
 exports.get_my_bookshelf = (req, res) => {
     let userid = req.params.id.slice(0,-1);
-    const renting = Exchange.find({$and: [ {buyer: userid} , {'status.state':"Renting"} ] }).populate('book').populate('owner').populate('status.rent_info.place');
+    const renting = Exchange.find({$and: [ {buyer: userid} , {'status.state':"Being Rented"} ] }).populate('book').populate('owner').populate('status.rent_info.place');
     renting.exec(function (err, data){
         if(err) throw err;
         res.render('bookshelf', { id:req.params.id , member: req.params.member, books:data});
@@ -50,6 +50,19 @@ exports.get_post_a_book_page = (req, res) => {
         res.render('postbook', { id:req.params.id , member: req.params.member, places:place});
     });
 
+};
+
+exports.book_repost = (req, res) => {
+    //update the merch item so that it is available and take out the exchange id
+    //update the exchange entry so that the status is that it was returned
+    Promise.all([
+        Merch.findOneAndUpdate({_id:req.params.merchid}, {'status.state':'Available', 'status.exchange_id':null}),
+        Exchange.findOneAndUpdate({merch:req.params.merchid, 'status.state': 'Being Rented'}, {'status.state': 'Returned'})
+    ])
+    .then(results => {
+        req.flash('success_msg', 'Your book has now been reposted to the Exchange.');
+        res.redirect('/exchange/textbook-owner-details/' + req.params.id + '/' + req.params.member +'/' + req.params.merchid);
+    })
 };
 
 exports.delete_book_post = (req, res) => {
