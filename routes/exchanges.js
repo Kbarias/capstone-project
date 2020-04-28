@@ -5,17 +5,27 @@ const router = express.Router();
 
 router.get('/:id/:member', auth.ensureAuthenticated, ExchangeController.get_all_exchanges);
 
-router.get('/postings/:id/:member', auth.ensureAuthenticated, ExchangeController.get_my_postings);
+router.get('/postings/:id/:member', auth.ensureAuthenticated, ExchangeController.get_post_a_book_page);
+
+router.post('/post-book/:id/:member', auth.ensureAuthenticated, ExchangeController.post_new_book);
+
+router.get('/myposts/:id/:member', auth.ensureAuthenticated, ExchangeController.get_myposts);
+
+router.get('/repostbook/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.book_repost);
+
+router.get('/deletepost/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.delete_book_post);
 
 router.get('/bookshelf/:id/:member', auth.ensureAuthenticated, ExchangeController.get_my_bookshelf);
 
 router.get('/history/:id/:member', auth.ensureAuthenticated, ExchangeController.get_history);
 
-router.post('/post-book/:id/:member', auth.ensureAuthenticated, ExchangeController.post_new_book);
-
 router.get('/textbook-details/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.get_textbook_details);
 
-router.get('/textbook-owner-details/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.get_textbook_owner);
+router.get('/textbook-owner-details/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.owner_get_textbook);
 
-router.post('/request/:id/:member', auth.ensureAuthenticated, ExchangeController.post_request);
+router.post('/request/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.post_request);
+
+router.post('/accept-request/:id/:member/:merchid', auth.ensureAuthenticated, ExchangeController.accept_request);
+
+router.get('/request/delete/:id/:member/:requestid', auth.ensureAuthenticated, ExchangeController.delete_request);
 module.exports = router;

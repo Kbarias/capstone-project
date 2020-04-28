@@ -21,32 +21,35 @@ const ExchangeSchema = mongoose.Schema({
         ref: 'Merch',
         required: true
     },
+    offer: {
+        type: String,
+        required: true
+    },
     place: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Place',
         required: true
     },
     meeting_date: {
-        type: Date,
+        type: String,
         required: true
     },
     meet_time: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
         required: true
     },
     status: {
         state: { type: String, required: true },
         rent_info: {
-            start_date: Date,
-            return_date: Date,
-            days_late: Number,
+            start_date: String,
+            return_date: String,
+            days_late: {type : Number, default: 0},
             place: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Place'
             }
         },
-        purchase_date: Date
+        purchase_date: String
     },
     is_deleted: {
         type: Boolean,

@@ -26,17 +26,22 @@ const RequestSchema = mongoose.Schema({
         ref: 'Place',
         required: true
     },
-    rental_period:{
-        start: String,
-        end: String
+    date: {
+        type: Date,
+        required: true
     },
+    status: {
+        type: String,
+        required: true
+    },
+    message: String,
     requested_times: {
         first_date: { type: String, required: true },
         first_time: { type: String, required: true },
         sec_date: { type: String, required: true },
         sec_time: { type: String, required: true },
         third_date: { type: String, required: true },
-        third_date: { type: String, required: true },
+        third_time: { type: String, required: true },
     },
     is_deleted: {
         type: Boolean,

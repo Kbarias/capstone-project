@@ -30,7 +30,7 @@ exports.get_admin_dashboard_page = (req, res) => {
         UserInfo.countDocuments({$and:[ {_id:{$ne:userid}} , {account_status:'Active'} , {is_deleted:{$ne:true}} ]}),
         UserInfo.countDocuments({$and:[ {_id:{$ne:userid}} , {account_status:'Blocked'}, {is_deleted:{$ne:true}} ]}),
         Place.countDocuments( {is_deleted:{$ne:true}} ),
-        Place.countDocuments( {$and: [{is_verified: true} , {is_deleted:{$ne:true}} ]} ),
+        Place.countDocuments( {$and: [{is_verified: false} , {is_deleted:{$ne:true}} ]} ),
         Session.countDocuments( {is_deleted:{$ne:true}} )
     ])
     .then(results => {

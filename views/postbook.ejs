@@ -11,7 +11,7 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/postings/<%=id%>/<%=member%>"><b>MY POSTINGS</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/myposts/<%=id%>/<%=member%>"><b>MY POSTINGS</b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/bookshelf/<%=id%>/<%=member%>"><b>BOOKSHELF</b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/<%=id%>/<%=member%>"><b>EXCHANGE</b></a>
 
@@ -87,8 +87,8 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
             <div class="container-fluid text-dark">
-                <h1 >My Postings</h1>
-                <h4>Your Postings are books that you are currently offering for rent/purchase/donation.</h4>
+                <h1 >Post a Book to the Exchange</h1>
+                <h4>You can put a book up for rent/ donate/ for purchase.</h4>
 
                 <div class="card border-standard mb-1" style="max-width:100%;margin-top: 0%">
 
@@ -145,14 +145,13 @@
                                 </div>
                             </div>
                             <div class="form-group d-inline-flex" id="availability" style="visibility:hidden;" >
-                                <label for="availability">Choose Availability Period:</label>
-                                <input type="date" id="start" name="start">
-                                <input type="date" id="end" name="end">
+                                <label for="availability">Choose number of weeks for rental:</label>
+                                <input type="number" min="0" id="weeks" name="weeks">
                             </div>
 
                             <label for="place">Choose 3 different locations you could make an exchange for this book:</label>
                             <div class="table-responsive myTable">
-                                <table id="places" class="table table-striped table-sm">
+                                <table id="myTable" class="table table-striped table-sm">
                                     <thead>
                                         <tr class="table-dark">
                                             <th scope="col">Location Name</th>
@@ -227,63 +226,6 @@
                 
                 </div>
             </div>
-            <h2 class="text-dark">Textbooks you currently are offering.</h2>
-            <div class="table-responsive myTable">
-                <table class="table table-striped table-sm " id="myTable">
-                    <thead>
-                        <tr class="myTable">
-                            <th scope="col">ISBN NO.</th>
-                            <th scope="col">Book Title</th>
-                            <th scope="col">Author</th>
-                            <th scope="col">Edition</th>
-                            <th scope="col">Offered As</th>
-                            <th scope="col">Condition</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Requests pending</th>
-                            <th scope="col">View Details</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                            <% books.forEach(function(row) { %>
-                                <tr class="table-secondary">
-                                    <td scope="row">
-                                        <%=row.book.isbn %>
-                                    </td>
-                                    <td scope="row">
-                                        <%=row.book.title %>
-                                    </td>
-                                    <td scope="row">
-                                        <%=row.book.author %>
-                                    </td>
-                                    <td scope="row">
-                                        <%if(!row.book.edition){ %>
-                                            N/A
-                                        <%} else {%>
-                                            <%=row.book.edition %>
-                                        <%}%>
-                                    </td>
-                                    <td scope="row">
-                                        <%=row.offered_as %>
-                                    </td>
-                                    <td scope="row">
-                                        <%=row.condition_desc %>
-                                    </td>
-                                    <td scope="row">
-                                        <%=row.status.state %>
-                                    </td>
-                                    <td scope="row">
-                                        <a class="btn btn-sm btn-secondary" href="/exchange/textbook-owner-details/<%=id%>/<%=member%>/<%=row._id%>" role="button">Click to review</a>
-                                    </td>
-                                    <td scope="row">
-                                        <a class="btn btn-sm btn-secondary" href="/exchange/textbook-details/<%=id%>/<%=member%>/<%=row._id%>" role="button">Select</a>
-                                    </td>
-                                </tr>
-                            <% }) %> 
-
-                    </tbody>
-                </table>
-            </div>
 
         </main>
     </div>
@@ -328,8 +270,8 @@
             return;
         }
         var inde = x.parentNode.parentNode.rowIndex;
-        var name = document.getElementById("places").rows[inde].cells[0].innerHTML.replace(/\s\s+/g, ' ');
-        var address = document.getElementById("places").rows[inde].cells[1].innerHTML.replace(/\s\s+/g, ' ');
+        var name = document.getElementById("myTable").rows[inde].cells[0].innerHTML.replace(/\s\s+/g, ' ');
+        var address = document.getElementById("myTable").rows[inde].cells[1].innerHTML.replace(/\s\s+/g, ' ');
 
         var tags = list.getElementsByTagName('input');
         for(var ind = 0; ind < count; ind++){
