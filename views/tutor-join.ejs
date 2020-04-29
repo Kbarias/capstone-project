@@ -210,6 +210,10 @@
                                     <%if(info._id.capacity != info.members.length){%>
                                         <label for="createButton" class="col-sm-3 mytext"> Join or Leave:</label>
                                         <div class="col-sm-9 d-flex justify-content-around">
+                                            <form action="/gather/leave-tutoring/<%=id%>/<%=member%>/<%=info._id._id%>" method="POST">
+                                                <button type="submit" class="btn btn-danger align-content-between col-12">LEAVE</button>
+                                            </form>
+                                            
                                             <a class="btn btn-outline-success col-sm-3 my-2 my-sm-0" href="/gather/tutor-join/<%=id%>/<%=member%>/<%=info._id._id%>" role="button" >JOIN</a>
                                         </div>
                                     <%}else{%>

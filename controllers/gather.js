@@ -60,6 +60,46 @@ exports.join_invited_session = (req, res) => {
     })
 };
 
+exports.leave_group = (req, res) => {
+    let userid = req.params.id.slice(0,-1);
+
+    //check that person is a member
+    SessionMember.findOne({_id:req.params.sessionid, members:userid}).populate('_id')
+        .then(found_sess => {
+            if(found_sess){
+                SessionMember.findOneAndUpdate({_id:req.params.sessionid}, {$pull:{members: userid}})
+                    .then(updated_sess => {
+                        req.flash('success_msg', 'You were successfully removed from this group.');
+                        res.redirect('/gather/'+ req.params.id +'/' + req.params.member);
+                    })
+            }
+            else {
+                req.flash('error_msg', 'You are not a member of this group.');
+                res.redirect('/gather/group-join-info/'+ req.params.id +'/' + req.params.member + '/' + req.params.sessionid);
+            }
+        })
+};
+
+exports.leave_tutoring = (req, res) => {
+    let userid = req.params.id.slice(0,-1);
+
+    //check that person is a member
+    SessionMember.findOne({_id:req.params.sessionid, members:userid}).populate('_id')
+        .then(found_sess => {
+            if(found_sess){
+                SessionMember.findOneAndUpdate({_id:req.params.sessionid}, {$pull:{members: userid}})
+                    .then(updated_sess => {
+                        req.flash('success_msg', 'You were successfully removed from this tutoring group.');
+                        res.redirect('/gather/'+ req.params.id +'/' + req.params.member);
+                    })
+            }
+            else {
+                req.flash('error_msg', 'You are not a member of this group.');
+                res.redirect('/gather/tutor-join-info/'+ req.params.id +'/' + req.params.member + '/' + req.params.sessionid);
+            }
+        })
+};
+
 exports.delete_session = (req, res) => {
     Promise.all([
         Session.findOneAndUpdate({_id:req.params.sessionid}, {is_deleted:true}),

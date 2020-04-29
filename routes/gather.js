@@ -7,6 +7,10 @@ router.get('/:id/:member', auth.ensureAuthenticated, GatherController.get_gather
 
 router.get('/invited-join/:id/:sessionid', auth.ensureAuthenticated, GatherController.join_invited_session);
 
+router.post('/leave-group/:id/:member/:sessionid' , auth.ensureAuthenticated, GatherController.leave_group)
+
+router.post('/leave-tutoring/:id/:member/:sessionid' , auth.ensureAuthenticated, GatherController.leave_tutoring)
+
 router.post('/delete/:id/:member/:sessionid', auth.ensureAuthenticated, GatherController.delete_session);
 
 router.get('/create/:id/:member', auth.ensureAuthenticated , GatherController.create_group_page);
