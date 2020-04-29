@@ -4,7 +4,7 @@ const Geocodio = require('geocodio-library-node');
 const geocoder = new Geocodio('77180e0f788715b08e97e9b8985fe01f95b9908');
 
 exports.get_all_places = (req, res) => {
-    const places = Place.find({$and: [ {is_verified:true} , {is_deleted:false} ] });
+    const places = Place.find({is_verified:true, is_deleted:false});
     places.exec(function (err, data){
         if(err) throw err;
         res.render('wander' , { id:req.params.id, member: req.params.member, places:data });
