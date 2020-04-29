@@ -6,10 +6,6 @@ const SessionMemberSchema = mongoose.Schema({
         ref: 'Session'
     },
     is_tutoring: Boolean,
-    tutors: [{ 
-        type: mongoose.Schema.Types.ObjectId,   
-        ref: 'User'
-    }],
     members: [{ 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

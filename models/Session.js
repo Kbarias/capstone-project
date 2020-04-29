@@ -6,19 +6,18 @@ const SessionSchema = mongoose.Schema({
         ref: 'Place',
         required: true
     },
-    organizers: [{
+    organizer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    }],
+    },
     name: {
         type: String,
         required: true
     },
     is_tutoring: Boolean,
     capacity: {
-        type: Number,
-        required: true
+        type: Number
     },
     time: {
         start: {type: String, required: true},

@@ -102,7 +102,7 @@
                                         <th scope="col">Session Name</th>
                                         <th scope="col">Date and Time</th>
                                         <th scope="col">Capacity</th>
-                                        <th scope="col">Organizers</th>
+                                        <th scope="col">Organizer</th>
                                         <th scope="col">Details</th>
                                     </tr>
                                 </thead>
@@ -123,10 +123,7 @@
                                                 <%=row.capacity %>
                                             </td>
                                             <td scope="row">
-                                                <%for(var i = 0; i < row.organizers.length; i++){%>
-                                                    <%=row.organizers[i].username %>
-                                                    <br>
-                                                <%}%>
+                                                <%=row.organizer.username %>
                                             </td>
                                             <td scope="row">
                                                 <a class="btn btn-primary justify-content-end" href="/gather/tutor-join-info/<%=id%>/<%=member%>/<%=row._id%>" role="button">Select</a>
@@ -161,10 +158,7 @@
                                     <label class="col-sm-3 col-form-label mytext"> Organizers:</label>
                                     <div class="col-sm-9 mytext">
                                         <p>
-                                            <%for(var i = 0; i < info._id.organizers.length; i++){%>
-                                                <%=info._id.organizers[i].username %>
-                                                <br>
-                                            <%}%>
+                                            <%=info._id.organizer.username%>
                                         </p>
                                     </div>
                                 </div>
@@ -177,15 +171,7 @@
                                         </p>
                                     </div>
                                 </div>
-                                <!-- Tutors -->
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label mytext"> Tutors:</label>
-                                    <div class="col-sm-9">
-                                        <%for(var i = 0; i < info.tutors.length; i++){%>
-                                            <span class="badge col-sm-3 badge-pill badge-light" style="font-size: 16px;"><%=info.tutors[i].username %></span>
-                                        <%}%>
-                                    </div>
-                                </div>
+
                                 <!-- Group Members -->
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label mytext"> Members:</label>

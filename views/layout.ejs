@@ -28,19 +28,25 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#myTable').DataTable();
+            $('#myTable').dataTable( {
+                "lengthMenu": [ 5, 10, 20, 25]
+            } );
         });
     </script>
 
     <!-- Tables for gather page -->
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#groupTable').DataTable();
+            $('#groupTable').dataTable( {
+                "lengthMenu": [ 5, 10, 20, 25]
+            } );
         });
     </script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#tutorTable').DataTable();
+            $('#tutorTable').dataTable( {
+                "lengthMenu": [ 5, 10, 20, 25]
+            } );
         });
     </script>
 
