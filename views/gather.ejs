@@ -57,7 +57,6 @@ body {
                         </a>
                     </li>
                 </ul>
-                <!--Other text to appear in between-->
                 <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
                     <span></span>
                     <a class="d-flex align-items-center text-muted" href="#">
@@ -86,6 +85,7 @@ body {
  
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent text-dark">
             <div class="container-fluid">
+                <%- include ('./partials/messages'); -%>
                 <div class="row text-black-50">
                     <H1> Let's gather.</H1>
                     <H4> The Gather feature allows you to meet up with fellow students and friends. Join and form study groups, offer tutoring, find tutors, or simply hang out with friends at a time and place that works.
@@ -123,8 +123,6 @@ body {
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    <!--Sample code-->
                                     <% mygroups.forEach(function (row) {%>
                                         <tr class=" myTable">
                                             <td scope="row">
@@ -184,9 +182,7 @@ body {
                                         <th scope="col">Click to View</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-
-                                    <!--Sample code-->
+                                <tbody>                                    
                                     <% mytutoring.forEach(function (row) {%>
                                         <tr class=" myTable">
                                             <td scope="row">
@@ -230,8 +226,6 @@ body {
                                 </tr>
                             </thead>
                             <tbody>
-
-                                <!--Sample code-->
                                 <% org_sessions.forEach(function (row) {%>
                                     <tr class=" myTable">
                                         <td scope="row">
@@ -249,7 +243,7 @@ body {
                                             <%=row.capacity %>
                                         </td>
                                         <td>
-                                            <a class="btn btn-sm btn-secondary" href="/gather/tutor-join-info/<%=id%>/<%=member%>/<%=row._id._id%>" role="button">View Details</a>
+                                            <a class="btn btn-sm btn-secondary" href="/gather/organizer-details/<%=id%>/<%=member%>/<%=row._id._id%>" role="button">View Details</a>
                                         </td>
 
                                     </tr>
