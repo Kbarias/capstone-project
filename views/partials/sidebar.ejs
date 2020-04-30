@@ -1,6 +1,6 @@
 <div class="sidebar-sticky">
     <br>
-    <img class="img-fluid rounded mx-auto d-block bg-white" src="../image/logo.png">
+    <img class="img-fluid rounded mx-auto d-block bg-white" src="/image/logo.png">
     <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
         <span>Welcome <%=member%></span>
         <a class="d-flex align-items-center text-muted" href="#">
@@ -9,27 +9,27 @@
     </h3>
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link mya2 active" href="http://localhost:3000/dashboard-user/name">
+            <a class="nav-link mya2 active" href="/dashboard/admin/<%=id%>/<%=member%>">
                 <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link mya2" href="http://localhost:3000/exchange/name">
+            <a class="nav-link mya2" href="/exchange/<%=id%>/<%=member%>">
                 <span data-feather="file"></span> EXCHANGE
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link mya2" href="http://localhost:3000/gather/name">
+            <a class="nav-link mya2" href="/gather/<%=id%>/<%=member%>">
                 <span data-feather="shopping-cart"></span> GATHER
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link mya2" href="http://localhost:3000/wander/name">
+            <a class="nav-link mya2" href="/places/<%=id%>/<%=member%>">
                 <span data-feather="users"></span> WANDER
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link mya2" href="http://localhost:3000/dashboard-admin/name">
+            <a class="nav-link mya2" href="/dashboard/admin/<%=id%>/<%=member%>">
                 <span data-feather="users"></span> MANAGE
             </a>
         </li>
