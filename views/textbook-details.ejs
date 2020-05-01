@@ -109,13 +109,13 @@
                                             <%=row.address.zipcode %>
                                         </td>
                                         <td scope="row">
-                                            Mon :<%=row.operation_hours.mon %>,
-                                            Tues: <%=row.operation_hours.tues %>,
-                                            Wed: <%=row.operation_hours.weds %>,
-                                            Thurs: <%=row.operation_hours.thurs %>,
-                                            Fri: <%=row.operation_hours.fri %>,
-                                            Sat: <%=row.operation_hours.sat %>,
-                                            Sun: <%=row.operation_hours.sun %>
+                                            Mon: <%=row.operation_hours[0] %>,
+                                            Tues: <%=row.operation_hours[1] %>,
+                                            Weds: <%=row.operation_hours[2] %>,
+                                            Thurs: <%=row.operation_hours[3] %>,
+                                            Fri: <%=row.operation_hours[4] %>,
+                                            Sat: <%=row.operation_hours[5] %>,
+                                            Sun: <%=row.operation_hours[6] %>
                                         </td>
                                         <td scope="row">
                                             <%=row.capacity %>

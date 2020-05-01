@@ -75,13 +75,13 @@
                                             <%=row.address.zipcode %>
                                         </td>
                                         <td scope="row">
-                                            Mon: <%=row.operation_hours.mon %>,
-                                            Tues: <%=row.operation_hours.tues %>,
-                                            Weds: <%=row.operation_hours.weds %>,
-                                            Thurs: <%=row.operation_hours.thurs %>,
-                                            Fri: <%=row.operation_hours.fri %>,
-                                            Sat: <%=row.operation_hours.sat %>,
-                                            Sun: <%=row.operation_hours.sun %>
+                                            Mon: <%=row.operation_hours[0] %>,
+                                            Tues: <%=row.operation_hours[1] %>,
+                                            Weds: <%=row.operation_hours[2] %>,
+                                            Thurs: <%=row.operation_hours[3] %>,
+                                            Fri: <%=row.operation_hours[4] %>,
+                                            Sat: <%=row.operation_hours[5] %>,
+                                            Sun: <%=row.operation_hours[6] %>
                                         </td>
                                         <td scope="row">
                                             <%=row.capacity %>
@@ -137,18 +137,18 @@
                                 <div class="form-group row">
                                     <label for="rating" class="col-sm-4 col-form-label">5. Give the location a rating:</label>
                                     <div class="col-sm-8">
-                                        <input type="number" min="1" max="5" class="form-control" id="rating" placeholder="Rating (1 - 5 scale)" name="rating" value="<%=place.rating%>">
+                                        <input type="number" min="1" max="5" class="form-control" id="rating" placeholder="Rating (1 - 5 scale)" name="rating" value="<%=place.rating%>" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="inputHours" class="col-sm-4 col-form-label">6. Enter hours of operation:</label>
-            
+                                    <h6 class="text-danger col-sm-10">If you see issues with hours, please fill out BOTH the start time and end time for the day.</h6>
             
                                     <div class="col-sm-8 form-inline justify-content-around">
             
                                         <div class="badge-dark col-3">
                                             <label for="Mon">Monday</label>
-                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours.mon%></label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[0]%></label>
                                         </div>
                                         
                                         <input type="time" class="col-sm-3 my-3 my-sm-0" id="starttime1" name="monday1" >
@@ -156,42 +156,42 @@
                                         <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime1" name="monday2">
                                         <div class="badge-dark col-3">
                                             <label for="Mon">Tuesday</label>
-                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours.tues%></label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[1]%></label>
                                         </div>
                                         <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime2" name="tuesday1">
                                         <label for="to">To</label>
                                         <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime2" name="tuesday2">
                                         <div class="badge-dark col-3">
                                             <label for="Mon">Wednesday</label>
-                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours.weds%></label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[2]%></label>
                                         </div>
                                         <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime3" name="wednesday1">
                                         <label for="to">To</label>
                                         <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime3" name="wednesday2">
                                         <div class="badge-dark col-3">
                                             <label for="Mon">Thursday</label>
-                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours.thurs%></label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[3]%></label>
                                         </div>
                                         <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime4" name="thursday1">
                                         <label for="to">To</label>
                                         <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime4" name="thursday2">
                                         <div class="badge-dark col-3">
                                             <label for="Mon">Friday</label>
-                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours.fri%></label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[4]%></label>
                                         </div>
                                         <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime5" name="friday1">
                                         <label for="to">To</label>
                                         <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime5" name="friday2">
                                         <div class="badge-success col-3">
                                             <label for="Mon">Saturday</label>
-                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours.sat%></label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[5]%></label>
                                         </div>
                                         <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime6" name="saturday1">
                                         <label for="to">To</label>
                                         <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime6" name="saturday2">
                                         <div class="badge-danger col-3">
                                             <label for="Mon">Sunday</label>
-                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours.sun%></label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[6]%></label>
                                         </div>
                                         <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime7" name="sunday1">
                                         <label for="to">To</label>

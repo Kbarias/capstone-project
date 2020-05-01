@@ -18,8 +18,8 @@ router.get('/wander-detail/:id/:member/:placeid', auth.ensureAuthenticated, Plac
 //GET ADD NEW PLACE PAGE
 router.get('/wander-add/:id/:member', auth.ensureAuthenticated, PlaceController.get_add_new_place_page);
 
-//POST EDIT TO LOCATION
-router.post('/edit/:id/:member/:placeid', auth.ensureAuthenticated, PlaceController.edit_place);
+// //POST EDIT TO LOCATION
+// router.post('/edit/:id/:member/:placeid', auth.ensureAuthenticated, PlaceController.edit_place);
 
 //GET MANAGE LOCATION PAGE FOR ADMINS
 router.get('/manage-location/:id/:member/:placeid?', auth.ensureAuthenticated, PlaceController.get_manage_locations_page);

@@ -50,15 +50,6 @@ exports.create_a_place = (req, res) => {
                                 rating: rating,
                                 website: website,
                                 description: description,
-                                operation_hours: {
-                                    mon: op_hours[0] + " - " + op_hours[1],
-                                    tues: op_hours[2] + " - " + op_hours[3],
-                                    weds: op_hours[4] + " - " + op_hours[5],
-                                    thurs: op_hours[6] + " - " + op_hours[7],
-                                    fri: op_hours[8] + " - " + op_hours[9],
-                                    sat: op_hours[10] + " - " + op_hours[11],
-                                    sun: op_hours[12] + " - " + op_hours[13]
-                                },
                                 address: {
                                     street: response.results[0].address_components.number + " " + response.results[0].address_components.formatted_street,
                                     city: response.results[0].address_components.city,
@@ -69,6 +60,8 @@ exports.create_a_place = (req, res) => {
                                 is_verified: true
 
                             });
+
+                            newplace.operation_hours.push(op_hours[0] + " - " + op_hours[1], op_hours[2] + " - " + op_hours[3], op_hours[4] + " - " + op_hours[5], op_hours[6] + " - " + op_hours[7], op_hours[8] + " - " + op_hours[9], op_hours[10] + " - " + op_hours[11], op_hours[12] + " - " + op_hours[13]);
                             newplace.save()
                             .then(savedplace =>{
                                 req.flash('success_msg', 'You have successfully added a location to Agora.');
@@ -88,15 +81,6 @@ exports.create_a_place = (req, res) => {
                                 rating: rating,
                                 website: website,
                                 description: description,
-                                operation_hours: {
-                                    mon: op_hours[0] + " - " + op_hours[1],
-                                    tues: op_hours[2] + " - " + op_hours[3],
-                                    weds: op_hours[4] + " - " + op_hours[5],
-                                    thurs: op_hours[6] + " - " + op_hours[7],
-                                    fri: op_hours[8] + " - " + op_hours[9],
-                                    sat: op_hours[10] + " - " + op_hours[11],
-                                    sun: op_hours[12] + " - " + op_hours[13]
-                                },
                                 address: {
                                     street: response.results[0].address_components.number + " " + response.results[0].address_components.formatted_street,
                                     city: response.results[0].address_components.city,
@@ -105,6 +89,7 @@ exports.create_a_place = (req, res) => {
                                     full_address: response.results[0].formatted_address
                                 }
                             });
+                            newplace.operation_hours.push(op_hours[0] + " - " + op_hours[1], op_hours[2] + " - " + op_hours[3], op_hours[4] + " - " + op_hours[5], op_hours[6] + " - " + op_hours[7], op_hours[8] + " - " + op_hours[9], op_hours[10] + " - " + op_hours[11], op_hours[12] + " - " + op_hours[13]);
                             newplace.save()
                             .then(savedplace =>{
                                 req.flash('success_msg', 'You have successfully added a location to Agora. The location has to be approved by an admin before it can be accessed.');
@@ -152,44 +137,44 @@ exports.get_manage_locations_page = (req, res) => {
     });
 };
 
-exports.edit_place = (req, res) => {
-    const {starttime1, endtime1, starttime2, endtime2, starttime3, endtime3, starttime4, endtime4, starttime5, endtime5, starttime6, endtime6, starttime7, endtime7, rating, descriiption} = req.body;
+// exports.edit_place = (req, res) => {
+//     const {starttime1, endtime1, starttime2, endtime2, starttime3, endtime3, starttime4, endtime4, starttime5, endtime5, starttime6, endtime6, starttime7, endtime7, rating, descriiption} = req.body;
 
-    let op_hours = [];
-    op_hours.push(starttime1, endtime1, starttime2, endtime2, starttime3, endtime3, starttime4, endtime4, starttime5, endtime5, starttime6, endtime6, starttime7, endtime7);
+//     let op_hours = [];
+//     op_hours.push(starttime1, endtime1, starttime2, endtime2, starttime3, endtime3, starttime4, endtime4, starttime5, endtime5, starttime6, endtime6, starttime7, endtime7);
 
-    //make a copy of the place doc
-    const place_edits = new Place({
-        gps_coordinates: {
-            latitude: lat,
-            longitude: long
-        },
-        name: placename,
-        capacity: capacity,
-        rating: rating,
-        website: website,
-        description: description,
-        operation_hours: {
-            mon: op_hours[0] + " - " + op_hours[1],
-            tues: op_hours[2] + " - " + op_hours[3],
-            weds: op_hours[4] + " - " + op_hours[5],
-            thurs: op_hours[6] + " - " + op_hours[7],
-            fri: op_hours[8] + " - " + op_hours[9],
-            sat: op_hours[10] + " - " + op_hours[11],
-            sun: op_hours[12] + " - " + op_hours[13]
-        },
-        address: {
-            street: response.results[0].address_components.number + " " + response.results[0].address_components.formatted_street,
-            city: response.results[0].address_components.city,
-            state: response.results[0].address_components.state,
-            zipcode: response.results[0].address_components.zip,
-            full_address: response.results[0].formatted_address
-        },
-        is_verified: true
+//     //make a copy of the place doc
+//     const place_edits = new Place({
+//         gps_coordinates: {
+//             latitude: lat,
+//             longitude: long
+//         },
+//         name: placename,
+//         capacity: capacity,
+//         rating: rating,
+//         website: website,
+//         description: description,
+//         operation_hours: {
+//             mon: op_hours[0] + " - " + op_hours[1],
+//             tues: op_hours[2] + " - " + op_hours[3],
+//             weds: op_hours[4] + " - " + op_hours[5],
+//             thurs: op_hours[6] + " - " + op_hours[7],
+//             fri: op_hours[8] + " - " + op_hours[9],
+//             sat: op_hours[10] + " - " + op_hours[11],
+//             sun: op_hours[12] + " - " + op_hours[13]
+//         },
+//         address: {
+//             street: response.results[0].address_components.number + " " + response.results[0].address_components.formatted_street,
+//             city: response.results[0].address_components.city,
+//             state: response.results[0].address_components.state,
+//             zipcode: response.results[0].address_components.zip,
+//             full_address: response.results[0].formatted_address
+//         },
+//         is_verified: true
 
-    });
+//     });
 
-};
+// };
 
 exports.reject_place = (req, res) => {
     Place.findOneAndUpdate({_id:req.params.placeid}, {is_deleted:true})
@@ -206,74 +191,57 @@ exports.verify_place = (req, res) => {
 
     Place.findOne({_id:req.params.placeid})
         .then(existing_place => {
-            let hours = [];
+            let new_hours = [];
+            for(var i = 0; i < existing_place.operation_hours.length; i++){
+                new_hours.push(existing_place.operation_hours[i]);
+            }
             //turn hours from 24 to 12
             op_hours.forEach( function (value, index){
-                //if admin entered a change in time 
-                if(value != null){
-                    var time = value.split(':');
-                    var hour = (time[0] % 12) || 12;
-                
+                if(index % 2 == 0 && (value != '')){
+                    var time = value.split(':'); var hour = (time[0] % 12) || 12;
+
+                    var time2 = op_hours[index + 1].split(':'); var hour2 = (time2[0] % 12) || 12;
                     if(time[0]>= 12){
-                        existing_place. = hour + ":" + time[1] + " " + "PM";
+                        new_hours[Math.floor(index/2)] = hour + ":" + time[1] + " " + "PM";
+                        if(time2[0]>= 12){
+                            new_hours[Math.floor(index/2)] = new_hours[Math.floor(index/2)] + ' - ' + hour2 + ":" + time2[1] + " " + "PM";
+                        }
+                        else{
+                            new_hours[Math.floor(index/2)] = new_hours[Math.floor(index/2)] + ' - ' + hour2 + ":" + time2[1] + " " + "AM";
+                        }
                     }
                     else{
-                        op_hours[index] = hour + ":" + time[1] + " " + "AM";
+                        new_hours[Math.floor(index/2)] = hour + ":" + time[1] + " " + "AM";
+                        if(time2[0]>= 12){
+                            new_hours[Math.floor(index/2)] = new_hours[Math.floor(index/2)] + ' - ' + hour2 + ":" + time2[1] + " " + "PM";
+                        }
+                        else{
+                            new_hours[Math.floor(index/2)] = new_hours[Math.floor(index/2)] + ' - ' + hour2 + ":" + time2[1] + " " + "AM";
+                        }
                     }
                 }
             })
 
-            existing_place
-        })
-    //incase the admin changed the address, such for it to get the lat and long
-    geocoder.geocode(streetaddress + "," + city + "," + state + "," + zipcode)
-        .then(response => {
-            let lat = response.results[0].location.lat;
-            let long =response.results[0].location.lng;
-            
-            
-            //find the unverified place doc, and update with the entered data by the admin
-            Place.findOneAndUpdate({_id:req.params.placeid}, )
-                .then(place =>{
+            //incase the admin changed the address, such for it to get the lat and long
+            geocoder.geocode(streetaddress + "," + city + "," + state + "," + zipcode)
+                .then(response => {
+                    let lat = response.results[0].location.lat;
+                    let long =response.results[0].location.lng;
+                    
+                    //find the unverified place doc, and update with the entered data by the admin
+                    Place.findOneAndUpdate({_id:req.params.placeid}, {'gps_coordinates.latitude':lat, 'gps_coordinates.longitude': long, name:placename, 
+                        capacity: capacity,rating: rating, website: website, description: description, 'address.street': (response.results[0].address_components.number 
+                        + " " + response.results[0].address_components.formatted_street), 'address.city':(response.results[0].address_components.city), 
+                        'address.state':(response.results[0].address_components.state), 'address.zipcode':(response.results[0].address_components.zip), 
+                        'address.full_address': (response.results[0].formatted_address), operation_hours:new_hours, is_verified: true})
+                        .then(place =>{
+                            req.flash('success_msg', 'You have successfully added location to Agora.');
+                            res.redirect('/places/manage-location/' + req.params.id + '/' + req.params.member);
 
-                    const newplace = new Place({
-                        gps_coordinates: {
-                            latitude: lat,
-                            longitude: long
-                        },
-                        name: placename,
-                        capacity: capacity,
-                        rating: rating,
-                        website: website,
-                        description: description,
-                        operation_hours: {
-                            mon: op_hours[0] + " - " + op_hours[1],
-                            tues: op_hours[2] + " - " + op_hours[3],
-                            weds: op_hours[4] + " - " + op_hours[5],
-                            thurs: op_hours[6] + " - " + op_hours[7],
-                            fri: op_hours[8] + " - " + op_hours[9],
-                            sat: op_hours[10] + " - " + op_hours[11],
-                            sun: op_hours[12] + " - " + op_hours[13]
-                        },
-                        address: {
-                            street: response.results[0].address_components.number + " " + response.results[0].address_components.formatted_street,
-                            city: response.results[0].address_components.city,
-                            state: response.results[0].address_components.state,
-                            zipcode: response.results[0].address_components.zip,
-                            full_address: response.results[0].formatted_address
-                        },
-                        is_verified: true
-
-                    });
-                        newplace.save()
-                        .then(savedplace =>{
-                            req.flash('success_msg', 'You have successfully added a location to Agora.');
-                            res.redirect('/places/' + req.params.id + '/' + req.params.member);
                         })
-
                 })
+                .catch(err => {
+                    console.error(err);
+                });
         })
-        .catch(err => {
-            console.error(err);
-        });
 };
