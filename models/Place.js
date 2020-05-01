@@ -7,9 +7,15 @@ const PlaceSchema = mongoose.Schema({
     },
     name: { type: String, required: true},
     capacity: Number,
-    rating: Number,
+    rating: {
+        num:Number,
+        people:Number
+    },
     website: String,
-    description: String,
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment',
+    }],
     operation_hours: [{
         type: String,
         maxItems: 7,

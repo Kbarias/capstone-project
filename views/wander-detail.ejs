@@ -41,6 +41,7 @@
             <div class="row">
                 <h4 class="h4 text-dark"> Display details of a location, please rate and comment responsibly!</h4>
             </div>
+            <button onclick="myFunction()" id="comments-button">See Comments from other members</button>
             <div class="row mt-4">
                 <form class="container-fluid col-6 pt-3 justify-content bg-light font-weight-bold text-dark" action="/places/edit/<%=id%>/<%=member%>/<%=place._id%>" method="POST">
                     <div class="form-group row">
@@ -103,13 +104,9 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="description" class="col-sm-4 col-form-label">5. Description:</label>
-                        <div class="col-sm-8">
-                            <%=place.description%>
-                        </div>
                         <label for="ratings" class="col-sm-4 col-form-label">6. Current average rating:</label>
                         <div class="col-sm-8">
-                            <% for (var star=0; star< place.rating; star++){ %>
+                            <% for (var star=0; star< place.rating.num; star++){ %>
                                 <span class="fa fa-star checked"></span>
                                 <% } %>
                         </div>
@@ -174,9 +171,9 @@
                     </div>
                     
                     <div class="form-group row">
-                        <label for="description" class="col-sm-4 col-form-label">8. Add a better description:</label>
+                        <label for="comment" class="col-sm-4 col-form-label">8. Add a commnet:</label>
                         <div class="col-sm-8">
-                            <textarea class="form-control" id="comment" rows="3" name="description"></textarea>
+                            <textarea class="form-control" id="comment" rows="3" name="comment"></textarea>
                         </div>
                     </div>
                     <div class="form-group row pb-1 mb-1 justify-content">
@@ -188,12 +185,32 @@
                         </div>
                     </div>
                 </form>
-                <div class="col-6">
-                    <div id="map">
+                
+                <div class="col-6" id='comments' style="visibility: hidden;">
+                    <table class="table table-sm myTable">
+                        <thead>
+                          <tr>
+                            <th scope="col">User</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Review</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <% for (var i=0; i< place.comments.length; i++){ %>
+                                <td><%=place.comments[i].commentor.username%></td>
+                                <td><%=place.comments[i].time%></td>
+                                <td><%=place.comments[i].text%></td>
+                            <% } %>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    <!-- <div id="map">
 
                         <p>This is a map</p>
 
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </main>
@@ -230,6 +247,18 @@
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDw9i5kS-0ajreM29FC1d2ifdXypgk2JQ0
 &callback=initMap" type="text/javascript">
+</script>
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("comments");
+        if(x.style.visibility == 'hidden'){
+            document.getElementById("comments").style.visibility = "visible";
+        }
+        else{
+            document.getElementById("comments").style.visibility = "hidden";
+        }
+    }
 </script>
 
 <!--sample location:

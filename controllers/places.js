@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Place = require('../models/Place');
+const Comment = require('../models/Comment');
 const Geocodio = require('geocodio-library-node');
 const geocoder = new Geocodio('77180e0f788715b08e97e9b8985fe01f95b9908');
 
@@ -12,7 +13,8 @@ exports.get_all_places = (req, res) => {
 };
 
 exports.create_a_place = (req, res) => {
-    const {placename, streetaddress, city, state, zipcode, capacity, rating, website, description, monday1, monday2, tuesday1, tuesday2, wednesday1, wednesday2, thursday1, thursday2, friday1, friday2, saturday1, saturday2, sunday1, sunday2} = req.body;
+    let userid = req.params.id.slice(0,-1);
+    const {placename, streetaddress, city, state, zipcode, capacity, rating, website, comment, monday1, monday2, tuesday1, tuesday2, wednesday1, wednesday2, thursday1, thursday2, friday1, friday2, saturday1, saturday2, sunday1, sunday2} = req.body;
     let op_hours = [];
     op_hours.push(monday1, monday2, tuesday1, tuesday2, wednesday1, wednesday2, thursday1, thursday2, friday1, friday2, saturday1, saturday2, sunday1, sunday2);
 
@@ -33,11 +35,11 @@ exports.create_a_place = (req, res) => {
                         
                             if(time[0]>= 12){
                                 op_hours[index] = hour + ":" + time[1] + " " + "PM";
-                            }
-                            else{
+                            }else{
                                 op_hours[index] = hour + ":" + time[1] + " " + "AM";
                             }
                         })
+
                         //if an admin, set is_verified to true
                         if(req.params.id[req.params.id.length -1] == '1'){
 
@@ -48,9 +50,7 @@ exports.create_a_place = (req, res) => {
                                 },
                                 name: placename,
                                 capacity: capacity,
-                                rating:rating,
                                 website: website,
-                                description: description,
                                 address: {
                                     street: response.results[0].address_components.number + " " + response.results[0].address_components.formatted_street,
                                     city: response.results[0].address_components.city,
@@ -61,14 +61,31 @@ exports.create_a_place = (req, res) => {
                                 is_verified: true
 
                             });
-
-                            newplace.operation_hours.push(op_hours[0] + " - " + op_hours[1], op_hours[2] + " - " + op_hours[3], op_hours[4] + " - " + op_hours[5], op_hours[6] + " - " + op_hours[7], op_hours[8] + " - " + op_hours[9], op_hours[10] + " - " + op_hours[11], op_hours[12] + " - " + op_hours[13]);
-                            newplace.save()
-                            .then(savedplace =>{
-                                req.flash('success_msg', 'You have successfully added a location to Agora.');
-                                res.redirect('/places/' + req.params.id + '/' + req.params.member);
-                            })
-                            
+                            if(rating){
+                                newplace.rating.num = Number(rating);
+                                newplace.rating.people = 1;
+                            }
+                            //if a comment is being added too
+                            if(comment){
+                                var newComment = new Comment({place:newplace._id, commentor:userid, text: comment});
+                                newComment.save()
+                                .then(saved => {
+                                    newplace.operation_hours.push(op_hours[0] + " - " + op_hours[1], op_hours[2] + " - " + op_hours[3], op_hours[4] + " - " + op_hours[5], op_hours[6] + " - " + op_hours[7], op_hours[8] + " - " + op_hours[9], op_hours[10] + " - " + op_hours[11], op_hours[12] + " - " + op_hours[13]);
+                                    newplace.comments.push(newComment);
+                                    newplace.save()
+                                    .then(savedplace =>{
+                                        req.flash('success_msg', 'You have successfully added a location to Agora.');
+                                        res.redirect('/places/' + req.params.id + '/' + req.params.member);
+                                    })
+                                })
+                            }else{ //no comment being added
+                                newplace.operation_hours.push(op_hours[0] + " - " + op_hours[1], op_hours[2] + " - " + op_hours[3], op_hours[4] + " - " + op_hours[5], op_hours[6] + " - " + op_hours[7], op_hours[8] + " - " + op_hours[9], op_hours[10] + " - " + op_hours[11], op_hours[12] + " - " + op_hours[13]);
+                                newplace.save()
+                                .then(savedplace =>{
+                                    req.flash('success_msg', 'You have successfully added a location to Agora.');
+                                    res.redirect('/places/' + req.params.id + '/' + req.params.member);
+                                })
+                            }                          
                         }
                         //if not an admin, is_verifed is false
                         else {
@@ -79,9 +96,7 @@ exports.create_a_place = (req, res) => {
                                 },
                                 name: placename,
                                 capacity: capacity,
-                                rating: rating,
                                 website: website,
-                                description: description,
                                 address: {
                                     street: response.results[0].address_components.number + " " + response.results[0].address_components.formatted_street,
                                     city: response.results[0].address_components.city,
@@ -90,15 +105,32 @@ exports.create_a_place = (req, res) => {
                                     full_address: response.results[0].formatted_address
                                 }
                             });
-                            newplace.operation_hours.push(op_hours[0] + " - " + op_hours[1], op_hours[2] + " - " + op_hours[3], op_hours[4] + " - " + op_hours[5], op_hours[6] + " - " + op_hours[7], op_hours[8] + " - " + op_hours[9], op_hours[10] + " - " + op_hours[11], op_hours[12] + " - " + op_hours[13]);
-                            newplace.save()
-                            .then(savedplace =>{
-                                req.flash('success_msg', 'You have successfully added a location to Agora. The location has to be approved by an admin before it can be accessed.');
-                                res.redirect('/places/' + req.params.id + '/' + req.params.member);
-                            })
-                        }
+                            if(rating){
+                                newplace.rating.num = Number(rating);
+                                newplace.rating.people = 1;
+                            }
+                            if(comment){
+                                var newComment = new Comment({place:newplace._id, commentor:userid, text: comment});
+                                newComment.save()
+                                .then(saved => {
+                                    newplace.operation_hours.push(op_hours[0] + " - " + op_hours[1], op_hours[2] + " - " + op_hours[3], op_hours[4] + " - " + op_hours[5], op_hours[6] + " - " + op_hours[7], op_hours[8] + " - " + op_hours[9], op_hours[10] + " - " + op_hours[11], op_hours[12] + " - " + op_hours[13]);
+                                    newplace.comments.push(newComment);
+                                    newplace.save()
+                                    .then(savedplace =>{
+                                        req.flash('success_msg', 'You have successfully added a location to Agora. The location has to be approved by an admin before it can be accessed.');
+                                        res.redirect('/places/' + req.params.id + '/' + req.params.member);
+                                    })
+                                })
+                            }else{ //no comment being added
+                                newplace.operation_hours.push(op_hours[0] + " - " + op_hours[1], op_hours[2] + " - " + op_hours[3], op_hours[4] + " - " + op_hours[5], op_hours[6] + " - " + op_hours[7], op_hours[8] + " - " + op_hours[9], op_hours[10] + " - " + op_hours[11], op_hours[12] + " - " + op_hours[13]);
+                                newplace.save()
+                                .then(savedplace =>{
+                                    req.flash('success_msg', 'You have successfully added a location to Agora.');
+                                    res.redirect('/places/' + req.params.id + '/' + req.params.member);
+                                })
+                            } 
 
-                        
+                        } 
                     }
                     else {
                         console.log(req.params.id[-1]);
@@ -116,11 +148,10 @@ exports.create_a_place = (req, res) => {
 };
 
 exports.get_place_detail = (req, res) => {
-    Place.findOne({_id:req.params.placeid})
+    Place.findOne({_id:req.params.placeid}).populate('comments').populate({path: 'comments', populate: { path: 'commentor', model:'User'}})
         .then(place => {
             res.render('wander-detail', { id:req.params.id, member: req.params.member, place:place});
         })
-    
 };
 
 exports.get_add_new_place_page = (req, res) => {
@@ -128,7 +159,7 @@ exports.get_add_new_place_page = (req, res) => {
 };
 
 exports.get_manage_locations_page = (req, res) => {
-    const places = Place.find({is_verified:false, is_deleted:false});
+    const places = Place.find({is_verified:false, is_deleted:false})
     places.exec(function (err, data){
         if(err) throw err;
         Place.findOne({_id:req.params.placeid})
@@ -139,31 +170,39 @@ exports.get_manage_locations_page = (req, res) => {
 };
 
 exports.edit_place = (req, res) => {
-    const {rating, description, monday1, monday2, tuesday1, tuesday2, wednesday1, wednesday2, thursday1, thursday2, friday1, friday2, saturday1, saturday2, sunday1, sunday2} = req.body;
+    let userid = req.params.id.slice(0,-1);
+    const {rating, comment, monday1, monday2, tuesday1, tuesday2, wednesday1, wednesday2, thursday1, thursday2, friday1, friday2, saturday1, saturday2, sunday1, sunday2} = req.body;
     let op_hours = [];
     op_hours.push(monday1, monday2, tuesday1, tuesday2, wednesday1, wednesday2, thursday1, thursday2, friday1, friday2, saturday1, saturday2, sunday1, sunday2);
-    
 
-    // console.log(!rating + ' ' + !description + ' ' + op_hours.length);
-    if((!rating) && (!description) && (!op_hours[0]) && (!op_hours[1]) && (!op_hours[2]) && (!op_hours[3]) && (!op_hours[4]) && (!op_hours[5]) && (!op_hours[6]) ){
+    // No edits made
+    if((!rating) && (!comment) && (!op_hours[0]) && (!op_hours[1]) && (!op_hours[2]) && (!op_hours[3]) && (!op_hours[4]) && (!op_hours[5]) && (!op_hours[6]) ){
         req.flash('error_msg', 'You did not make any edits.');
         res.redirect('/places/wander-detail/' + req.params.id + '/' + req.params.member + '/' + req.params.placeid);
     }
 
-    //just adding a rating
-    else if(!description && (!op_hours[0]) && (!op_hours[1]) && (!op_hours[2]) && (!op_hours[3]) && (!op_hours[4]) && (!op_hours[5]) && (!op_hours[6]) ){
+    //just adding a rating or comment
+    else if((!op_hours[0]) && (!op_hours[1]) && (!op_hours[2]) && (!op_hours[3]) && (!op_hours[4]) && (!op_hours[5]) && (!op_hours[6]) ){
         Place.findOne({_id:req.params.placeid})
             .then(edit_rating => {
-                //if no existing rating just update it with 
-                if(edit_rating.rating == null){
-                    Place.findOneAndUpdate({_id:req.params.placeid}, {rating: rating})
-                    .then(donee =>{
-                        req.flash('success_msg', 'You have successfully submitted a review.');
-                        res.redirect('/places/' + req.params.id + '/' + req.params.member);
-                    })
+                var new_rating = Number(edit_rating.rating.num);
+                var new_people = Number(edit_rating.rating.people);
+                if(rating){
+                    new_people = Number(new_people + 1);
+                    new_rating = Number(Number(edit_rating.rating.num) + Number(rating)) / Number(new_people);
                 }
-                else{
-                    Place.findOneAndUpdate({_id:req.params.placeid}, {rating: ((edit_rating.rating + Number(rating))/2)})
+                if(comment){
+                    var newComment = new Comment({place:req.params.placeid, commentor:userid, text: comment});
+                    newComment.save()
+                    .then(saved_comment => {
+                        Place.findOneAndUpdate({_id:req.params.placeid}, {'rating.num' : Number(new_rating), 'rating.people': Number(new_people), $push:{comments: newComment}})
+                            .then(donee =>{
+                                req.flash('success_msg', 'You have successfully submitted a review.');
+                                res.redirect('/places/' + req.params.id + '/' + req.params.member);
+                            })
+                    })
+                }else{
+                    Place.findOneAndUpdate({_id:req.params.placeid}, {'rating.num': new_rating, 'rating.people': new_people})
                     .then(donee =>{
                         req.flash('success_msg', 'You have successfully submitted a review.');
                         res.redirect('/places/' + req.params.id + '/' + req.params.member);
@@ -172,6 +211,7 @@ exports.edit_place = (req, res) => {
             })
     }
     else {
+        //editing the operation hours
         Place.findOne({_id:req.params.placeid})
         .then(existing_place => {
 
@@ -205,23 +245,29 @@ exports.edit_place = (req, res) => {
                     }
                 }
             })
-            var the_rating;
-            if(!rating){
-                the_rating = existing_place.rating;
-            }else {the_rating = (existing_place.rating + rating)/2;}
-            var desc;
-            if(!description){
-                desc = existing_place.description;
-            }else{desc = description;}
-
-            console.log(the_rating);
-            //find the place doc to edit, and update with the entered data by the member
-            Place.findOneAndUpdate({_id:req.params.placeid}, {rating: the_rating, description: desc, operation_hours:new_hours, is_verified: false})
-                .then(place =>{
-                    req.flash('success_msg', 'You have successfully submitted an edit to this location. It will be reviewed by an Agora admin.');
-                    res.redirect('/places/' + req.params.id + '/' + req.params.member);
-        
-                })
+            var new_rating = Number(edit_rating.rating.num);
+            var new_people = Number(edit_rating.rating.people);
+            if(rating){
+                new_people = Number(new_people + 1);
+                new_rating = Number(Number(edit_rating.rating.num) + Number(rating)) / Number(new_people);
+            }
+            if(comment){
+                var newComment = new Comment({place:req.params.placeid, commentor:userid, text: comment});
+                newComment.save()
+                    .then(saved_comment => {
+                        Place.findOneAndUpdate({_id:req.params.placeid}, {'rating.num': Number(new_rating), 'rating.people': Number(new_people), $push:{comments: newComment}})
+                            .then(donee =>{
+                                req.flash('success_msg', 'You have successfully submitted an edit to this location. It will be reviewed by an Agora admin.');
+                                res.redirect('/places/' + req.params.id + '/' + req.params.member);
+                            })
+                    })
+            }else{
+                Place.findOneAndUpdate({_id:req.params.placeid}, {'rating.num': Number(new_rating), 'rating.people': Number(new_people)})
+                    .then(donee =>{
+                        req.flash('success_msg', 'You have successfully submitted an edit to this location. It will be reviewed by an Agora admin.');
+                        res.redirect('/places/' + req.params.id + '/' + req.params.member);
+                    })
+            }
         })
     }
 };
@@ -235,7 +281,7 @@ exports.reject_place = (req, res) => {
 };
 
 exports.verify_place = (req, res) => {
-    const {placename, streetaddress, city, state, zipcode, capacity, rating, website, description, monday1, monday2, tuesday1, tuesday2, wednesday1, wednesday2, thursday1, thursday2, friday1, friday2, saturday1, saturday2, sunday1, sunday2} = req.body;
+    const {placename, streetaddress, city, state, zipcode, capacity, website, monday1, monday2, tuesday1, tuesday2, wednesday1, wednesday2, thursday1, thursday2, friday1, friday2, saturday1, saturday2, sunday1, sunday2} = req.body;
     let op_hours = [];
     op_hours.push(monday1, monday2, tuesday1, tuesday2, wednesday1, wednesday2, thursday1, thursday2, friday1, friday2, saturday1, saturday2, sunday1, sunday2);
 
@@ -278,10 +324,9 @@ exports.verify_place = (req, res) => {
                     let lat = response.results[0].location.lat;
                     let long =response.results[0].location.lng;
                     
-
-                    //find the unverified place doc, and update with the entered data by the admin
+                        //find the unverified place doc, and update with the entered data by the admin
                     Place.findOneAndUpdate({_id:req.params.placeid}, {'gps_coordinates.latitude':lat, 'gps_coordinates.longitude': long, name:placename, 
-                        capacity: capacity,rating: rating, website: website, description: description, 'address.street': (response.results[0].address_components.number 
+                        capacity: capacity, website: website, 'address.street': (response.results[0].address_components.number 
                         + " " + response.results[0].address_components.formatted_street), 'address.city':(response.results[0].address_components.city), 
                         'address.state':(response.results[0].address_components.state), 'address.zipcode':(response.results[0].address_components.zip), 
                         'address.full_address': (response.results[0].formatted_address), operation_hours:new_hours, is_verified: true})
@@ -290,6 +335,7 @@ exports.verify_place = (req, res) => {
                             res.redirect('/places/manage-location/' + req.params.id + '/' + req.params.member);
 
                         })
+
                 })
                 .catch(err => {
                     console.error(err);

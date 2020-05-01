@@ -88,7 +88,7 @@
                                         </td>
                                         <td scope="row">
                                             <!--change this number eg 3 to whatever the database has and run the loop to show how many stars -->
-                                            <% for (var star=0; star< row.rating; star++){ %>
+                                            <% for (var star=0; star< row.rating.num; star++){ %>
                                                 <span class="fa fa-star checked"></span>
                                                 <% } %>
                                         </td>
@@ -135,13 +135,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="rating" class="col-sm-4 col-form-label">5. Give the location a rating:</label>
-                                    <div class="col-sm-8">
-                                        <input type="number" min="1" max="5" class="form-control" id="rating" placeholder="Rating (1 - 5 scale)" name="rating" value="<%=place.rating%>">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputHours" class="col-sm-4 col-form-label">6. Enter hours of operation:</label>
+                                    <label for="inputHours" class="col-sm-4 col-form-label">5. Enter hours of operation:</label>
                                     <h6 class="text-danger col-sm-10">If you see issues with hours, please fill out BOTH the start time and end time for the day.</h6>
             
                                     <div class="col-sm-8 form-inline justify-content-around">
@@ -202,14 +196,8 @@
             
             
                                 </div>
-                                <div class="form-group row">
-                                    <label for="description" class="col-sm-4 col-form-label">7. Enter a brief description:</label>
-                                    <div class="col-sm-8">
-                                        <textarea class="form-control" id="description" rows="5" name="description" required><%=place.description%></textarea>
-                                    </div>
-                                </div>
                                 <div class="form-group row pb-5">
-                                    <label for="createButton" class="col-sm-4 col-form-label">8. Click the button</label>
+                                    <label for="createButton" class="col-sm-4 col-form-label">6. Click the button</label>
                                     <div class="col-sm-6">
                                         <button class="btn btn-outline-success " type="submit">VERIFY</button>
 
