@@ -33,8 +33,8 @@ router.post('/login', UserController.user_login);
 //LOGOUT HANDLE
 router.get('/logout', UserController.user_logout);
 
-//DELETE USER
-router.get('/delete/:userid', UserController.delete_user);
+//DELETE USER HANDLE
+router.post('/delete/:userid/:id?/:member?/:admin?', UserController.delete_user);
 
 //CHANGE USER ROLE/ BLOCK OR UNBLOCK USER
 router.post('/:id/:member/role/:userid', UserController.edit_user);
@@ -42,5 +42,7 @@ router.post('/:id/:member/role/:userid', UserController.edit_user);
 //EDIT PROFILE PAGE
 router.get('/user-profile/:id/:member', UserController.get_edit_profile_page);
 
+//EDIT PROFILE HANDLE
 router.post('/edit-profile/:id/:member', UserController.edit_profile);
+
 module.exports = router;

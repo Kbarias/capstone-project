@@ -61,7 +61,7 @@ exports.user_login = (req, res, next) => {
         //Confirmation of email handle
         let errors = [];
         //Make sure email is registered in DB
-        User.findOne({email: email})
+        User.findOne({email: email, is_deleted:false})
             .then(user => {
                 //if no user exists send message back
                 if (!user) {
@@ -172,10 +172,10 @@ exports.user_registration = (req, res) => {
         errors.push({ msg: 'Please fill in all fields' });
     }
 
-    // //Check that username length is greater than 4
-    // if (username.length < 6) {
-    //     errors.push({ msg: 'Username should be at least 4 characters' });
-    // }
+    //Check that username length is greater than 4
+    if (username.length < 4) {
+        errors.push({ msg: 'Username should be at least 4 characters' });
+    }
 
     //Check that passwords match
     if (password != password2) {
@@ -192,8 +192,8 @@ exports.user_registration = (req, res) => {
         res.render('register', { errors, fname, lname, username, email, password, password2 });
     } else {
         //Validation passed
-        //Check if user already exists
-        User.findOne({ username: username })
+        //Check if user already exists, and has an active account (not deleted)
+        User.findOne({ username: username, is_deleted:false })
             .then(user => {
                 if (user) {
                     //User exists, re-render register page
@@ -201,7 +201,7 @@ exports.user_registration = (req, res) => {
                     res.render('register', { errors, fname, lname, username, email, password, password2 });
                 }
                 else {
-                    User.findOne({email: email})
+                    User.findOne({email: email, is_deleted:false})
                     .then(user2 => {
                         if(user2) {
                             errors.push({msg: 'That email is already registered'});
@@ -277,7 +277,9 @@ exports.get_user_recovery_request = (req, res) => {
 
 exports.user_recovery_request = (req, res) => {
     const {email} = req.body;
-    User.findOne({email: email})
+    let errors = [];
+    //check that email is even in the DB and is not deleted
+    User.findOne({email: email, is_deleted:false})
         .then( user => {
             if(!user){
                 errors.push({msg: 'We were unable to find a user with that email.'});
@@ -295,11 +297,7 @@ exports.user_recovery_request = (req, res) => {
                         mailOptions.text = 'Hello,\n\n' + 'You can reset your Agora password by clicking this link: \nhttp:\/\/' + req.headers.host + '\/users'+ '\/recovery\/' + new_token.token + '.\n';
                                                         
                         transporter.sendMail(mailOptions, function (err) {
-                            if(err) { 
-                                console.log(err);
-                            } else {
-                                console.log('A new verification email has been sent to ' + email + '.');
-                            }
+                            if(err) { console.log(err);}
                         });
                     })
                     .catch(err => console.log(err));
@@ -327,14 +325,14 @@ exports.user_password_reset = (req, res) => {
                 res.render('recovery' , {errors});
             }
             else {
-                User.findOne({email: email})
+                User.findOne({email: email, is_deleted:false})
                     .then(user => {
                         if(!user){
                             errors.push({ msg: 'We were unable to find a user with this email.'});
                             res.render('recovery' , {errors});
                         }
                         else {
-                            //the user id matches the token
+                            //check if the user id matches the token
                             if(toString(user._id) == toString(token._userId)){
 
                                 if (!email || !password || !password2) {
@@ -410,7 +408,29 @@ exports.become_an_admin = (req, res) => {
 };
 
 exports.delete_user = (req, res) => {
-    res.send('deleting: ' + req.params.userid);
+    //if it is an admin deleting user account
+    if(req.params.admin){
+        User.findOneAndUpdate({_id:req.params.userid}, {is_deleted:true})
+            .then(deleted_user => {
+                UserInfo.findOneAndUpdate({_id:req.params.userid}, {is_deleted:true})
+                    .then(result => {
+                        req.flash('success_msg', 'You have successfully this Agora account.');
+                        res.redirect('/dashboard/admin/' + req.params.id + '/' + req.params.member);
+                    })
+            })
+    }
+    else {
+        let userid = req.params.userid.slice(0,-1);
+        User.findOneAndUpdate({_id:userid}, {is_deleted:true})
+            .then(deleted_user => {
+                UserInfo.findOneAndUpdate({_id:userid}, {is_deleted:true})
+                    .then(result => {
+                        req.logout();
+                        req.flash('success_msg', 'You have successfully deleted your Agora account. Sorry to see you go!');
+                        res.redirect('/users/login');
+                    })
+        })
+    }
 };
 
 exports.edit_user = (req, res) => {
@@ -610,8 +630,8 @@ exports.edit_profile = (req, res)=> {
     else {
         let errors = [];
         //Check that username length is greater than 4
-        if ( (username) && (username.length < 6) ) {
-            errors.push({ msg: 'Username should be at least 6 characters' });
+        if ( (username) && (username.length < 4) ) {
+            errors.push({ msg: 'Username should be at least 4 characters' });
         }
 
         //Check that passwords match
@@ -629,33 +649,26 @@ exports.edit_profile = (req, res)=> {
                 .then(user => {
                     var name, i_lname, i_username, i_email, i_password;
 
-                    if(!fname){
-                        name = user.first_name;
-                    }else {name = fname;}
+                    if(!fname){name = user.first_name;}else {name = fname;}
 
-                    if(!lname){
-                        i_lname = user.last_name;
-                    }else {i_lname = lname;}
+                    if(!lname){i_lname = user.last_name;}else {i_lname = lname;}
 
-                    if(!username){
-                        i_username = user.username;
-                    }else {i_username = username;}
+                    if(!username){i_username = user.username;}else {i_username = username;}
 
-                    if(!email){
-                        i_email = user.email;
-                    }else {i_email = email;}
+                    if(!email){i_email = user.email;}else {i_email = email;}
 
                     if(!password){
                         i_password = user.password;
-                        //make sure username is not already taken
-                        User.findOne({username:username})
+                        //make sure username is not already taken by an active user
+                        User.findOne({username:username, is_deleted:false})
                             .then(found_un => {
                                 if(found_un){
                                     errors.push({ msg: 'That username is already taken' });
                                     res.render('user-profile', {id:req.params.id, member:req.params.member, errors, fname, lname, username, email, password, password2 });
                                 }
                                 else{
-                                    User.findOne({email:email})
+                                    //make sure email is not already taken by an active user
+                                    User.findOne({email:email, is_deleted:false})
                                         .then(found_email => {
                                             if(found_email){
                                                 errors.push({ msg: 'That email is already registered.' });
@@ -679,14 +692,14 @@ exports.edit_profile = (req, res)=> {
                             if (err) throw err;
                             //set password to hashed
                             new_password = hash;
-                            User.findOne({username:username})
+                            User.findOne({username:username, is_deleted:false})
                                 .then(found_un => {
                                     if(found_un){
                                         errors.push({ msg: 'That username is already taken' });
                                         res.render('user-profile', {id:req.params.id, member:req.params.member, errors, fname, lname, username, email, password, password2 });
                                     }
                                     else{
-                                        User.findOne({email:email})
+                                        User.findOne({email:email, is_deleted:false})
                                             .then(found_email => {
                                                 if(found_email){
                                                     errors.push({ msg: 'That email is already registered.' });

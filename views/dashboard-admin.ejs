@@ -116,7 +116,10 @@
                                 
 
                             </form>
-                            <a class="btn btn-danger col-10 btn-block mb-3" href="/users/delete/<%=editing._id._id%>" role="button">Delete User</a>
+                            <form action="/users/delete/<%=editing._id._id%>/<%=id%>/<%=member%>/admin" method="POST">
+                                <button type="submit" class="btn btn-danger col-10 btn-block mb-3">DELETE USER</button>
+                            </form>
+                            
 
                         </div>
                     </div>
