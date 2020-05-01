@@ -18,8 +18,8 @@ router.get('/wander-detail/:id/:member/:placeid', auth.ensureAuthenticated, Plac
 //GET ADD NEW PLACE PAGE
 router.get('/wander-add/:id/:member', auth.ensureAuthenticated, PlaceController.get_add_new_place_page);
 
-// //POST EDIT TO LOCATION
-// router.post('/edit/:id/:member/:placeid', auth.ensureAuthenticated, PlaceController.edit_place);
+//POST EDIT TO LOCATION
+router.post('/edit/:id/:member/:placeid', auth.ensureAuthenticated, PlaceController.edit_place);
 
 //GET MANAGE LOCATION PAGE FOR ADMINS
 router.get('/manage-location/:id/:member/:placeid?', auth.ensureAuthenticated, PlaceController.get_manage_locations_page);
@@ -30,4 +30,6 @@ router.post('/location-reject/:id/:member/:placeid', auth.ensureAuthenticated, P
 //POST VERIFIED PLACE BY ADMIN
 router.post('/verify/:id/:member/:placeid', auth.ensureAuthenticated, PlaceController.verify_place);
 
+
+//router.get('/location-review/:id/:member', auth.ensureAuthenticated, PlaceController.location_review);
 module.exports = router;

@@ -6,13 +6,6 @@ router.get('/', (req, res) => {
     res.render('login');
 });
 
-router.get('/location-review/:name', (req, res) => {
-    res.render('location-review', { member: req.params.name });
-});
-
-router.get('/user-profile/:name', (req, res) => {
-    res.render('user-profile', { member: req.params.name });
-});
 router.get('/disclaimer', (req, res) => {
     res.render('disclaimer', { member: req.params.name });
 });

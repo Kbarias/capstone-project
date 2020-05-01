@@ -594,3 +594,118 @@ exports.edit_user = (req, res) => {
         }
     }
 };
+
+exports.get_edit_profile_page = (req, res) => {
+    res.render('user-profile', {id:req.params.id, member: req.params.member });
+};
+
+exports.edit_profile = (req, res)=> {
+    const {fname, lname, username, email, password, password2} = req.body;
+
+    //if no entered information
+    if (!fname && !lname && !username && !email && !password && !password2) {
+        res.redirect('/users/user-profile/' + req.params.id + '/' + req.params.member);
+    }
+
+    else {
+        let errors = [];
+        //Check that username length is greater than 4
+        if ( (username) && (username.length < 6) ) {
+            errors.push({ msg: 'Username should be at least 6 characters' });
+        }
+
+        //Check that passwords match
+        if ( (password) && (password != password2) ) {
+            errors.push({ msg: 'Passwords do not match' });
+        }
+
+        if (errors.length > 0) {
+            res.render('user-profile', {id:req.params.id, member:req.params.member, errors, fname, lname, username, email, password, password2 });
+        } 
+        else {
+            //update values for 
+            let userid = req.params.id.slice(0,-1);
+            User.findOne({_id:userid})
+                .then(user => {
+                    var name, i_lname, i_username, i_email, i_password;
+
+                    if(!fname){
+                        name = user.first_name;
+                    }else {name = fname;}
+
+                    if(!lname){
+                        i_lname = user.last_name;
+                    }else {i_lname = lname;}
+
+                    if(!username){
+                        i_username = user.username;
+                    }else {i_username = username;}
+
+                    if(!email){
+                        i_email = user.email;
+                    }else {i_email = email;}
+
+                    if(!password){
+                        i_password = user.password;
+                        //make sure username is not already taken
+                        User.findOne({username:username})
+                            .then(found_un => {
+                                if(found_un){
+                                    errors.push({ msg: 'That username is already taken' });
+                                    res.render('user-profile', {id:req.params.id, member:req.params.member, errors, fname, lname, username, email, password, password2 });
+                                }
+                                else{
+                                    User.findOne({email:email})
+                                        .then(found_email => {
+                                            if(found_email){
+                                                errors.push({ msg: 'That email is already registered.' });
+                                                res.render('user-profile', {id:req.params.id, member:req.params.member, errors, fname, lname, username, email, password, password2 });
+                                            }
+                                            else{
+                                                User.findOneAndUpdate({_id:userid}, {first_name:name, last_name:i_lname, username:i_username ,email:i_email, password:i_password})
+                                                .then(updated_profile => {
+                                                    req.flash('success_msg', 'Your profile has been updated.');
+                                                    res.redirect('/dashboard/admin/' +  req.params.id + '/' + name);
+                                                })
+                                            }
+                                        })
+                                }
+                            })
+                    }else {
+                        //changing to new password
+                        i_password = password;
+                        bcrypt.genSalt(10, (err, salt) =>
+                        bcrypt.hash(i_password, salt, (err, hash) => {
+                            if (err) throw err;
+                            //set password to hashed
+                            new_password = hash;
+                            User.findOne({username:username})
+                                .then(found_un => {
+                                    if(found_un){
+                                        errors.push({ msg: 'That username is already taken' });
+                                        res.render('user-profile', {id:req.params.id, member:req.params.member, errors, fname, lname, username, email, password, password2 });
+                                    }
+                                    else{
+                                        User.findOne({email:email})
+                                            .then(found_email => {
+                                                if(found_email){
+                                                    errors.push({ msg: 'That email is already registered.' });
+                                                    res.render('user-profile', {id:req.params.id, member:req.params.member, errors, fname, lname, username, email, password, password2 });
+                                                }
+                                                else{
+                                                    User.findOneAndUpdate({_id:userid}, {first_name:name, last_name:i_lname, username:i_username ,email:i_email, password:new_password})
+                                                    .then(updated_profile => {
+                                                        req.flash('success_msg', 'Your profile has been updated.');
+                                                        res.redirect('/dashboard/admin/' +  req.params.id + '/' + name);
+                                                    })
+                                                }
+                                            })
+                                    }
+                                })
+
+                        }))
+                    }
+                })
+        }
+    }
+};

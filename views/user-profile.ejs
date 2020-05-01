@@ -10,7 +10,7 @@
 
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/dashboard-user/name"><b>HOME</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><b>INBOX</b></a>
     <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> 
     <ul class="navbar-nav px-3">
@@ -42,7 +42,7 @@
                             <i class="fas fa-user"></i> <b>Edit Profile</b>
                         </h1>
                         <%- include ('./partials/messages'); -%>
-                            <form action="/users/register" method="POST">
+                            <form action="/users/edit-profile/<%=id%>/<%=member%>" method="POST">
                                 <div class="form-group">
                                     <label for="fname"></label>
                                     <input type="fname" id="fname" name="fname" class="form-control" placeholder="First Name" value="<%= typeof fname != 'undefined' ? fname : '' %>" />
