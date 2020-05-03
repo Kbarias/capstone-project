@@ -449,7 +449,7 @@ exports.edit_user = (req, res) => {
                     //Create and send email informing user of status change
                     mailOptions.to = blocked_user._id.email;
                     mailOptions.subject = 'Your Agora account is blocked';
-                    mailOptions.text = 'Hello,\n\n' + 'Your account has recently been blocked. Please reach out to an Agora Administrator for information.';
+                    mailOptions.text = 'Hello,\n\n' + 'Your account has recently been blocked. You can reply to this email if you wish to request that your account be unblocked.' ;
                     transporter.sendMail(mailOptions, function (err) {
                         if(err) { 
                             console.log(err);
@@ -489,7 +489,7 @@ exports.edit_user = (req, res) => {
                 .then(blocked_user => {
                     mailOptions.to = blocked_user._id.email;
                     mailOptions.subject = 'Your Agora account is blocked';
-                    mailOptions.text = 'Hello,\n\n' + 'Your account has recently been blocked and your role has changed to "member". Please reach out to an Agora Administrator for information.';
+                    mailOptions.text = 'Hello,\n\n' + 'Your account has recently been blocked and your role has changed to "member". You can reply to this email to learn more information.';
                     transporter.sendMail(mailOptions, function (err) {
                         if(err) { 
                             console.log(err);

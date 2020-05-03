@@ -39,6 +39,7 @@ router.post('/delete/:userid/:id?/:member?/:admin?', UserController.delete_user)
 //CHANGE USER ROLE/ BLOCK OR UNBLOCK USER
 router.post('/:id/:member/role/:userid', UserController.edit_user);
 
+
 //EDIT PROFILE PAGE
 router.get('/user-profile/:id/:member', UserController.get_edit_profile_page);
 

@@ -24,7 +24,7 @@ exports.create_a_place = (req, res) => {
             let long =response.results[0].location.lng;
             
             //check if place is already in DB
-            Place.findOne({'gps_coordinates.latitude':lat, 'gps_coordinates.longitude':long})
+            Place.findOne({'gps_coordinates.latitude':lat, 'gps_coordinates.longitude':long, is_deleted:false})
                 .then(place =>{
                     //if not place found, create a new doc for it
                     if(!place){
