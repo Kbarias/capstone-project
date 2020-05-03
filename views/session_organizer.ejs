@@ -13,75 +13,15 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/gather/join/<%=id%>/<%=member%>"><b>GROUPS</b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="gather/tutor-join-info/<%=id%>/<%=member%>"><b>TUTORING</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/gather/group-join-info/<%=id%>/<%=member%>"><b>GROUPS</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/gather/tutor-join-info/<%=id%>/<%=member%>"><b>TUTORING</b></a>
 
 </nav>
 
 <div class="container-fluid">
     <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-dark sidebar myVerticalNav">
-            <div class="sidebar-sticky">
-                <br>
-                <img class="img-fluid rounded mx-auto d-block bg-white" src="/image/logo.png">
-                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
-                    <span>Welcome <%=member%></span>
-                    <a class="d-flex align-items-center text-muted" href="#">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h3>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link mya2 active" href="/dashboard/admin/<%=id%>/<%=member%>">
-                            <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="/exchange/<%=id%>/<%=member%>">
-                            <span data-feather="file"></span> EXCHANGE
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="/gather/<%=id%>/<%=member%>">
-                            <span data-feather="shopping-cart"></span> GATHER
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="/places/<%=id%>/<%=member%>">
-                            <span data-feather="users"></span> WANDER
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="/dashboard/admin/<%=id%>/<%=member%>">
-                            <span data-feather="users"></span> MANAGE
-                        </a>
-                    </li>
-                </ul>
-                <!--Other text to appear in between-->
-                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
-                    <span></span>
-                    <a class="d-flex align-items-center text-muted" href="#">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h3>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="/users/logout">
-                            <span data-feather="bar-chart-2"></span> LOGOUT
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="#">
-                            <span data-feather="layers"></span> SETTINGS
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="#">
-                            <span data-feather="file-text"></span> HELP
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <%- include ('./partials/sidebar'); -%>
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent text-dark">
@@ -223,7 +163,66 @@
                                                 
                                                 <%=info._id.place.address.full_address%>
                                             </textarea>
+                                            <button onclick="myFunction()" id="comments-button" class="light col-8 btn btn-warning col-sm-2 my-2 my-sm-0" type="button">Change Location</button>
         
+                                        </div>
+                                        <div id="pick-place" style="display: none;" class="form-group row col 8">
+                                            <table style="background: rgba(205, 210, 212, 0.7);
+                                            color: white;" class="table table-sm " id="changeTable">
+                                                <thead>
+                                                    <tr class="myTable">
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Address</th>
+                                                        <th scope="col">Capacity</th>
+                                                        <th scope="col">Rating</th>
+                                                        <th scope="col">Hours</th>
+                                                        <th scope="col">Click to Select</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                        <% places.forEach(function(row) { %>
+                                                            <tr class="table-secondary">
+                                                                <td scope="row">
+                                                                    <%=row.name %>
+                                                                </td>
+                                                                <td scope="row">
+                                                                    <%=row.address.full_address %>
+                                                                </td>
+                                                                <td scope="row">
+                                                                    <%=row.capacity %>
+                                                                </td>
+                                                                <td scope="row">
+                                                                    <%=row.rating.num %>
+                                                                </td>
+                                                                <td scope="row">
+                                                                    Mon: <%=row.operation_hours[0] %>,
+                                                                    Tues: <%=row.operation_hours[1] %>,
+                                                                    Weds: <%=row.operation_hours[2] %>,
+                                                                    Thurs: <%=row.operation_hours[3] %>,
+                                                                    Fri: <%=row.operation_hours[4] %>,
+                                                                    Sat: <%=row.operation_hours[5] %>,
+                                                                    Sun: <%=row.operation_hours[6] %>
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-secondary btn-sm" onclick="addPlace(this)">Select Place</button>
+                                                                </td>
+                                                            </tr>
+                                                        <% }) %> 
+                            
+                                                </tbody>
+                                            </table>
+
+                                            <div class="form-group row">
+                                                <div class="col-sm-6">
+                                                    <div id="dynamic-list2" style="font-size: 16px;">
+                                                    
+                                                    </div>
+                        
+                                                    <div id="list2" style="font-size: 16px;">
+                                                        <input id="first2" name="place" style="visibility: hidden;">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- Date-->
                                         <div class="form-group row">
@@ -246,7 +245,7 @@
                                                 <label for="createButton" class="col-sm-3 mytext"> Edit:</label>
                                                 <div class="col-sm-9 d-flex justify-content-around">
                                                     <a class="btn btn-outline-danger col-sm-2 my-2 my-sm-0" href="/gather/organizer-details/<%=id%>/<%=member%>/<%=info._id._id%>" role="button">Cancel</a>
-                                                    <button class="btn btn-outline-success col-sm-2 my-2 my-sm-0" type="submit">SUBMIT</button>
+                                                    <button class="btn btn-outline-success" type="submit">SUBMIT</button>
                                                 </div>
                                         </div>
                                     </div>
@@ -262,3 +261,88 @@
         </main>
     </div>
 </div>
+
+<script>
+
+    function myFunction() {
+        var x = document.getElementById("pick-place");
+        if(x.style.display == 'none'){
+            x.style.display = "block";
+        }
+        else{
+            x.style.display = "none";
+        }
+    }
+
+
+         //script to select place
+    function addPlace(x){
+        var list = document.getElementById("dynamic-list2");
+        var count = list.getElementsByTagName('input').length;
+        if(count == 1){
+            return;
+        }
+        var inde = x.parentNode.parentNode.rowIndex;
+        var name = document.getElementById("changeTable").rows[inde].cells[0].innerHTML.replace(/\s\s+/g, ' ');
+        var address = document.getElementById("changeTable").rows[inde].cells[1].innerHTML.replace(/\s\s+/g, ' ');
+
+        var tags = list.getElementsByTagName('input');
+        for(var ind = 0; ind < count; ind++){
+            if(tags[ind].value == (name + ": " + address)){
+                alert("That location was already selected");
+                return;
+            }
+        }
+
+        var inp = document.createElement('input');
+        inp.classList.add("col-sm-11");
+        inp.style.border = '2px solid gray';
+        inp.style.borderRadius = '25px';
+        inp.style.padding = '10px';
+        inp.style.display = 'inline-block';
+        inp.readOnly = true;
+        list.appendChild(inp);
+    
+        inp.required = true;
+        inp.value = name + ": " + address;
+
+        var list2 = document.getElementById("list2");
+        var values = list2.getElementsByTagName('input')
+        for(var ind = 0; ind < 1; ind++){
+            if(!values[ind].value){
+                values[ind].value = inp.value;
+                break;
+            }
+        }
+
+        inp.size = inp.value.length;
+        //create your delete button after you click try it
+        var del = document.createElement('button');
+        del.style.textDecoration = 'none';
+        del.innerHTML = 'X';
+        del.style.color = 'white';
+        del.style.borderRadius = '25px';
+        del.style.backgroundColor = 'red';
+        //assign a function for it when clicked
+        del.onclick = function() { deletePlace(inp,this)}; 
+        list.appendChild(del);
+    }
+
+    function deletePlace(x,y) {
+	  
+      var parent = document.getElementById('dynamic-list2');
+      //remove the input field
+      parent.removeChild(x);
+      //remove the button
+      parent.removeChild(y);
+      
+      var list2 = document.getElementById("list2");
+        var values = list2.getElementsByTagName('input')
+        for(var ind = 0; ind < 1; ind++){
+            if(values[ind].value == x.value){
+                values[ind].value = null;
+                break;
+            }
+        }
+  }
+</script>

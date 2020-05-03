@@ -10,7 +10,7 @@ module.exports = {
         }
 
         else {
-            res.redirect('/dashboard/member/' + req.params.id + '/' + req.params.first_name)
+            res.redirect('/dashboard/member/' + req.params.id + '/' + req.params.member)
         }
 
     },

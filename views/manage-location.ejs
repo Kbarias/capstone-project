@@ -5,7 +5,7 @@
     }
     
     body {
-        background-image: url("../image/wander-bg.png");
+        background-image: url("/image/wander-bg.png");
         background-color: white;
         background-attachment: fixed;
         background-repeat: no-repeat;
@@ -23,8 +23,8 @@
 
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/dashboard-user/name"><b>HOME</b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="http://localhost:3000/dashboard-admin/name"><b>BACK</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>BACK</b></a>
 </nav>
 
 <div class="container-fluid">
@@ -34,7 +34,7 @@
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
-
+            <%- include ('./partials/messages'); -%>
             <div class="row">
                 <h1 class="h1 text-dark"> Locations pending approval.</h1>
             </div>
@@ -62,44 +62,157 @@
                             <tbody>
 
                                 <!--Sample code-->
-                                <% for(var i=0; i < 150; i++) { %>
+                                <% places.forEach(function(row) { %>
                                     <tr class="myTable">
 
-                                        <td scope="row">place :
-                                            <%=i %>
+                                        <td scope="row">
+                                            <%=row.name %>
                                         </td>
-                                        <td scope="row">address :
-                                            <%=i %>
+                                        <td scope="row">
+                                            <%=row.address.street %>
+                                            <%=row.address.city %>
+                                            <%=row.address.state %>
+                                            <%=row.address.zipcode %>
                                         </td>
-                                        <td scope="row">hours :
-                                            <%=i %>
+                                        <td scope="row">
+                                            Mon: <%=row.operation_hours[0] %>,
+                                            Tues: <%=row.operation_hours[1] %>,
+                                            Weds: <%=row.operation_hours[2] %>,
+                                            Thurs: <%=row.operation_hours[3] %>,
+                                            Fri: <%=row.operation_hours[4] %>,
+                                            Sat: <%=row.operation_hours[5] %>,
+                                            Sun: <%=row.operation_hours[6] %>
                                         </td>
-
-                                        <td scope="row">Capacity :
-                                            <%=i %>
+                                        <td scope="row">
+                                            <%=row.capacity %>
                                         </td>
                                         <td scope="row">
                                             <!--change this number eg 3 to whatever the database has and run the loop to show how many stars -->
-                                            <% for (var star=0; star< 3; star++){ %>
+                                            <% for (var star=0; star< row.rating.num; star++){ %>
                                                 <span class="fa fa-star checked"></span>
                                                 <% } %>
                                         </td>
                                         <td>
-                                            <a class="btn btn-secondary btn-sm" href="http://localhost:3000/location-review/name" role="button">Click to Review</a>
+                                            <a class="btn btn-secondary btn-sm" href="/places/manage-location/<%=id%>/<%=member%>/<%=row._id%>" role="button">Click to Review</a>
                                         </td>
                                     </tr>
-                                    <% } %>
+                                    <% }) %> 
 
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-6">
-                        <div id="map">
+                    <%if(place){%>
+                        <div class="col-6">
+                            <form action="/places/verify/<%=id%>/<%=member%>/<%=place._id%>" method="POST" class="container-fluid pt-5 justify-content bg-light font-weight-bold text-dark">
+                                <div class="form-group row">
+                                    <label for="locationName" class="col-sm-4 col-form-label">1. Enter a location name:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="locationName" placeholder="Location Name" name="placename" value="<%=place.name%>" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputAddress" class="col-sm-4 col-form-label">2. Enter the address:</label>
+                                    <div class="col-sm-8">
+                                        <div class="">
+                                            <input placeholder="Street address" class="form-control" id="inputAddress" type="text" name="streetaddress" value="<%=place.address.street%>" required>
+                                            <input placeholder="City" class="form-control" id="inputAddress" type="text" name="city" value="<%=place.address.city%>" required>
+                                            <input placeholder="State" class="form-control" id="inputAddress" type="text" name="state" value="<%=place.address.state%>" required>
+                                            <input placeholder="Zipcode" class="form-control" id="inputAddress" type="text" name="zipcode" value="<%=place.address.zipcode%>" required>
+                                            <!-- <button type="submit"><i class="fa fa-search"></i></button> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputURL" class="col-sm-4 col-form-label">3. Enter website, if available:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="inputURL" placeholder="Website" name="website" value="<%=place.website%>">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="capacity" class="col-sm-4 col-form-label">4. Enter the capacity of the location:</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" min="0" class="form-control" id="capacity" placeholder="Capacity" name="capacity" value="<%=place.capacity%>" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputHours" class="col-sm-4 col-form-label">5. Enter hours of operation:</label>
+                                    <h6 class="text-danger col-sm-10">If you see issues with hours, please fill out BOTH the start time and end time for the day.</h6>
+            
+                                    <div class="col-sm-8 form-inline justify-content-around">
+            
+                                        <div class="badge-dark col-3">
+                                            <label for="Mon">Monday</label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[0]%></label>
+                                        </div>
+                                        
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="starttime1" name="monday1" >
+                                        <label for="to">To</label>
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime1" name="monday2">
+                                        <div class="badge-dark col-3">
+                                            <label for="Mon">Tuesday</label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[1]%></label>
+                                        </div>
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime2" name="tuesday1">
+                                        <label for="to">To</label>
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime2" name="tuesday2">
+                                        <div class="badge-dark col-3">
+                                            <label for="Mon">Wednesday</label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[2]%></label>
+                                        </div>
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime3" name="wednesday1">
+                                        <label for="to">To</label>
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime3" name="wednesday2">
+                                        <div class="badge-dark col-3">
+                                            <label for="Mon">Thursday</label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[3]%></label>
+                                        </div>
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime4" name="thursday1">
+                                        <label for="to">To</label>
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime4" name="thursday2">
+                                        <div class="badge-dark col-3">
+                                            <label for="Mon">Friday</label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[4]%></label>
+                                        </div>
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime5" name="friday1">
+                                        <label for="to">To</label>
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime5" name="friday2">
+                                        <div class="badge-success col-3">
+                                            <label for="Mon">Saturday</label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[5]%></label>
+                                        </div>
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime6" name="saturday1">
+                                        <label for="to">To</label>
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime6" name="saturday2">
+                                        <div class="badge-danger col-3">
+                                            <label for="Mon">Sunday</label>
+                                            <label class="col-sm-3 my-3 my-sm-0" for="Mon"><%=place.operation_hours[6]%></label>
+                                        </div>
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime7" name="sunday1">
+                                        <label for="to">To</label>
+                                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime7" name="sunday2">
+            
+            
+                                    </div>
+            
+            
+                                </div>
+                                <div class="form-group row pb-5">
+                                    <label for="createButton" class="col-sm-4 col-form-label">6. Click the button</label>
+                                    <div class="col-sm-6">
+                                        <button class="btn btn-outline-success " type="submit">VERIFY</button>
 
-                            <p>This is a map</p>
-
+                                    </div>
+                                    
+                                </div>
+            
+                            </form>
+                            <form action="/places/location-reject/<%=id%>/<%=member%>/<%=place._id%>" method="POST" class="container-fluid pt-5 justify-content bg-light font-weight-bold text-dark">
+                                <button class="btn btn-outline-danger " type="submit">REJECT</button>
+                            </form>
+                            
                         </div>
-                    </div>
+                    <%}%>
+                    
                 </div>
             </div>
         </main>

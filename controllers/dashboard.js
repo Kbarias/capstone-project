@@ -26,16 +26,16 @@ exports.get_admin_dashboard_page = (req, res) => {
     let userid = req.params.id.slice(0,-1);
     Promise.all([
         User.findOne({_id:userid}),
-        UserInfo.countDocuments({$and: [ {_id:{$ne:userid}} , {is_deleted:{$ne:true}} ]}),
-        UserInfo.countDocuments({$and:[ {_id:{$ne:userid}} , {account_status:'Active'} , {is_deleted:{$ne:true}} ]}),
-        UserInfo.countDocuments({$and:[ {_id:{$ne:userid}} , {account_status:'Blocked'}, {is_deleted:{$ne:true}} ]}),
-        Place.countDocuments( {is_deleted:{$ne:true}} ),
-        Place.countDocuments( {$and: [{is_verified: false} , {is_deleted:{$ne:true}} ]} ),
-        Session.countDocuments( {is_deleted:{$ne:true}} )
+        UserInfo.countDocuments( {_id:{$ne:userid} , is_deleted:false} ),
+        UserInfo.countDocuments({_id:{$ne:userid} , account_status:'Active' , is_deleted:false} ),
+        UserInfo.countDocuments({_id:{$ne:userid}, account_status:'Blocked', is_deleted:false} ),
+        Place.countDocuments( {is_deleted:false} ),
+        Place.countDocuments( {is_verified: false , is_deleted:false} ),
+        Session.countDocuments( {is_deleted:false} )
     ])
     .then(results => {
         const [admin_user, all_users, actives, blocked, places, pending, sessions] = results;
-        const users = UserInfo.find({$and: [ {_id:{$ne:userid}} , {is_deleted:{$ne:true}} ] }).populate('_id');
+        const users = UserInfo.find({_id:{$ne:userid} , is_deleted:false} ).populate('_id');
         users.exec(function (err, data){
             if(err) throw err;
             UserInfo.findOne({_id:req.params.userinfo}).populate('_id')

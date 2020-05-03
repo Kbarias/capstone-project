@@ -24,85 +24,26 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="places/wander-add/<%=id%>/<%=member%>"><b>ADD</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/places/wander-add/<%=id%>/<%=member%>"><b>ADD</b></a>
 </nav>
 
 <div class="container-fluid">
     <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-dark sidebar myVerticalNav">
-            <div class="sidebar-sticky">
-                <br>
-                <img class="img-fluid rounded mx-auto d-block bg-white" src="/image/logo.png">
-                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
-                    <span>Welcome <%=member%></span>
-                    <a class="d-flex align-items-center text-muted" href="#">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h3>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link mya2 active" href="/dashboard/admin/<%=id%>/<%=member%>">
-                            <span data-feather="home"></span> DASHBOARD <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="/exchange/<%=id%>/<%=member%>">
-                            <span data-feather="file"></span> EXCHANGE
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="/gather/<%=id%>/<%=member%>">
-                            <span data-feather="shopping-cart"></span> GATHER
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="/places/<%=id%>/<%=member%>">
-                            <span data-feather="users"></span> WANDER
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="/dashboard/admin/<%=id%>/<%=member%>">
-                            <span data-feather="users"></span> MANAGE
-                        </a>
-                    </li>
-                </ul>
-                <!--Other text to appear in between-->
-                <h3 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-5 mb-1 text-muted">
-                    <span></span>
-                    <a class="d-flex align-items-center text-muted" href="#">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h3>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="/users/logout">
-                            <span data-feather="bar-chart-2"></span> LOGOUT
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="#">
-                            <span data-feather="layers"></span> SETTINGS
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mya2" href="#">
-                            <span data-feather="file-text"></span> HELP
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <%- include ('./partials/sidebar'); -%>
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 mb-2 myMainContent">
-
+            <%- include ('./partials/messages'); -%>
             <div class="row">
                 <h1 class="h1 text-dark "><%=place.name%></h1>
             </div>
             <div class="row">
                 <h4 class="h4 text-dark"> Display details of a location, please rate and comment responsibly!</h4>
             </div>
+            <button onclick="myFunction()" id="comments-button">See Comments from other members</button>
             <div class="row mt-4">
-                <form class="container-fluid col-6 pt-3 justify-content bg-light font-weight-bold text-dark">
+                <form class="container-fluid col-6 pt-3 justify-content bg-light font-weight-bold text-dark" action="/places/edit/<%=id%>/<%=member%>/<%=place._id%>" method="POST">
                     <div class="form-group row">
                         <label for="locationName" class="col-sm-4 col-form-label">1. Location name:</label>
                         <div class="col-sm-8">
@@ -131,31 +72,31 @@
                             <div class="badge-dark col-3">
                                 <label for="Mon">Monday</label>
                             </div>
-                            <%=place.operation_hours.mon%>
+                            <%=place.operation_hours[0]%>
                             <div class="badge-dark col-3">
                                 <label for="Mon">Tuesday</label>
                             </div>
-                            <%=place.operation_hours.tues%>
+                            <%=place.operation_hours[1]%>
                             <div class="badge-dark col-3">
                                 <label for="Mon">Wednesday</label>
                             </div>
-                            <%=place.operation_hours.weds%>
+                            <%=place.operation_hours[2]%>
                             <div class="badge-dark col-3">
                                 <label for="Mon">Thursday</label>
                             </div>
-                            <%=place.operation_hours.thurs%>
+                            <%=place.operation_hours[3]%>
                             <div class="badge-dark col-3">
                                 <label for="Mon">Friday</label>
                             </div>
-                            <%=place.operation_hours.fri%>
+                            <%=place.operation_hours[4]%>
                             <div class="badge-success col-3">
                                 <label for="Mon">Saturday</label>
                             </div>
-                            <%=place.operation_hours.sat%>
+                            <%=place.operation_hours[5]%>
                             <div class="badge-danger col-3">
                                 <label for="Mon">Sunday</label>
                             </div>
-                            <%=place.operation_hours.sun%>
+                            <%=place.operation_hours[6]%>
 
                             
                         </div>
@@ -163,76 +104,76 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="description" class="col-sm-4 col-form-label">5. Description:</label>
+                        <label for="ratings" class="col-sm-4 col-form-label">6. Current average rating:</label>
                         <div class="col-sm-8">
-                            <%=place.description%>
-                        </div>
-                        <label for="ratings" class="col-sm-4 col-form-label">6. Current rating:</label>
-                        <div class="col-sm-8">
-                            <% for (var star=0; star< place.rating; star++){ %>
+                            <% for (var star=0; star< place.rating.num; star++){ %>
                                 <span class="fa fa-star checked"></span>
                                 <% } %>
                         </div>
                     </div>
-
-                    <br>
-                    <div class="form-group row pb-5">
-                            <h6 class="text-danger">See things that need updating? Suggest changes below.</h6>
-                            <!--chuns changes-->
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="starttime1" name="starttime1">
-                            <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime1" name="endtime1">
-                            <div class="badge-dark col-3">
-                                <label for="Mon">Monday</label>
-                            </div>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime2" name="starttime2">
-                            <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime2" name="endtime2">
-                            <div class="badge-dark col-3">
-                                <label for="Mon">Tuesday</label>
-                            </div>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime3" name="starttime3">
-                            <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime3" name="endtime3">
-                            <div class="badge-dark col-3">
-                                <label for="Mon">Wednesday</label>
-                            </div>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime4" name="starttime4">
-                            <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime4" name="endtime4">
-                            <div class="badge-dark col-3">
-                                <label for="Mon">Thursday</label>
-                            </div>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime5" name="starttime5">
-                            <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime5" name="endtime5">
-                            <div class="badge-dark col-3">
-                                <label for="Mon">Friday</label>
-                            </div>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime6" name="starttime6">
-                            <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime6" name="endtime6">
-                            <div class="badge-success col-3">
-                                <label for="Mon">Saturday</label>
-                            </div>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime7" name="starttime7">
-                            <label for="to">To</label>
-                            <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime7" name="endtime7">
-                            <div class="badge-danger col-3">
-                                <label for="Mon">Sunday</label>
-                            </div>
-                            <!--end of his changes-->
-                    </div>
-                    <div class="form-group row pb-5">
-                        <label for="rating" class="col-sm-3 col-form-label">7. Your rating:</label>
-                        <div class="col-sm-3">
-                            <span class="rating"></span>
+                    <div class="form-group row">
+                        <label for="rating" class="col-sm-4 col-form-label"> Add your rating:</label>
+                        <div class="col-sm-6">
+                            <!-- <span class="rating"></span> -->
+                            <input type="number" min='1' max="5" name="rating">
                         </div>
                     </div>
+                    
+
+                    <div class="row pb-5 col-12">
+                        <h6 class="text-danger">See things that need updating? Suggest changes below.</h6>
+                        <h6 class="text-danger">If you see issues with hours, please fill out BOTH the start time and end time for the day.</h6>
+                        <div class="badge-dark col-3">
+                            <label for="Mon">Monday</label>
+                        </div>
+                        
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="starttime1" name="monday1" >
+                        <label for="to">To</label>
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime1" name="monday2">
+                        <div class="badge-dark col-3">
+                            <label for="Mon">Tuesday</label>
+                        </div>
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime2" name="tuesday1">
+                        <label for="to">To</label>
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime2" name="tuesday2">
+                        <div class="badge-dark col-3">
+                            <label for="Mon">Wednesday</label>
+                        </div>
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime3" name="wednesday1">
+                        <label for="to">To</label>
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime3" name="wednesday2">
+                        <div class="badge-dark col-3">
+                            <label for="Mon">Thursday</label>
+                        </div>
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime4" name="thursday1">
+                        <label for="to">To</label>
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime4" name="thursday2">
+                        <div class="badge-dark col-3">
+                            <label for="Mon">Friday</label>
+                        </div>
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime5" name="friday1">
+                        <label for="to">To</label>
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime5" name="friday2">
+                        <div class="badge-success col-3">
+                            <label for="Mon">Saturday</label>
+                        </div>
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime6" name="saturday1">
+                        <label for="to">To</label>
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime6" name="saturday2">
+                        <div class="badge-danger col-3">
+                            <label for="Mon">Sunday</label>
+                        </div>
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="Starttime7" name="sunday1">
+                        <label for="to">To</label>
+                        <input type="time" class="col-sm-3 my-3 my-sm-0" id="endtime7" name="sunday2">
+
+
+                    </div>
+                    
                     <div class="form-group row">
-                        <label for="description" class="col-sm-4 col-form-label">8. Add a better description:</label>
+                        <label for="comment" class="col-sm-4 col-form-label">8. Add a commnet:</label>
                         <div class="col-sm-8">
-                            <textarea class="form-control" id="comment" rows="3"></textarea>
+                            <textarea class="form-control" id="comment" rows="3" name="comment"></textarea>
                         </div>
                     </div>
                     <div class="form-group row pb-1 mb-1 justify-content">
@@ -244,12 +185,32 @@
                         </div>
                     </div>
                 </form>
-                <div class="col-6">
-                    <div id="map">
+                
+                <div class="col-6" id='comments' style="visibility: hidden;">
+                    <table class="table table-sm myTable">
+                        <thead>
+                          <tr>
+                            <th scope="col">User</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Review</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <% for (var i=0; i< place.comments.length; i++){ %>
+                                <td><%=place.comments[i].commentor.username%></td>
+                                <td><%=place.comments[i].time%></td>
+                                <td><%=place.comments[i].text%></td>
+                            <% } %>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    <!-- <div id="map">
 
                         <p>This is a map</p>
 
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </main>
@@ -268,8 +229,8 @@
 <script>
     function initMap() {
         var location = {
-            lat: 40.768560, //need default value or data poll from DB
-            lng: -73.964968 //need default value or data poll from DB
+            lat: place.gps_coordinates.latitude, //need default value or data poll from DB
+            lng: place.gps_coordinates.longitude //need default value or data poll from DB
 
         };
         var map = new google.maps.Map(document.getElementById("map"), {
@@ -286,6 +247,18 @@
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDw9i5kS-0ajreM29FC1d2ifdXypgk2JQ0
 &callback=initMap" type="text/javascript">
+</script>
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("comments");
+        if(x.style.visibility == 'hidden'){
+            document.getElementById("comments").style.visibility = "visible";
+        }
+        else{
+            document.getElementById("comments").style.visibility = "hidden";
+        }
+    }
 </script>
 
 <!--sample location:

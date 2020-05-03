@@ -7,18 +7,19 @@ const PlaceSchema = mongoose.Schema({
     },
     name: { type: String, required: true},
     capacity: Number,
-    rating: Number,
-    website: String,
-    description: String,
-    operation_hours: {
-        mon: { type: String, required: true},
-        tues: { type: String, required: true},
-        weds: { type: String, required: true},
-        thurs: { type: String, required: true},
-        fri: { type: String, required: true},
-        sat: { type: String, required: true},
-        sun: { type: String, required: true}
+    rating: {
+        num:Number,
+        people:Number
     },
+    website: String,
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment',
+    }],
+    operation_hours: [{
+        type: String,
+        maxItems: 7,
+    }],
     address: {
         street: { type: String, required: true},
         city: { type: String, required: true},

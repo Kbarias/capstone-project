@@ -9,7 +9,7 @@ module.exports = function(passport){
     passport.use(
         new LocalStrategy({ usernameField: 'email'}, (email, password, done) => {
             //Match user
-            User.findOne({ email: email})
+            User.findOne({ email: email, is_deleted:false})
                 .then(user => {
                     //if no match
                     if(!user){
