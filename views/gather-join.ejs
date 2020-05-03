@@ -13,8 +13,8 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/gather/join/<%=id%>/<%=member%>"><b>GROUPS</b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="gather/tutor-join-info/<%=id%>/<%=member%>"><b>TUTORING</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/gather/create/<%=id%>/<%=member%>"><b>CREATE A GROUP</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/gather/tutor-create/<%=id%>/<%=member%>"><b>CREATE A TUTORING SESSION</b></a>
 
 </nav>
 
@@ -145,9 +145,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group row pb-5">
+
                                     <%if(info._id.capacity != info.members.length){%>
                                         <label for="createButton" class="col-sm-3 mytext"> Join or Leave:</label>
                                         <div class="col-sm-9 d-flex justify-content-around">
+                                            <form action="/gather/leave-tutoring/<%=id%>/<%=member%>/<%=info._id._id%>" method="POST">
+                                                <button type="submit" class="btn btn-danger align-content-between col-12">LEAVE</button>
+                                            </form>
                                             <a class="btn btn-outline-success col-sm-3 my-2 my-sm-0" href="/gather/join/<%=id%>/<%=member%>/<%=info._id._id%>" role="button" >JOIN</a>
                                         </div>
                                     <%}else{%>

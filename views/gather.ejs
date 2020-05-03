@@ -13,8 +13,6 @@ body {
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/gather/join/<%=id%>/<%=member%>"><b>GROUPS</b></a>
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/gather/tutor-join-info/<%=id%>/<%=member%>"><b>TUTORING</b></a>
 
 </nav>
 
@@ -81,7 +79,7 @@ body {
                                                 <%=row._id.capacity %>
                                             </td>
                                             <td>
-                                                <a class="btn btn-sm btn-secondary" href="#" role="button">View Details</a>
+                                                <a class="btn btn-sm btn-secondary" href="/gather/group-join-info/<%=id%>/<%=member%>/<%=row._id._id%>" role="button">View Details</a>
                                             </td>
 
                                         </tr>

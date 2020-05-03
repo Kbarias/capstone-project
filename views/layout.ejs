@@ -28,6 +28,14 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+            $('#changeTable').dataTable( {
+                "lengthMenu": [ 3, 10, 20, 25]
+            } );
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
             $('#myTable').dataTable( {
                 "lengthMenu": [ 5, 10, 20, 25]
             } );
