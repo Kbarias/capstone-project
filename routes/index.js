@@ -44,6 +44,9 @@ router.get('/textbook-details/:name', (req, res) => {
 router.get('/textbook-owner-details/:name', (req, res) => {
     res.render('textbook-owner-details', { member: req.params.name });
 });
+router.get('/textbook-edit/:name', (req, res) => {
+    res.render('textbook-edit', { member: req.params.name });
+});
 router.get('/history/:name', (req, res) => {
     res.render('history', { member: req.params.name });
 });
