@@ -113,7 +113,7 @@ exports.post_new_book = (req, res) => {
         Place.findOne({'address.full_address':(third.split(':')[1].trim())}),
     ])
     .then(results =>{
-        const [placeone ,placetwo, placethree] = results;
+        const [ placeone ,placetwo, placethree] = results;
         //search if the book entry already exists in DB
         Book.findOne({$and: [ {isbn:isbn}, {title: { '$regex': new RegExp('^' + title + '$', "i")}} , {edition:edition}]} )
         .then(book => {
@@ -124,7 +124,10 @@ exports.post_new_book = (req, res) => {
                     .then(book => {
                         //create a merch entry for user
                         var new_merch = new Merch({book: new_book._id, owner: userid, condition_desc: condition, cost: price, offered_as: offer, status:{state:'Available'}, availability_period: week_input});
+                        console.log(new_book);
                         new_merch.suggested_places.push(placeone._id, placetwo._id, placethree._id);
+                        
+                        
                         new_merch.save()
                             .then(new_posting => {
                                 req.flash('success_msg', 'You have successfully posted a book!');
@@ -171,6 +174,53 @@ exports.get_history = (req, res) => {
         const [my_requests, sold, bought] = myhistory;
         res.render('history', { id:req.params.id, member: req.params.member, requests:my_requests, sold_books:sold, bought_books:bought });
     })
+};
+
+exports.get_edit_textbook_page = (req, res) => {
+    const places = Place.find({$and: [{is_verified: true} , {is_deleted:false} ] });
+    Merch.findOne({_id:req.params.merchid}).populate('book').populate('owner').populate('suggested_places')
+    .then(merch => {
+        UserInfo.findOne({_id: merch.owner})
+            .then(userinfo=> {
+                places.exec(function (err, place) {
+                    res.render('textbook-edit', { id:req.params.id, member: req.params.member, merch:merch, rating:userinfo.rating, sug_places:merch.suggested_places, places:place});
+                });
+            })
+    })
+};
+
+exports.post_textbook_edits = (req, res) => {
+    const {condition, offer, price, availability, first, second, third} = req.body;
+    //find original merch info
+    let weeks = availability;
+    if(offer == 'To Donate' || offer == 'For Sale'){
+        weeks = null;
+    }
+    //if changing locations
+    if(first){
+        Promise.all([
+            //get place ids from DB
+            Place.findOne({'address.full_address':(first.split(':')[1].trim())}),
+            Place.findOne({'address.full_address':(second.split(':')[1].trim())}),
+            Place.findOne({'address.full_address':(third.split(':')[1].trim())}),
+        ])
+        .then(results => {
+            const [place1, place2, place3] = results;
+            let places = [place1, place2, place3];
+            Merch.findOneAndUpdate({_id:req.params.merchid}, {condition_desc:condition, cost:price, offered_as:offer, availability_period:weeks, suggested_places:places })
+                .then(updated => {
+                    req.flash('success_msg', 'You have successfully made edits to your book!');
+                    res.redirect('/exchange/textbook-owner-details/' + req.params.id + '/' + req.params.member + '/' + req.params.merchid);
+                })
+        })
+    }
+    else{
+        Merch.findOneAndUpdate({_id:req.params.merchid}, {condition_desc:condition, cost:price, offered_as:offer, availability_period:weeks})
+            .then(updated => {
+                req.flash('success_msg', 'You have successfully made edits to your book!');
+                res.redirect('/exchange/textbook-owner-details/' + req.params.id + '/' + req.params.member + '/' + req.params.merchid);
+            })
+    }
 };
 
 exports.get_textbook_details = (req, res) => {
@@ -331,7 +381,7 @@ exports.accept_request = (req, res) => {
                         mailOptions.to = request_info.requester.email;
                         mailOptions.subject = 'Your book request has been accepted!';
                         mailOptions.text = 'Hello,\n\n' + 'Your recent request for '+ request_info.book.title + ' being offered by ' + request_info.owner.username + 
-                                ' has been accepted. Your meeting date is ' + newExchange.meeting_date + ' at ' + newExchange.meet_time + '. Your meeting location is ' + request_info.place.address.full_address + '. You can look at your My History page on Agora for these details.';
+                                ' has been accepted. Your meeting date is ' + newExchange.meeting_date + ' at ' + newExchange.meet_time + '. Your meeting location is ' + request_info.place.address.full_address + '. You can look at your My History page on Agora for these details. The owner included the message: ' + message;
                         transporter.sendMail(mailOptions, function (err) {
                             if(err) { 
                                 console.log(err);
