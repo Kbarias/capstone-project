@@ -1,0 +1,345 @@
+<style>
+    body {
+        background-image: url("/image/books.png");
+        background-repeat: no-repeat;
+        background-color: white;
+        background-size: 25%;
+        background-position: 55% 300px;
+    }
+</style>
+
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/myposts/<%=id%>/<%=member%>"><b>MY POSTINGS</b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/bookshelf/<%=id%>/<%=member%>"><b>BOOKSHELF</b></a>
+
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/exchange/<%=id%>/<%=member%>"><b>EXCHANGE</b></a>
+
+    <a class="navbar-brand col-sm-6 col-md-2 mr-0" href="/exchange/history/<%=id%>/<%=member%>"><b>HISTORY</b></a>
+</nav>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-dark sidebar myVerticalNav">
+            <%- include ('./partials/sidebar'); -%>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
+            <div class="container-fluid text-dark">
+                <form id="merch" onsubmit="return isValidForm()" action="/exchange/textbook-edit-post/<%=id%>/<%=member%>/<%=merch._id%>" method="POST">
+                    <div class="row">
+                        <h1 class="col-5 text-dark "> Edit Offering Details for:</h1>
+                        <h4 class=" col-7 text-dark"><%=merch.book.title%></h4>
+                    </div>
+                    <div class="row">
+                        <h4 class="h4 text-dark"> Here you can edit details for this book you are offering.</h4>
+                    </div>
+                    <hr>
+                    <div class="row justify-content-between">
+                        <div class="col-4">
+
+                            <div class="form-group">
+                                <label class=" col-3 col-form-label " for="author">Author:</label>
+                                <h4 class="col-8 col-form-control"><%=merch.book.author%></h4>
+                            
+                            </div>
+                            <div class="form-group">
+                                <label class="col-3 col-form-label" for="edition">Edition:</label>
+                                <h4 class="col-8 col-form-control"><%=merch.book.edition%></h4>
+                                
+                            </div>
+                            <div class="form-group">
+                                <label class="col-6 col-form-label" for="isbnNo">ISBN No:</label>
+                                <h4 class="col-8 col-form-control"><%=merch.book.isbn%></h4>
+                            </div>
+                            <h4>MISC.</h4>
+                            <div class="form-group">
+                                <label class="col-3 col-form-label" for="condition">Condition:</label>
+                                <select class="col-8 form-select" name="condition" required>
+                                    <option value="<%=merch.condition_desc%>" selected><%=merch.condition_desc%></option>
+                                    <option value="Like new">Like New</option>
+                                    <option value="Fairly new">Fairly New</option>
+                                    <option value="Some damage but usable">Some damage but usable</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <h3>Selected Exchange Locations:</h3>
+                                <ul>
+                                    <% for (var i=0; i< sug_places.length; i++){ %>
+                                        <li><%=sug_places[i].name%> <%=sug_places[i].address.full_address%></li>
+                                    <% } %>
+                                    
+                                </ul>
+                                <button onclick="myFunction()" class="light btn btn-warning" type="button">Change Locations</button>
+                            </div>
+                            
+                            <!-- <p>Textbook Image here </p>
+                            <p><img src="../image/marvin.jpg" style="width: 40%;" alt="A Great HTML Resource"></p>
+                            <div>
+                                <label for="myfile">Upload a new image:</label>
+                                <input type="file" id="myfile" name="myfile">
+                            </div>
+                            <p>Current link to Amazon for the book <a href="https://www.amazon.com/HTML5-Masterminds-3rd-revolutionary-applications-ebook/dp/B07KYB26T2/ref=sr_1_1?dchild=1&keywords=how+to+html5&qid=1586653659&s=digital-text&sr=1-1" target="_blank">Web site</a></p>
+                            <div>
+                                <label class="" for="myurl">Upload new link:</label>
+                                <input class="col-8" type="url" id="myurl" name="myurl">
+                            </div>
+                            <hr>
+                            
+                            <p>&#169; ACME Publishing, 2020</p> -->
+                        </div>
+                        <div class="col-3">
+                            <h3>Owner: <%=merch.owner.first_name%> <%=merch.owner.last_name%></h3>
+                            <h4>Ratings:</h4>
+                            <% for (var star=0; star< rating; star++){ %>
+                                <span class="fa fa-star checked"></span>
+                                <% } %>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-group">
+                                <h4 class=" col-3 d-inline">Offer Type:</h4>
+                                <select class="col-8  d-inline form-select" id="offerType" name="offer" required>
+                                    <option value="<%=merch.offered_as%>" selected><%=merch.offered_as%></option>
+                                    <option value="For Sale">For Sale</option>
+                                    <option value="To Donate">Donate</option>
+                                    <option value="For Rent" id="rent">For Rent</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-3 col-form-label d-inline" for="price"> Offering Price: </label>
+                                <span class="col-1  d-inline">$</span>
+                                <input class="col-7 col-form-control d-inline" type="text" id="price" name="price" value="<%=merch.cost%>" required>
+                            </div>
+                            <div class="form-group" id='availability' style="display: block;">
+                                <label class="col-4 d-inline" for="dateAvailable"> Weeks Available: </label>
+                                <input class="col-7 col-form-control d-inline" type="number" min="0" placeholder="" id="dateAvailable" name="availability" value="<%=merch.availability_period%>">
+                            </div>
+
+
+                            <br>
+                            <div class="form-group">
+                                <a class="col-3 btn btn-danger btn-lg" href="/exchange/textbook-edit/<%=id%>/<%=member%>/<%=merch._id%>" role="button">Reset</a>
+                                <a class="col-4 btn btn-secondary btn-lg" href="/exchange/myposts/<%=id%>/<%=member%>" role="button">Cancel</a>
+                                <button type="submit" class="col-4 btn btn-success btn-lg">Save</button>
+                            </div>
+                            <br>
+                            <br>
+                            <h4 class="text-success">Reset will populate the form with original inforamtion from the database</h4>
+                            <hr>
+                            <h4 class="text-secondary">Cancel will bring you back to your bookshelf.</h4>
+                            <hr>
+                            <h4 class="text-danger">Clicking on the Save button will save your changes!</h4>
+                            <h5 class="text-warning"> You will then be brought back to your bookshelf.</h5>
+                        </div>
+                        <div id="pick-place" style="display: none;" class="form-group">
+                            <label for="changeTable">Please choose 3 locations</label>
+                            <table style="background: rgba(205, 210, 212, 0.7); color: white;" class="table table-sm " id="changeTable">
+                                <thead>
+                                    <tr class="myTable">
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Capacity</th>
+                                        <th scope="col">Rating</th>
+                                        <th scope="col">Hours</th>
+                                        <th scope="col">Click to Select</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <% places.forEach(function(row) { %>
+                                            <tr class="table-secondary">
+                                                <td scope="row">
+                                                    <%=row.name %>
+                                                </td>
+                                                <td scope="row">
+                                                    <%=row.address.full_address %>
+                                                </td>
+                                                <td scope="row">
+                                                    <%=row.capacity %>
+                                                </td>
+                                                <td scope="row">
+                                                    <%=row.rating.num %>
+                                                </td>
+                                                <td scope="row">
+                                                    Mon: <%=row.operation_hours[0] %>,
+                                                    Tues: <%=row.operation_hours[1] %>,
+                                                    Weds: <%=row.operation_hours[2] %>,
+                                                    Thurs: <%=row.operation_hours[3] %>,
+                                                    Fri: <%=row.operation_hours[4] %>,
+                                                    Sat: <%=row.operation_hours[5] %>,
+                                                    Sun: <%=row.operation_hours[6] %>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-secondary btn-sm" onclick="addPlace(this)">Select Place</button>
+                                                </td>
+                                            </tr>
+                                        <% }) %> 
+            
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div id="dynamic-list2" style="font-size: 16px;">
+                                
+                                </div>
+
+                                <div id="list2" style="font-size: 16px;">
+                                    <input id="first" name="first" style="visibility:hidden;">
+                                    <input id="second" name="second" style="visibility:hidden;">
+                                    <input id="third" name="third" style="visibility:hidden;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<script>
+    window.onload = function displayWeeks () {
+        if(document.getElementById("offerType").value != 'For Rent'){
+            document.getElementById("availability").style.display = "none";
+        }
+    }
+
+    document.getElementById("offerType").addEventListener("change", myFunction2);
+
+    function myFunction2() {
+        var x = document.getElementById("offerType");
+        if(x.value == 'For Rent'){
+            document.getElementById("availability").style.display = 'block';
+        }
+        else{
+            document.getElementById("availability").style.display = "none";
+        }
+    }
+
+
+    function isValidForm(){
+        var list = document.getElementById("dynamic-list2");
+        var count = list.getElementsByTagName('input').length;
+        if(count > 0 && count < 3)
+        {
+            alert("Choose 3 locations for the exchange.");
+            return false;
+        }
+        alert("Validations successful!");
+        return true;
+    }
+
+    document.getElementById('merch').onsubmit = function() {
+        return isValidForm();
+    };
+
+    function myFunction() {
+        var x = document.getElementById("pick-place");
+        if(x.style.display == 'none'){
+            x.style.display = "block";
+        }
+        else{
+            x.style.display = "none";
+        }
+    }
+
+    function addPlace(x){
+        var list = document.getElementById("dynamic-list2");
+        var count = list.getElementsByTagName('input').length;
+        if(count == 3){
+            return;
+        }
+        var inde = x.parentNode.parentNode.rowIndex;
+        var name = document.getElementById("changeTable").rows[inde].cells[0].innerHTML.replace(/\s\s+/g, ' ');
+        var address = document.getElementById("changeTable").rows[inde].cells[1].innerHTML.replace(/\s\s+/g, ' ');
+
+        var tags = list.getElementsByTagName('input');
+        for(var ind = 0; ind < count; ind++){
+            if(tags[ind].value == (name + ": " + address)){
+                alert("That location was already selected");
+                return;
+            }
+        }
+
+        var inp = document.createElement('input');
+        inp.classList.add("col-sm-11");
+        inp.style.border = '2px solid gray';
+        inp.style.borderRadius = '25px';
+        inp.style.padding = '10px';
+        inp.style.display = 'inline-block';
+        inp.readOnly = true;
+        list.appendChild(inp);
+    
+        inp.required = true;
+        inp.value = name + ": " + address;
+
+        var list2 = document.getElementById("list2");
+        var values = list2.getElementsByTagName('input')
+        for(var ind = 0; ind < 3; ind++){
+            if(!values[ind].value){
+                values[ind].value = inp.value;
+                break;
+            }
+        }
+
+        inp.size = inp.value.length;
+        //create your delete button after you click try it
+        var del = document.createElement('button');
+        del.style.textDecoration = 'none';
+        del.innerHTML = 'X';
+        del.style.color = 'white';
+        del.style.borderRadius = '25px';
+        del.style.backgroundColor = 'red';
+        //assign a function for it when clicked
+        del.onclick = function() { deletePlace(inp,this)}; 
+        list.appendChild(del);
+    }
+
+    function deletePlace(x,y) {
+	  
+      var parent = document.getElementById('dynamic-list2');
+      //remove the input field
+      parent.removeChild(x);
+      //remove the button
+      parent.removeChild(y);
+      
+      var list2 = document.getElementById("list2");
+        var values = list2.getElementsByTagName('input')
+        for(var ind = 0; ind < 3; ind++){
+            if(values[ind].value == x.value){
+                values[ind].value = null;
+                break;
+            }
+        }
+  }
+</script>
+<script>
+    (function() {
+    
+        const idleDurationSecs = 900;    // X number of seconds
+        const redirectUrl = '/users/logout';  // Redirect idle users to this URL
+        let idleTimeout; // variable to hold the timeout, do not modify
+    
+        const resetIdleTimeout = function() {
+    
+            // Clears the existing timeout
+            if(idleTimeout) clearTimeout(idleTimeout);
+    
+            // Set a new idle timeout to load the redirectUrl after idleDurationSecs
+            idleTimeout = setTimeout(() => location.href = redirectUrl, idleDurationSecs * 1000);
+        };
+    
+        // Init on page load
+        resetIdleTimeout();
+    
+        // Reset the idle timeout on any of the events listed below
+        ['click', 'touchstart', 'mousemove'].forEach(evt => 
+            document.addEventListener(evt, resetIdleTimeout, false)
+        );
+    
+    })();
+</script>

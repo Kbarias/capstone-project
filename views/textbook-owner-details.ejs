@@ -24,7 +24,7 @@
         <nav class="col-md-2 d-none d-md-block bg-dark sidebar myVerticalNav">
             <%- include ('./partials/sidebar'); -%>
         </nav>
-
+        <%- include ('./partials/messages'); -%>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
             <div class="container-fluid text-dark">
                 <div class="row">
@@ -66,12 +66,13 @@
                                 <% } %>
                         </h5>
                         <hr>
-                        <h4>Requesting members:</h4>
                         <%if(merch.status.state == 'Being Rented'){%>
                             <h4 class="text-danger">Note: There will be no requests until the book has been returned and you set the book as available again on the Exchange.</h4>
                         <%} else {%>
                             <h3>Please accept a request</h3>
                         <%}%>
+                        <h4>Requesting members:</h4>
+                        <%if(merch.status.state == 'Available'){%>
                         <form id="request" onsubmit="return isValidForm()" action="/exchange/accept-request/<%=id%>/<%=member%>/<%=merch._id%>" method="POST">
                             <div class="table-responsive myTable">
                                 <table class="table table-striped table-sm" id="myTable">
@@ -82,6 +83,7 @@
                                             <th scope="col">First Requested Date</th>
                                             <th scope="col">Second Requested Date</th>
                                             <th scope="col">Third Requested Date</th>
+                                            <th scope="col">Message</th>
                                             <th scope="col">Check to accept</th>
                                         </tr>
                                     </thead>
@@ -111,6 +113,9 @@
                                                     <%=row.requested_times.third_time %>
                                                     <input type="checkbox" name = 'accept' style="visibility: hidden;" onclick="selectTime(this)" >
                                                 </td>
+                                                <td scope="row">
+                                                    <%=row.message%>
+                                                </td>
 
                                                 <td>
                                                     <button id='do-it' type="button" class="btn btn-secondary btn-sm" onclick="select(this, '<%= row._id %>')">Select Request</button>
@@ -138,8 +143,9 @@
                                 <h5 class="text-warning">The text book will then be removed from the list of avaialable items to be exchanged.</h5>
                             <%}%>
                             
-
+                            
                         </form>
+                        <%}%>
                     </div>
                     <div class="col-4">
                         <%if(merch.status.state == 'Being Rented'){%>
@@ -224,11 +230,37 @@
 
     //script to select
     function selectTime(x){
-        alert(x.value);
         var checkboxes = document.getElementsByName('accept');
         checkboxes.forEach((item) => {
             if (item !== x) item.checked = false;
         })
     };
 
+</script>
+
+<script>
+    (function() {
+    
+        const idleDurationSecs = 900;    // X number of seconds
+        const redirectUrl = '/users/logout';  // Redirect idle users to this URL
+        let idleTimeout; // variable to hold the timeout, do not modify
+    
+        const resetIdleTimeout = function() {
+    
+            // Clears the existing timeout
+            if(idleTimeout) clearTimeout(idleTimeout);
+    
+            // Set a new idle timeout to load the redirectUrl after idleDurationSecs
+            idleTimeout = setTimeout(() => location.href = redirectUrl, idleDurationSecs * 1000);
+        };
+    
+        // Init on page load
+        resetIdleTimeout();
+    
+        // Reset the idle timeout on any of the events listed below
+        ['click', 'touchstart', 'mousemove'].forEach(evt => 
+            document.addEventListener(evt, resetIdleTimeout, false)
+        );
+    
+    })();
 </script>

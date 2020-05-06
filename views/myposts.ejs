@@ -50,7 +50,7 @@
                                         <th scope="col">Condition</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Requests pending</th>
-                                        <th scope="col">View Details</th>
+                                        <th scope="col">Edit Details</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -86,7 +86,7 @@
                                                     <a class="btn btn-sm btn-secondary" href="/exchange/textbook-owner-details/<%=id%>/<%=member%>/<%=row._id%>" role="button">View Pending Requests</a>
                                                 </td>
                                                 <td scope="row">
-                                                    <a class="btn btn-sm btn-secondary" href="/exchange/textbook-details/<%=id%>/<%=member%>/<%=row._id%>" role="button">View Posting</a>
+                                                    <a class="btn btn-sm btn-secondary" href="/exchange/textbook-edit/<%=id%>/<%=member%>/<%=row._id%>" role="button">Click to Edit</a>
                                                 </td>
                                             </tr>
                                         <% }) %> 
@@ -105,3 +105,29 @@
     </div>
 </div>
 
+<script>
+    (function() {
+    
+        const idleDurationSecs = 900;    // X number of seconds
+        const redirectUrl = '/users/logout';  // Redirect idle users to this URL
+        let idleTimeout; // variable to hold the timeout, do not modify
+    
+        const resetIdleTimeout = function() {
+    
+            // Clears the existing timeout
+            if(idleTimeout) clearTimeout(idleTimeout);
+    
+            // Set a new idle timeout to load the redirectUrl after idleDurationSecs
+            idleTimeout = setTimeout(() => location.href = redirectUrl, idleDurationSecs * 1000);
+        };
+    
+        // Init on page load
+        resetIdleTimeout();
+    
+        // Reset the idle timeout on any of the events listed below
+        ['click', 'touchstart', 'mousemove'].forEach(evt => 
+            document.addEventListener(evt, resetIdleTimeout, false)
+        );
+    
+    })();
+</script>

@@ -254,3 +254,30 @@
     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1510.8780331939784!2d-73.96472090523616!3d40.76738959330323!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c258ebe8836e8f%3A0x306c53c6456af436!2sHunter%20College%20Leon%20%26%20Toby%20Cooperman%20Library!5e0!3m2!1sen!2sus!4v1585064383050!5m2!1sen!2sus" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
 
 -->
+
+<script>
+    (function() {
+    
+        const idleDurationSecs = 900;    // X number of seconds
+        const redirectUrl = '/users/logout';  // Redirect idle users to this URL
+        let idleTimeout; // variable to hold the timeout, do not modify
+    
+        const resetIdleTimeout = function() {
+    
+            // Clears the existing timeout
+            if(idleTimeout) clearTimeout(idleTimeout);
+    
+            // Set a new idle timeout to load the redirectUrl after idleDurationSecs
+            idleTimeout = setTimeout(() => location.href = redirectUrl, idleDurationSecs * 1000);
+        };
+    
+        // Init on page load
+        resetIdleTimeout();
+    
+        // Reset the idle timeout on any of the events listed below
+        ['click', 'touchstart', 'mousemove'].forEach(evt => 
+            document.addEventListener(evt, resetIdleTimeout, false)
+        );
+    
+    })();
+</script>

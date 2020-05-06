@@ -51,10 +51,10 @@
                                 Total number of Tutor Sessions
                                 <span class="badge badge-primary badge-pill"><%=sessions%></span>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Pending messages
                                 <span class="badge badge-primary badge-pill"><a class="mya" href="#">2</a></span>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                     <%if(editing){%>
@@ -177,3 +177,31 @@
         </main>
     </div>
 </div>
+<%- include ('./partials/footer'); -%>
+
+<script>
+    (function() {
+    
+        const idleDurationSecs = 900;    // X number of seconds
+        const redirectUrl = '/users/logout';  // Redirect idle users to this URL
+        let idleTimeout; // variable to hold the timeout, do not modify
+    
+        const resetIdleTimeout = function() {
+    
+            // Clears the existing timeout
+            if(idleTimeout) clearTimeout(idleTimeout);
+    
+            // Set a new idle timeout to load the redirectUrl after idleDurationSecs
+            idleTimeout = setTimeout(() => location.href = redirectUrl, idleDurationSecs * 1000);
+        };
+    
+        // Init on page load
+        resetIdleTimeout();
+    
+        // Reset the idle timeout on any of the events listed below
+        ['click', 'touchstart', 'mousemove'].forEach(evt => 
+            document.addEventListener(evt, resetIdleTimeout, false)
+        );
+    
+    })();
+</script>
