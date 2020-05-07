@@ -240,6 +240,7 @@ exports.user_registration = (req, res) => {
                                             
                                                     // Send the email
                                                     mailOptions.to = newUser.email;
+                                                    mailOptions.subject = 'Please Verify your Email for Agora';
                                                     mailOptions.text = 'Hello,\n\n' + 'Please verify your Agora account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/users'+ '\/login'+ '\/confirmation\/' + token.token + '\n and logging in'+ '.\n';
                                 
                                                     transporter.sendMail(mailOptions, function (err) {

@@ -28,8 +28,8 @@ exports.get_gather_page = (req, res) => {
     const my_org_sess = Session.find({is_deleted:false,'organizer':userid}).populate('place');
     all_mygroups.exec(function (err, groups){
         all_tutorings.exec(function (err, tutoring){
-
             my_org_sess.exec(function (err, orgs){
+                console.log(groups);
                 if(err) throw err;
                 res.render('gather', { id: req.params.id , member: req.params.member, mytutoring:tutoring, org_sessions:orgs, mygroups: groups});
             });
@@ -421,7 +421,7 @@ exports.create_tutoring_session = (req, res) => {
 
         var newMembers = new SessionMember({
             _id: newTutoring._id,
-            is_tutoring: false
+            is_tutoring: true
         });
 
         for(var i = 0; i < people.length; i++){
