@@ -103,10 +103,7 @@
                                             <%=row.name %>
                                         </td>
                                         <td id="place-address" name="place-address" scope="row">
-                                            <%=row.address.street %>,
-                                            <%=row.address.city %>,
-                                            <%=row.address.state %>,
-                                            <%=row.address.zipcode %>
+                                            <%=row.address.full_address %>
                                         </td>
                                         <td scope="row">
                                             Mon: <%=row.operation_hours[0] %>,

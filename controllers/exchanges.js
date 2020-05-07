@@ -272,7 +272,7 @@ exports.post_request = (req, res) => {
     ])
     .then(results =>{
         const [place, merch]= results;
-        console.log(place + " " + merch);
+        
         //check to make sure that the exact request doesn't exist already (same merch, same requester)
         Request.findOne({merch:req.params.merchid, requester: userid, is_deleted:false, place:place, 'requested_times.first_date':choices[0], 'requested_times.first_time':choices[1], 'requested_times.sec_date':choices[2], 'requested_times.sec_time':choices[3], 'requested_times.third_date':choices[4], 'requested_times.third_time':choices[5]})
         .then(oldrequest =>{
@@ -295,6 +295,7 @@ exports.post_request = (req, res) => {
                         third_time: choices[5],
                     }
                 });
+                console.log(new_request);
                 new_request.save(request => {
                     req.flash('success_msg', 'You have successfully submitted a request for ' + merch.book.title + 'offered by ' + merch.owner.username);
                     res.redirect('/exchange/history/' + req.params.id +'/' + req.params.member);
