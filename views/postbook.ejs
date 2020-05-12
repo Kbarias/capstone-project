@@ -89,7 +89,7 @@
                                 <input type="number" min="0" id="weeks" name="weeks">
                             </div>
 
-                            <label for="place">Choose 3 different locations you could make an exchange for this book:</label>
+                            <label for="place">Choose at least 1 location and up to 3 where you could make an exchange for this book:</label>
                             <div class="table-responsive myTable">
                                 <table id="myTable" class="table table-striped table-sm">
                                     <thead>
@@ -184,9 +184,9 @@
     function isValidForm(){
         var list = document.getElementById("dynamic-list");
         var count = list.getElementsByTagName('input').length;
-        if(count < 3)
+        if(count < 1)
         {
-            alert("Choose 3 locations for the exchange.");
+            alert("Please choose at least one location.");
             return false;
         }
         alert("Validations successful!");

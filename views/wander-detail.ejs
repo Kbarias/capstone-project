@@ -53,11 +53,10 @@
                     <div class="form-group row">
                         <label for="inputAddress" class="col-sm-4 col-form-label">2. Address:</label>
                         <div class="col-sm-8">
-                            <%=place.address.street%>,
-                            <%=place.address.city%>,
-                            <%=place.address.state%>,
-                            <%=place.address.zipcode%>
+                            <%=place.address.full_address%>
                         </div>
+                        <input id="lati" value="<%=place.gps_coordinates.latitude%>" style="display: none;" readonly>
+                        <input id="longi" value="<%=place.gps_coordinates.longitude%>" style="display: none;" readonly>
                     </div>
                     <div class="form-group row">
                         <label for="inputURL" class="col-sm-4 col-form-label">3. Website:</label>
@@ -186,8 +185,8 @@
                     </div>
                 </form>
                 
-                <div class="col-6" id='comments' style="visibility: hidden;">
-                    <table class="table table-sm myTable">
+                <div class="col-6">
+                    <table class="table table-sm myTable"  id='comments' style="display: none;">
                         <thead>
                           <tr>
                             <th scope="col">User</th>
@@ -206,11 +205,11 @@
 
                         </tbody>
                       </table>
-                    <!-- <div id="map">
+                      <div id="map">
 
                         <p>This is a map</p>
 
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </main>
@@ -220,18 +219,18 @@
 <!--need fixing, this is code to get the input from screen-->
 <script async defer type="text/javascript">
     function getCoord() {
-        var newlat = parseFloat(document.getElementById("newlat").value);
-        var newlng = parseFloat(document.getElementById("newlng").value);
+        var newlat = parseFloat(document.getElementById("lati").value);
+        var newlng = parseFloat(document.getElementById("longi").value);
         $("#map").load(" #map");
+
     }
 </script>
 
 <script>
     function initMap() {
-        // var lati = <%- JSON.stringify().gps_coordinates.latitude)%>;
         var location = {
-            lat: place.gps_coordinates.latitude, //need default value or data poll from DB
-            lng: place.gps_coordinates.longitude //need default value or data poll from DB
+            lat: parseFloat(document.getElementById("lati").value), //need default value or data poll from DB
+            lng: parseFloat(document.getElementById("longi").value) //need default value or data poll from DB
 
         };
         var map = new google.maps.Map(document.getElementById("map"), {
@@ -253,11 +252,11 @@
 <script>
     function myFunction() {
         var x = document.getElementById("comments");
-        if(x.style.visibility == 'hidden'){
-            document.getElementById("comments").style.visibility = "visible";
+        if(x.style.display == 'none'){
+            document.getElementById("comments").style.display = "block";
         }
         else{
-            document.getElementById("comments").style.visibility = "hidden";
+            document.getElementById("comments").style.display = "none";
         }
     }
 </script>

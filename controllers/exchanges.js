@@ -101,16 +101,25 @@ exports.post_new_book = (req, res) => {
     const { isbn, title, author, edition, offer, condition, price, weeks, first, second, third} = req.body;
 
     let week_input = weeks;
-
+    let loc1, loc2, loc3;
     if(offer == 'To Donate' || offer == 'For Sale'){
         week_input = null;
+    }
+    if(first){
+        loc1 = first.split(':')[1].trim();
+    }
+    if(second){
+        loc2 = second.split(':')[1].trim();
+    }
+    if(third){
+        loc3 = third.split(':')[1].trim();
     }
 
     Promise.all([
         //get place ids from DB
-        Place.findOne({'address.full_address':(first.split(':')[1].trim())}),
-        Place.findOne({'address.full_address':(second.split(':')[1].trim())}),
-        Place.findOne({'address.full_address':(third.split(':')[1].trim())}),
+        Place.findOne({'address.full_address':loc1}),
+        Place.findOne({'address.full_address':loc2}),
+        Place.findOne({'address.full_address':loc3}),
     ])
     .then(results =>{
         const [ placeone ,placetwo, placethree] = results;
@@ -124,9 +133,15 @@ exports.post_new_book = (req, res) => {
                     .then(book => {
                         //create a merch entry for user
                         var new_merch = new Merch({book: new_book._id, owner: userid, condition_desc: condition, cost: price, offered_as: offer, status:{state:'Available'}, availability_period: week_input});
-                        console.log(new_book);
-                        new_merch.suggested_places.push(placeone._id, placetwo._id, placethree._id);
-                        
+                        if(placeone){
+                            new_merch.suggested_places.push(placeone._id);
+                        }
+                        if(placetwo){
+                            new_merch.suggested_places.push(placetwo._id);
+                        }
+                        if(placethree){
+                            new_merch.suggested_places.push(placethree._id);
+                        }                
                         
                         new_merch.save()
                             .then(new_posting => {
@@ -139,7 +154,15 @@ exports.post_new_book = (req, res) => {
             else{
                 //if the book was found, create a new merch entry for user
                 var new_merch = new Merch({book: book._id, owner: userid, condition_desc: condition, cost: price, offered_as: offer, status:{state:'Available'}, availability_period: week_input});
-                new_merch.suggested_places.push(placeone._id, placetwo._id, placethree._id);
+                if(placeone){
+                    new_merch.suggested_places.push(placeone._id);
+                }
+                if(placetwo){
+                    new_merch.suggested_places.push(placetwo._id);
+                }
+                if(placethree){
+                    new_merch.suggested_places.push(placethree._id);
+                }  
                 new_merch.save()
                     .then(new_posting => {
                         req.flash('success_msg', 'You have successfully posted a book!');
@@ -196,17 +219,38 @@ exports.post_textbook_edits = (req, res) => {
     if(offer == 'To Donate' || offer == 'For Sale'){
         weeks = null;
     }
+
+
     //if changing locations
-    if(first){
+    if(first || second || third){
+        let loc1, loc2, loc3;
+        if(first){
+            loc1 = first.split(':')[1].trim();
+        }
+        if(second){
+            loc2 = second.split(':')[1].trim();
+        }
+        if(third){
+            loc3 = third.split(':')[1].trim();
+        }
         Promise.all([
             //get place ids from DB
-            Place.findOne({'address.full_address':(first.split(':')[1].trim())}),
-            Place.findOne({'address.full_address':(second.split(':')[1].trim())}),
-            Place.findOne({'address.full_address':(third.split(':')[1].trim())}),
+            Place.findOne({'address.full_address':loc1}),
+            Place.findOne({'address.full_address':loc2}),
+            Place.findOne({'address.full_address':loc3}),
         ])
         .then(results => {
             const [place1, place2, place3] = results;
-            let places = [place1, place2, place3];
+            let places = [];
+            if (place1){
+                places.push(place1);
+            }
+            if(place2){
+                places.push(place2);
+            }
+            if(place3){
+                places.push(place3);
+            }
             Merch.findOneAndUpdate({_id:req.params.merchid}, {condition_desc:condition, cost:price, offered_as:offer, availability_period:weeks, suggested_places:places })
                 .then(updated => {
                     req.flash('success_msg', 'You have successfully made edits to your book!');

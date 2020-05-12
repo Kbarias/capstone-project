@@ -20,7 +20,7 @@ var mailOptions = {
     text: '' 
 };
 
-exports.get_gather_page = (req, res) => {
+exports.get_my_sessions_page = (req, res) => {
     let userid = req.params.id.slice(0,-1);
     //find all existing tutoring sessions I am a part of either as a tutor or a member or an organizer
     const all_mygroups = SessionMember.find({members:userid, is_deleted:false, is_tutoring:false}).populate({path: '_id', populate: { path: 'organizer', model:'User'}}).populate({path: '_id', populate: { path: 'place', model:'Place'}});
@@ -31,8 +31,21 @@ exports.get_gather_page = (req, res) => {
             my_org_sess.exec(function (err, orgs){
                 console.log(groups);
                 if(err) throw err;
-                res.render('gather', { id: req.params.id , member: req.params.member, mytutoring:tutoring, org_sessions:orgs, mygroups: groups});
+                res.render('mysessions', { id: req.params.id , member: req.params.member, mytutoring:tutoring, org_sessions:orgs, mygroups: groups});
             });
+        });
+    });
+};
+
+exports.get_gather_page = (req, res) => {
+    let userid = req.params.id.slice(0,-1);
+    //find all existing tutoring sessions I am a part of either as a tutor or a member or an organizer
+    const groups = Session.find({is_public:true, is_deleted:false, is_tutoring:false}).populate('organizer').populate('place'); 
+    const tutoring = Session.find({is_public:true, is_deleted:false, is_tutoring:true}).populate('organizer').populate('place'); 
+    tutoring.exec(function (err, tutor){
+        groups.exec(function (err, group){
+            if(err) throw err;
+            res.render('gather', { id: req.params.id , member: req.params.member, tutoring:tutor, groups: group});
         });
     });
 };
@@ -231,15 +244,11 @@ exports.create_group = (req, res) => {
 };
 
 exports.get_group_session_info = (req, res) => {
-        //find all group sessions that are public
-        const sessions = Session.find({is_public:true, is_deleted:false, is_tutoring:false}).populate('organizer'); 
-        sessions.exec(function (err, data){
-            if(err) throw err;
-            SessionMember.findOne({_id:req.params.sessinfo}).populate('_id').populate({path: '_id', populate: { path: 'organizer', model:'User'}}).populate('members').populate({path: '_id', populate: { path: 'place', model:'Place'}})
-                .then(sessioninfo => {
-                    res.render('gather-join', { id: req.params.id ,member:req.params.member, sessions :data, info:sessioninfo });
-                })
-        });
+    //find all group sessions that are public
+    SessionMember.findOne({_id:req.params.sessinfo}).populate('_id').populate({path: '_id', populate: { path: 'organizer', model:'User'}}).populate('members').populate({path: '_id', populate: { path: 'place', model:'Place'}})
+        .then(sessioninfo => {
+            res.render('gather-join', { id: req.params.id ,member:req.params.member, info:sessioninfo });
+        })
 };
 
 exports.join_gathering = (req, res) => {
@@ -256,12 +265,12 @@ exports.join_gathering = (req, res) => {
             SessionMember.findByIdAndUpdate({_id:req.params.sessionid}, {$push:{members: userid}})
                 .then(save_member => {
                     req.flash('success_msg', 'You have been added to the ' + found_sm._id.name + " group." );
-                    res.redirect('/gather/group-join-info/'+ req.params.id +'/' + req.params.member);
+                    res.redirect('/gather/mygroups/'+ req.params.id +'/' + req.params.member);
                 })
         }
         else{
             req.flash('error_msg', 'You are already a member or organizer of this group.');
-            res.redirect('/gather/group-join-info/'+ req.params.id +'/' + req.params.member);
+            res.redirect('/gather/group-join-info/'+ req.params.id +'/' + req.params.member + '/' + req.params.sessionid);
         }
     })
 
@@ -347,14 +356,14 @@ exports.organizer_edit_details = (req, res) => {
                                 Session.findOneAndUpdate({_id:req.params.sessionid}, {name:up_name, description:up_description, date:up_date, 'time.start': up_start, 'time.end': up_end, place:location._id})
                                 .then(updated => {
                                     req.flash('success_msg', 'You have successfully edited your session. Members will be notified.' );
-                                    res.redirect('/gather/'+ req.params.id +'/' + req.params.member);
+                                    res.redirect('/gather/mygroups/'+ req.params.id +'/' + req.params.member);
                                 })
                             })
                     }else{
                         Session.findOneAndUpdate({_id:req.params.sessionid}, {name:up_name, description:up_description, date:up_date, 'time.start': up_start, 'time.end': up_end})
                         .then(updated => {
                             req.flash('success_msg', 'You have successfully edited your session. Members will be notified.' );
-                            res.redirect('/gather/'+ req.params.id +'/' + req.params.member);
+                            res.redirect('/gather/mygroups/'+ req.params.id +'/' + req.params.member);
                         })
                     }
                 })
@@ -482,26 +491,21 @@ exports.join_tutoring_session = (req, res) => {
             SessionMember.findByIdAndUpdate({_id:req.params.sessionid}, {$push:{members: userid}})
                 .then(save_member => {
                     req.flash('success_msg', 'You have been added to the ' + found_sm._id.name + " tutoring session." );
-                    res.redirect('/gather/tutor-join-info/'+ req.params.id +'/' + req.params.member);
+                    res.redirect('/gather/mygroups/'+ req.params.id +'/' + req.params.member);
                 })
         }
         else{
             req.flash('error_msg', 'You are already a member or organizer of this tutoring session.');
-            res.redirect('/gather/tutor-join-info/'+ req.params.id +'/' + req.params.member);
+            res.redirect('/gather/tutor-join-info/'+ req.params.id +'/' + req.params.member + '/' + req.params.sessionid);
         }
     })
         
 };
 
 exports.get_tutoring_session_info = (req, res) => {
-    //find all tutoring sessions that are public
-    const sessions = Session.find({is_public:true, is_deleted:false, is_tutoring:true}).populate('organizer'); 
-    sessions.exec(function (err, data){
-        if(err) throw err;
-        SessionMember.findOne({_id:req.params.sessinfo}).populate('_id').populate({path: '_id', populate: { path: 'organizer', model:'User'}}).populate('members').populate({path: '_id', populate: { path: 'place', model:'Place'}})
-            .then(sessioninfo => {
-                res.render('tutor-join', { id: req.params.id ,member:req.params.member, sessions:data, info:sessioninfo });
-            })
-    });
+    SessionMember.findOne({_id:req.params.sessinfo}).populate('_id').populate({path: '_id', populate: { path: 'organizer', model:'User'}}).populate('members').populate({path: '_id', populate: { path: 'place', model:'Place'}})
+        .then(sessioninfo => {
+            res.render('tutor-join', { id: req.params.id ,member:req.params.member, info:sessioninfo });
+        })
 
 };

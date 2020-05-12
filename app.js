@@ -22,7 +22,10 @@ app.use(
     session({
         secret: 'secret',
         resave: true,
-        saveUninitialized: true
+        saveUninitialized: true,
+        cookie:{
+            maxAge : 360000 // one hour in millis
+          }
     })
 );
 //for image folder

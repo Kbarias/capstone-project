@@ -28,7 +28,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
             <div class="container-fluid text-dark">
-                <form id="merch" onsubmit="return isValidForm()" action="/exchange/textbook-edit-post/<%=id%>/<%=member%>/<%=merch._id%>" method="POST">
+                <form id="merch" action="/exchange/textbook-edit-post/<%=id%>/<%=member%>/<%=merch._id%>" method="POST">
                     <div class="row">
                         <h1 class="col-5 text-dark "> Edit Offering Details for:</h1>
                         <h4 class=" col-7 text-dark"><%=merch.book.title%></h4>
@@ -135,7 +135,7 @@
                             <h5 class="text-warning"> You will then be brought back to your bookshelf.</h5>
                         </div>
                         <div id="pick-place" style="display: none;" class="form-group">
-                            <label for="changeTable">Please choose 3 locations</label>
+                            <label for="changeTable">Choose up to 3 locations where you can make your exchange.</label>
                             <table style="background: rgba(205, 210, 212, 0.7); color: white;" class="table table-sm " id="changeTable">
                                 <thead>
                                     <tr class="myTable">
@@ -221,21 +221,21 @@
     }
 
 
-    function isValidForm(){
-        var list = document.getElementById("dynamic-list2");
-        var count = list.getElementsByTagName('input').length;
-        if(count > 0 && count < 3)
-        {
-            alert("Choose 3 locations for the exchange.");
-            return false;
-        }
-        alert("Validations successful!");
-        return true;
-    }
+    // function isValidForm(){
+    //     var list = document.getElementById("dynamic-list2");
+    //     var count = list.getElementsByTagName('input').length;
+    //     if(count > 0 && count < 3)
+    //     {
+    //         alert("Choose at least 1 location ");
+    //         return false;
+    //     }
+    //     alert("Validations successful!");
+    //     return true;
+    // }
 
-    document.getElementById('merch').onsubmit = function() {
-        return isValidForm();
-    };
+    // document.getElementById('merch').onsubmit = function() {
+    //     return isValidForm();
+    // };
 
     function myFunction() {
         var x = document.getElementById("pick-place");

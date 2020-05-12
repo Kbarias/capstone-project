@@ -6,6 +6,9 @@ const auth = require('../config/auth');
 //GATHER PAGE
 router.get('/:id/:member', auth.ensureAuthenticated, GatherController.get_gather_page);
 
+//GET MY GROUPS
+router.get('/mygroups/:id/:member',  auth.ensureAuthenticated, GatherController.get_my_sessions_page);
+
 //JOIN INVITED SESSION
 router.get('/invited-join/:id/:sessionid', auth.ensureAuthenticated, GatherController.join_invited_session);
 
@@ -25,7 +28,7 @@ router.get('/create/:id/:member', auth.ensureAuthenticated , GatherController.cr
 router.post('/group-create/:id/:member', auth.ensureAuthenticated, GatherController.create_group);
 
 //GROUP INFO PAGE
-router.get('/group-join-info/:id/:member/:sessinfo?', auth.ensureAuthenticated, GatherController.get_group_session_info);
+router.get('/group-join-info/:id/:member/:sessinfo', auth.ensureAuthenticated, GatherController.get_group_session_info);
 
 //JOIN GATHERING HANDLE
 router.get('/join/:id/:member/:sessionid', auth.ensureAuthenticated, GatherController.join_gathering);
@@ -46,5 +49,6 @@ router.post('/tutoring-create/:id/:member', auth.ensureAuthenticated, GatherCont
 router.get('/tutor-join/:id/:member/:sessionid', auth.ensureAuthenticated, GatherController.join_tutoring_session);
 
 //TUTORING SESSION INFO PAGE
-router.get('/tutor-join-info/:id/:member/:sessinfo?', auth.ensureAuthenticated, GatherController.get_tutoring_session_info);
+router.get('/tutor-join-info/:id/:member/:sessinfo', auth.ensureAuthenticated, GatherController.get_tutoring_session_info);
+
 module.exports = router; 
