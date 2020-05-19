@@ -96,7 +96,6 @@
                     
                     <%if(merch.status.state == 'Available'){%>
                     <h3>Please accept a request</h3>
-                    <h4>Requesting members:</h4>
                     <form id="request" onsubmit="return isValidForm()" action="/exchange/accept-request/<%=id%>/<%=member%>/<%=merch._id%>" method="POST">
                         <div class="table-responsive myTable">
                             <table class="table table-striped table-sm" id="myTable">

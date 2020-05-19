@@ -4,23 +4,7 @@ const UserInfo = require('../models/UserInfo');
 const Place = require('../models/Place');
 const Session = require('../models/Session');
 const Merch = require('../models/Merch');
-const nodemailer = require('nodemailer');
 
-//NODEMAILER CONFIG
-var transporter = nodemailer.createTransport({ 
-    service: 'gmail', 
-    auth: { 
-        user: 'TheAgoraProject1@gmail.com', 
-        pass: 'vr0gVBroj3ct' 
-    } 
-});
-
-var mailOptions = { 
-    from: 'TheAgoraProject1@gmail.com', 
-    to: '', 
-    subject: 'Administrator Invitation', 
-    text: '' 
-};
 
 exports.get_admin_dashboard_page = (req, res) => {
     let userid = req.params.id.slice(0,-1);
@@ -49,7 +33,6 @@ exports.get_admin_dashboard_page = (req, res) => {
 };
 
 exports.get_member_dashboard_page = (req, res) => {
-    console.log(req.session);
     let userid = req.params.id.slice(0,-1)
     User.findOne({_id:userid})
         .then( user => {
