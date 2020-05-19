@@ -617,7 +617,11 @@ exports.edit_user = (req, res) => {
 };
 
 exports.get_edit_profile_page = (req, res) => {
-    res.render('user-profile', {id:req.params.id, member: req.params.member });
+    let userid = req.params.id.slice(0,-1);
+    User.findOne({_id:userid})
+        .then(user => {
+            res.render('user-profile', {id:req.params.id, member: req.params.member, info: user });
+        })
 };
 
 exports.edit_profile = (req, res)=> {
@@ -722,4 +726,32 @@ exports.edit_profile = (req, res)=> {
                 })
         }
     }
+};
+
+exports.get_rating_page = (req, res) => {
+    User.findOne({_id:req.params.user})
+        .then(user => {
+            res.render('user-rating', {id:req.params.id, member: req.params.member, user:user});
+        })
+};
+
+exports.rating_post = (req, res) => {
+    const {user_rating} = req.body;
+    UserInfo.findOne({_id:req.params.user})
+        .then(user => {
+            if(user.rating.num){
+                var new_people = Number(user.rating.people) + 1;
+                var new_rating = Number(Number(user.rating.num) + Number(user_rating)) / Number(new_people);
+                UserInfo.findOneAndUpdate({_id:req.params.user}, {'rating.num' : Number(new_rating), 'rating.people': Number(new_people)})
+                    .then(updated => {
+                        res.redirect('/exchange/history' + req.params.id + '/' + req.params.member );
+                    })
+            }
+            else{
+                UserInfo.findOneAndUpdate({_id:req.params.user}, {'rating.num' : Number(user_rating), 'rating.people': 1})
+                .then(updated => {
+                    res.redirect('/exchange/history' + req.params.id + '/' + req.params.member );
+                })
+            }
+        })
 };

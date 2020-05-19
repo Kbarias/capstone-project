@@ -14,7 +14,10 @@ const UserInfoSchema = mongoose.Schema({
         default: false,
         required: true
     },
-    rating: Number,
+    rating: {
+        num:Number,
+        people:Number
+    },
     last_login: {
         type: Date
     },

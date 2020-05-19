@@ -54,7 +54,7 @@
                                 <label class="col-6 col-form-label" for="isbnNo">ISBN No:</label>
                                 <h4 class="col-8 col-form-control"><%=merch.book.isbn%></h4>
                             </div>
-                            <h4>MISC.</h4>
+                            <h4>Condition:</h4>
                             <div class="form-group">
                                 <label class="col-3 col-form-label" for="condition">Condition:</label>
                                 <select class="col-8 form-select" name="condition" required>
@@ -93,7 +93,7 @@
                         <div class="col-3">
                             <h3>Owner: <%=merch.owner.first_name%> <%=merch.owner.last_name%></h3>
                             <h4>Ratings:</h4>
-                            <% for (var star=0; star< rating; star++){ %>
+                            <% for (var star=0; star< rating.num; star++){ %>
                                 <span class="fa fa-star checked"></span>
                                 <% } %>
                         </div>

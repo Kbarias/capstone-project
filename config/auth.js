@@ -16,7 +16,7 @@ module.exports = {
     },
 
     isAdminInvite: function(req, res, next) {
-        if(req.isAuthenticated()) {
+        if(req.user) {
             let num = req.params.id.length;
             if(req.params.id[num-1] == '1'){
                 return next();
@@ -31,7 +31,7 @@ module.exports = {
     },
 
     ensureAuthenticated: function(req, res, next) {
-        if(req.isAuthenticated()) {
+        if(req.user) {
                 return next();
         }
         req.flash('error_msg', 'Please log in to view this resource');

@@ -21,10 +21,10 @@ app.set('view engine', 'ejs');
 app.use(
     session({
         secret: 'secret',
-        resave: true,
-        saveUninitialized: true,
+        resave: false,
+        saveUninitialized: false,
         cookie:{
-            maxAge : 360000 // one hour in millis
+            expires: false
           }
     })
 );

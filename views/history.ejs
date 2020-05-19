@@ -37,6 +37,7 @@
                         <thead>
                             <tr class="myTable">
                                 <th scope="col">Exchange Date</th>
+                                <th scope="col">Exchange Time and Place</th>
                                 <th scope="col">Reference Number</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Book</th>
@@ -48,6 +49,13 @@
                                 <tr class=" myTable">
                                     <td scope="row">
                                         <%= row.meeting_date %>
+                                    </td>
+                                    <td scope="row">
+                                        <%= row.meet_time %>
+                                        <br>
+                                        <%= row.place.name %>
+                                        <br>
+                                        <%= row.place.address.full_address %>
                                     </td>
                                     <td scope="row">
                                         <%=row._id %>
@@ -66,7 +74,9 @@
                                     </td>
                                     <td scope="row">
                                         <%=row.buyer.username %>
+                                        <br>
                                         <%=row.buyer.email %>
+                                        <a class="btn btn-sm btn-primary" href="/users/rating/<%=id%>/<%=member%>/<%=row.buyer._id%>" role="button">Rate User</a>
                                     </td>
                                 </tr>
                                 <% }) %>
@@ -81,6 +91,7 @@
                         <thead>
                             <tr class="myTable">
                                 <th scope="col">Exchange Date</th>
+                                <th scope="col">Exchange Time and Place</th>
                                 <th scope="col">Reference Number</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Book</th>
@@ -92,6 +103,13 @@
                                 <tr class=" myTable">
                                     <td scope="row">
                                         <%= row.meeting_date %>
+                                    </td>
+                                    <td scope="row">
+                                        <%= row.meet_time %>
+                                        <br>
+                                        <%= row.place.name %>
+                                        <br>
+                                        <%= row.place.address.full_address %>
                                     </td>
                                     <td scope="row">
                                         <%=row._id %>
@@ -111,6 +129,7 @@
                                     <td scope="row">
                                         <%=row.buyer.username %>
                                         <%=row.buyer.email %>
+                                        <a class="btn btn-sm btn-primary" href="/users/rating/<%=id%>/<%=member%>/<%=row.buyer._id%>" role="button">Rate User</a>
                                     </td>
 
                                 </tr>
@@ -191,6 +210,21 @@
         </main>
         </div>
     </div>
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("buyer-rating");
+            var y = document.getElementById("buyer-submit");
+            if(x.style.display == 'none' && y.style.display == 'none'){
+                x.style.display = "block";
+                y.style.display = "block";
+            }
+            else{
+                x.style.display = "none";
+                y.style.display = "none";
+            }
+        }
+    </script>
 
     <script>
         (function() {
