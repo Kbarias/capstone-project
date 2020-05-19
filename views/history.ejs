@@ -76,6 +76,7 @@
                                         <%=row.buyer.username %>
                                         <br>
                                         <%=row.buyer.email %>
+                                        <a class="btn btn-sm btn-primary" href="/users/rating/<%=id%>/<%=member%>/<%=row.buyer._id%>" role="button">Rate User</a>
                                     </td>
                                 </tr>
                                 <% }) %>
@@ -128,6 +129,7 @@
                                     <td scope="row">
                                         <%=row.buyer.username %>
                                         <%=row.buyer.email %>
+                                        <a class="btn btn-sm btn-primary" href="/users/rating/<%=id%>/<%=member%>/<%=row.buyer._id%>" role="button">Rate User</a>
                                     </td>
 
                                 </tr>
@@ -208,6 +210,21 @@
         </main>
         </div>
     </div>
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("buyer-rating");
+            var y = document.getElementById("buyer-submit");
+            if(x.style.display == 'none' && y.style.display == 'none'){
+                x.style.display = "block";
+                y.style.display = "block";
+            }
+            else{
+                x.style.display = "none";
+                y.style.display = "none";
+            }
+        }
+    </script>
 
     <script>
         (function() {

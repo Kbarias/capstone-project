@@ -45,11 +45,7 @@
                                 <%=merch.book.edition%>
                             <%}%></h4>
                         <h4>ISBN No.: <%=merch.book.isbn%></h4>
-                        <h4>MISC.</h4>
-                        <ul>
-                            <li>Condition: <%=merch.condition_desc%></li>
-                            <li>Other stuffs here</li>
-                        </ul>
+                        <h4>Condition: <%=merch.condition_desc%></h4>
                         <!-- <p>Textbook Image here </p>
                         <p><img src="/image/marvin.jpg" style="width: 40%;" alt="A Great HTML Resource"></p>
                         <p>Add a link to Amazon for the book <a href="https://www.amazon.com/HTML5-Masterminds-3rd-revolutionary-applications-ebook/dp/B07KYB26T2/ref=sr_1_1?dchild=1&keywords=how+to+html5&qid=1586653659&s=digital-text&sr=1-1" target="_blank">Web site</a></p>
@@ -60,7 +56,7 @@
                     <div class="col-4">
                         <h3>Owner: <%=merch.owner.first_name%> <%=merch.owner.last_name%></h3>
                         <h4>Ratings:</h4>
-                        <% for (var star=0; star< rating; star++){ %>
+                        <% for (var star=0; star< rating.num; star++){ %>
                             <span class="fa fa-star checked"></span>
                             <% } %>
                     </div>

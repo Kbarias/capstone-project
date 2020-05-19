@@ -49,7 +49,6 @@ exports.get_admin_dashboard_page = (req, res) => {
 };
 
 exports.get_member_dashboard_page = (req, res) => {
-    console.log(req.cookie);
     let userid = req.params.id.slice(0,-1)
     User.findOne({_id:userid})
         .then( user => {
