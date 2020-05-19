@@ -186,7 +186,6 @@ exports.get_myposts = (req, res) => {
 };
 
 exports.get_history = (req, res) => {
-    console.log(req.session);
     let userid = req.params.id.slice(0,-1);
     Promise.all([
         Request.find({requester:userid, is_deleted:false}).populate('book').populate('owner'),

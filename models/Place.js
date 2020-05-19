@@ -8,8 +8,8 @@ const PlaceSchema = mongoose.Schema({
     name: { type: String, required: true},
     capacity: Number,
     rating: {
-        num:Number,
-        people:Number
+        num:{ type: Number, default: 0},
+        people: { type: Number, default: 0}
     },
     website: String,
     comments: [{
