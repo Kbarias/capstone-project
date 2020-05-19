@@ -617,7 +617,11 @@ exports.edit_user = (req, res) => {
 };
 
 exports.get_edit_profile_page = (req, res) => {
-    res.render('user-profile', {id:req.params.id, member: req.params.member });
+    let userid = req.params.id.slice(0,-1);
+    User.findOne({_id:userid})
+        .then(user => {
+            res.render('user-profile', {id:req.params.id, member: req.params.member, info: user });
+        })
 };
 
 exports.edit_profile = (req, res)=> {
