@@ -24,7 +24,7 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie:{
-            maxAge : 360000 // one hour in millis
+            expires: false
           }
     })
 );
