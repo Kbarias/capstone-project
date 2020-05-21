@@ -17,6 +17,8 @@ exports.create_a_place = (req, res) => {
     const {placename, streetaddress, city, state, zipcode, capacity, rating, website, comment, monday1, monday2, tuesday1, tuesday2, wednesday1, wednesday2, thursday1, thursday2, friday1, friday2, saturday1, saturday2, sunday1, sunday2} = req.body;
     let op_hours = [];
     op_hours.push(monday1, monday2, tuesday1, tuesday2, wednesday1, wednesday2, thursday1, thursday2, friday1, friday2, saturday1, saturday2, sunday1, sunday2);
+    console.log(typeof( monday1));
+    console.log(monday1);
 
     geocoder.geocode(streetaddress + "," + city + "," + state + "," + zipcode)
         .then(response => {
@@ -32,11 +34,15 @@ exports.create_a_place = (req, res) => {
                         op_hours.forEach( function (value, index){
                             var time = value.split(':');
                             var hour = (time[0] % 12) || 12;
-                        
-                            if(time[0]>= 12){
-                                op_hours[index] = hour + ":" + time[1] + " " + "PM";
-                            }else{
-                                op_hours[index] = hour + ":" + time[1] + " " + "AM";
+                            if(!value){
+                                op_hours[index] = "Closed"
+                            }
+                            else{
+                                if(time[0]>= 12){
+                                    op_hours[index] = hour + ":" + time[1] + " " + "PM";
+                                }else{
+                                    op_hours[index] = hour + ":" + time[1] + " " + "AM";
+                                }
                             }
                         })
 
@@ -125,7 +131,7 @@ exports.create_a_place = (req, res) => {
                                 newplace.operation_hours.push(op_hours[0] + " - " + op_hours[1], op_hours[2] + " - " + op_hours[3], op_hours[4] + " - " + op_hours[5], op_hours[6] + " - " + op_hours[7], op_hours[8] + " - " + op_hours[9], op_hours[10] + " - " + op_hours[11], op_hours[12] + " - " + op_hours[13]);
                                 newplace.save()
                                 .then(savedplace =>{
-                                    req.flash('success_msg', 'You have successfully added a location to Agora.');
+                                    req.flash('success_msg', 'You have successfully added a location to Agora. The location has to be approved by an admin before it can be accessed.');
                                     res.redirect('/places/' + req.params.id + '/' + req.params.member);
                                 })
                             } 
@@ -185,11 +191,16 @@ exports.edit_place = (req, res) => {
     else if((!op_hours[0]) && (!op_hours[1]) && (!op_hours[2]) && (!op_hours[3]) && (!op_hours[4]) && (!op_hours[5]) && (!op_hours[6]) ){
         Place.findOne({_id:req.params.placeid})
             .then(edit_rating => {
+                var new_people =  Number(edit_rating.rating.people);
                 var new_rating = Number(edit_rating.rating.num);
-                var new_people = Number(edit_rating.rating.people);
                 if(rating){
-                    new_people = Number(new_people + 1);
+                    new_people = Number(edit_rating.rating.people + 1);
                     new_rating = Number(Number(edit_rating.rating.num) + Number(rating)) / Number(new_people);
+                    
+                    if(!edit_rating.rating){
+                        new_rating = Number(rating);
+                        new_people = 1;
+                    }
                 }
                 if(comment){
                     var newComment = new Comment({place:req.params.placeid, commentor:userid, text: comment});
@@ -202,7 +213,7 @@ exports.edit_place = (req, res) => {
                             })
                     })
                 }else{
-                    Place.findOneAndUpdate({_id:req.params.placeid}, {'rating.num': new_rating, 'rating.people': new_people})
+                    Place.findOneAndUpdate({_id:req.params.placeid}, {'rating.num': Number(new_rating), 'rating.people': Number(new_people)})
                     .then(donee =>{
                         req.flash('success_msg', 'You have successfully submitted a review.');
                         res.redirect('/places/' + req.params.id + '/' + req.params.member);

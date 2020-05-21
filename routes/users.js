@@ -46,4 +46,10 @@ router.get('/user-profile/:id/:member', UserController.get_edit_profile_page);
 //EDIT PROFILE HANDLE
 router.post('/edit-profile/:id/:member', UserController.edit_profile);
 
+//USER RATING PAGE
+router.get('/rating/:id/:member/:user', UserController.get_rating_page);
+
+//USER RATING POST
+router.post('/leave-rating/:id/:member/:user', UserController.rating_post);
+
 module.exports = router;

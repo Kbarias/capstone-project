@@ -1,6 +1,6 @@
 <style>
     body {
-        background-image: url("../image/marvin.jpg");
+        background-image: url("/image/marvin.jpg");
         background-repeat: no-repeat;
         background-color: white;
         background-size: 35%;
@@ -32,6 +32,15 @@
                 <div class="row">
                     <div class="col-6  justify-content-center flex-wrap flex-md-nowrap align-items-top border-bottom">
                         <h1 class="h2 text-dark "> My Profile</h1>
+                        <div class="bg-dark card card-body" >
+                            <h3 class="text-white">First Name: <%=info.first_name%></h3>
+                            <br>
+                            <h3 class="text-white">Last Name: <%=info.last_name%></h3>
+                            <br>
+                            <h3 class="text-white">Username: <%=info.username%></h3>
+                            <br>
+                            <h3 class="text-white">Email: <%=info.email%></h3>
+                        </div>
                         <form action="/users/delete/<%=id%>" method="POST">
                             <button type="submit" class="btn btn-danger btn-block">DELETE ACCOUNT</button>
                         </form>
@@ -48,15 +57,15 @@
                         <%- include ('./partials/messages'); -%>
                             <form action="/users/edit-profile/<%=id%>/<%=member%>" method="POST">
                                 <div class="form-group">
-                                    <label for="fname"></label>
+                                    <label for="fname">First Name</label>
                                     <input type="fname" id="fname" name="fname" class="form-control" placeholder="First Name" value="<%= typeof fname != 'undefined' ? fname : '' %>" />
                                 </div>
                                 <div class="form-group">
-                                    <label for="lname"></label>
+                                    <label for="lname">Last Name</label>
                                     <input type="lname" id="lname" name="lname" class="form-control" placeholder="Last Name" value="<%= typeof lname != 'undefined' ? lname : '' %>" />
                                 </div>
                                 <div class="form-group">
-                                    <label for="username"></label>
+                                    <label for="username">Username</label>
                                     <input type="username" id="username" name="username" class="form-control" placeholder="Username" value="<%= typeof username != 'undefined' ? username : '' %>" />
                                 </div>
                                 <div class="form-group">
@@ -83,7 +92,6 @@
         </main>
     </div>
 </div>
-<%- include ('./partials/footer'); -%>
 
 <script>
     (function() {

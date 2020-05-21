@@ -189,8 +189,8 @@ exports.get_history = (req, res) => {
     let userid = req.params.id.slice(0,-1);
     Promise.all([
         Request.find({requester:userid, is_deleted:false}).populate('book').populate('owner'),
-        Exchange.find({owner:userid}).populate('book').populate('buyer'),
-        Exchange.find({buyer:userid}).populate('book').populate('buyer').populate('owner')
+        Exchange.find({owner:userid}).populate('book').populate('buyer').populate('place'),
+        Exchange.find({buyer:userid}).populate('book').populate('buyer').populate('owner').populate('place')
     ])
     .then(myhistory =>{
         //my_requests: outgoing requests I have made, sold: transactions where i have been the seller, bought: transactions where I have been the buyer

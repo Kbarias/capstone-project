@@ -1,0 +1,90 @@
+<style>
+    body {
+        background-image: url("/image/marvin.jpg");
+        background-repeat: no-repeat;
+        background-color: white;
+        background-size: 35%;
+        background-position: 60% 200px;
+    }
+</style>
+
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 myHorizontalNav">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-uppercase text-xl-left" href="#"><b><i>Agorá</i></b></a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/dashboard/admin/<%=id%>/<%=member%>"><b>HOME</b></a>
+    <!-- <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#"><b>INBOX</b></a> -->
+    <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> 
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="#">Sign out</a>
+        </li>
+    </ul>
+-->
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-dark sidebar myVerticalNav">
+            <%- include ('./partials/sidebar'); -%>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 myMainContent">
+            <div class="row mt-0 py-0">
+                <div class="col-md-8 m-auto">
+                    <div class="card card-body">
+                        <h1 class="text-center mb-3">
+                            <i class="fas fa-user"></i> <b>Leave A Rating For This User</b>
+                        </h1>
+                        <%- include ('./partials/messages'); -%>
+                                <div class="form-group">
+                                    First Name: <%=user.first_name%>
+                                </div>
+                                <div class="form-group">
+                                    Last Name: <%=user.last_name%>
+                                </div>
+                                <div class="form-group">
+                                    Username: <%=user.username%>
+                                </div>
+                                <div class="form-group">
+                                    Email: <%=user.email%>
+                                </div>
+                                <div class="form-group">
+                                    <form action="/users/leave-rating/<%=id%>/<%=member%>/<%=user._id%>" method="POST">
+                                        <label for="user_rating">Rating</label>
+                                        <input type="number" min="0" max="5" name="user_rating">
+                                        <button type="submit" class="btn btn-primary btn-md">Submit</button>
+                                    </form>
+                                </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    (function() {
+    
+        const idleDurationSecs = 900;    // X number of seconds
+        const redirectUrl = '/users/logout';  // Redirect idle users to this URL
+        let idleTimeout; // variable to hold the timeout, do not modify
+    
+        const resetIdleTimeout = function() {
+    
+            // Clears the existing timeout
+            if(idleTimeout) clearTimeout(idleTimeout);
+    
+            // Set a new idle timeout to load the redirectUrl after idleDurationSecs
+            idleTimeout = setTimeout(() => location.href = redirectUrl, idleDurationSecs * 1000);
+        };
+    
+        // Init on page load
+        resetIdleTimeout();
+    
+        // Reset the idle timeout on any of the events listed below
+        ['click', 'touchstart', 'mousemove'].forEach(evt => 
+            document.addEventListener(evt, resetIdleTimeout, false)
+        );
+    
+    })();
+</script>

@@ -46,106 +46,22 @@
                             <%}%>
                         </h4>
                         <h4>ISBN No.: <%=merch.book.isbn%></h4>
-                        <h4>MISC.</h4>
-                        <ul>
-                            <li>Condition: <%=merch.condition_desc%></li>
-                            <li>Other stuffs here</li>
-                        </ul>
-                        <p>Textbook Image here </p>
+                        <h4>Condition: <%=merch.condition_desc%></h4>
+                        <!-- <p>Textbook Image here </p>
                         <p><img src="/image/marvin.jpg" style="width: 40%;" alt="A Great HTML Resource"></p>
                         <p>Add a link to Amazon for the book <a href="https://www.amazon.com/HTML5-Masterminds-3rd-revolutionary-applications-ebook/dp/B07KYB26T2/ref=sr_1_1?dchild=1&keywords=how+to+html5&qid=1586653659&s=digital-text&sr=1-1" target="_blank">Web site</a></p>
                         <hr>
-                        <!-- And add a copyright notice.-->
-                        <p>&#169; ACME Publishing, 2020</p>
+                        <p>&#169; ACME Publishing, 2020</p> -->
                     </div>
                     <div class="col-4">
                         <h4>Owner: <%=merch.owner.first_name%> <%=merch.owner.last_name%></h4>
                         <h5>Ratings:
-                            <% for (var star=0; star< rating; star++){ %>
+                            <% for (var star=0; star< rating.num; star++){ %>
                                 <span class="fa fa-star checked"></span>
                                 <% } %>
                         </h5>
                         <hr>
-                        <%if(merch.status.state == 'Being Rented'){%>
-                            <h4 class="text-danger">Note: There will be no requests until the book has been returned and you set the book as available again on the Exchange.</h4>
-                        <%} else {%>
-                            <h3>Please accept a request</h3>
-                        <%}%>
-                        <h4>Requesting members:</h4>
-                        <%if(merch.status.state == 'Available'){%>
-                        <form id="request" onsubmit="return isValidForm()" action="/exchange/accept-request/<%=id%>/<%=member%>/<%=merch._id%>" method="POST">
-                            <div class="table-responsive myTable">
-                                <table class="table table-striped table-sm" id="myTable">
-                                    <thead>
-                                        <tr class="myTable">
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Place</th>
-                                            <th scope="col">First Requested Date</th>
-                                            <th scope="col">Second Requested Date</th>
-                                            <th scope="col">Third Requested Date</th>
-                                            <th scope="col">Message</th>
-                                            <th scope="col">Check to accept</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% requests.forEach(function(row) { %>
-                                            <tr class=" myTable">
-                                                <td scope="row">
-                                                    <%= row.requester.username %>
-                                                </td>
-                                                <td scope="row">
-                                                    <%= row.place.name %>
-                                                    <br>
-                                                    <%= row.place.address.full_address %>
-                                                </td>
-                                                <td scope="row">
-                                                    <%=row.requested_times.first_date %>
-                                                    <%=row.requested_times.first_time %>
-                                                    <input type="checkbox" name = 'accept' style="visibility: hidden;" onclick="selectTime(this)" >
-                                                </td>
-                                                <td scope="row">
-                                                    <%=row.requested_times.sec_date %>
-                                                    <%=row.requested_times.sec_time %>
-                                                    <input type="checkbox" name = 'accept' style="visibility: hidden;" onclick="selectTime(this)" >
-                                                </td>
-                                                <td scope="row">
-                                                    <%=row.requested_times.third_date %>
-                                                    <%=row.requested_times.third_time %>
-                                                    <input type="checkbox" name = 'accept' style="visibility: hidden;" onclick="selectTime(this)" >
-                                                </td>
-                                                <td scope="row">
-                                                    <%=row.message%>
-                                                </td>
-
-                                                <td>
-                                                    <button id='do-it' type="button" class="btn btn-secondary btn-sm" onclick="select(this, '<%= row._id %>')">Select Request</button>
-                                                </td>
-
-                                                
-                                            </tr>
-                                            <% })%>
-
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <input type="text" id="di" name="ID" style="visibility: hidden;">
-
-                            <%if(merch.status.state == 'Available'){%>
-                                <h4> Add comment:</h4>
-                                <div class="col-sm-12">
-                                    <textarea class="col-sm-12" id="message" rows="2" name="message"></textarea>
-                                </div>
-
-                                <a class="btn btn-danger btn-lg" href="/exchange/textbook-owner-details/<%=id%>/<%=member%>/<%=merch._id%>" role="button">Cancel</a>
-                                <button type="submit" class="btn btn-success btn-lg">Submit</button>
-                                <h4 class="text-danger">Once you click <b>confirmed</b>, the requesting party will be notified and you will receive email notification if the offer is confirmed.</h4>
-                                <h5 class="text-warning">The text book will then be removed from the list of avaialable items to be exchanged.</h5>
-                            <%}%>
-                            
-                            
-                        </form>
-                        <%}%>
+                        
                     </div>
                     <div class="col-4">
                         <%if(merch.status.state == 'Being Rented'){%>
@@ -172,6 +88,87 @@
                             <h4 class="text-info">Please coordinate with the requester accordingly for the exchange. You can view the status of the request in your History.</h4>
                         <%}%>
                     </div>
+                </div>
+                <div class='row'>
+                    <%if(merch.status.state == 'Being Rented'){%>
+                        <h4 class="text-danger">Note: There will be no requests until the book has been returned and you set the book as available again on the Exchange.</h4>
+                    <%} %>
+                    
+                    <%if(merch.status.state == 'Available'){%>
+                    <h3>Please accept a request</h3>
+                    <form id="request" onsubmit="return isValidForm()" action="/exchange/accept-request/<%=id%>/<%=member%>/<%=merch._id%>" method="POST">
+                        <div class="table-responsive myTable">
+                            <table class="table table-striped table-sm" id="myTable">
+                                <thead>
+                                    <tr class="myTable">
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Place</th>
+                                        <th scope="col">First Requested Date</th>
+                                        <th scope="col">Second Requested Date</th>
+                                        <th scope="col">Third Requested Date</th>
+                                        <th scope="col">Message</th>
+                                        <th scope="col">Check to accept</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% requests.forEach(function(row) { %>
+                                        <tr class=" myTable">
+                                            <td scope="row">
+                                                <%= row.requester.username %>
+                                            </td>
+                                            <td scope="row">
+                                                <%= row.place.name %>
+                                                <br>
+                                                <%= row.place.address.full_address %>
+                                            </td>
+                                            <td scope="row">
+                                                <%=row.requested_times.first_date %>
+                                                <%=row.requested_times.first_time %>
+                                                <input type="checkbox" name = 'accept' style="visibility: hidden;" onclick="selectTime(this)" >
+                                            </td>
+                                            <td scope="row">
+                                                <%=row.requested_times.sec_date %>
+                                                <%=row.requested_times.sec_time %>
+                                                <input type="checkbox" name = 'accept' style="visibility: hidden;" onclick="selectTime(this)" >
+                                            </td>
+                                            <td scope="row">
+                                                <%=row.requested_times.third_date %>
+                                                <%=row.requested_times.third_time %>
+                                                <input type="checkbox" name = 'accept' style="visibility: hidden;" onclick="selectTime(this)" >
+                                            </td>
+                                            <td scope="row">
+                                                <%=row.message%>
+                                            </td>
+
+                                            <td>
+                                                <button id='do-it' type="button" class="btn btn-secondary btn-sm" onclick="select(this, '<%= row._id %>')">Select Request</button>
+                                            </td>
+
+                                            
+                                        </tr>
+                                        <% })%>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <input type="text" id="di" name="ID" style="visibility: hidden;">
+
+                        <%if(merch.status.state == 'Available'){%>
+                            <h4> Add comment:</h4>
+                            <div class="col-sm-12">
+                                <textarea class="col-sm-12" id="message" rows="2" name="message"></textarea>
+                            </div>
+
+                            <a class="btn btn-danger btn-lg" href="/exchange/textbook-owner-details/<%=id%>/<%=member%>/<%=merch._id%>" role="button">Cancel</a>
+                            <button type="submit" class="btn btn-success btn-lg">Submit</button>
+                            <h4 class="text-danger">Once you click <b>confirmed</b>, the requesting party will be notified and you will receive email notification if the offer is confirmed.</h4>
+                            <h5 class="text-warning">The text book will then be removed from the list of avaialable items to be exchanged.</h5>
+                        <%}%>
+                        
+                        
+                    </form>
+                    <%}%>
                 </div>
             </div>
 
